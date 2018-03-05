@@ -5,7 +5,7 @@
 # Navigation Bot  
 
 # Parameters:
-#  - $instructions: instruction set file 
+#  - $script: script file 
 #  - $mode: execute/compile mode
 #  - $debug: disable/enable debug
 ######
