@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Author: <Alejandro Atance>
+# Author: <Zurdi>
 
 
 import lib_a_nb

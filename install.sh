@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# Author: <Zurdi>
 
 # Installer of Navigation Bot
 

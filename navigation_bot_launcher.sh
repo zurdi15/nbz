@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# Author: <Zurdi>
 
 # Navigation Bot  
 
@@ -21,7 +23,7 @@ function show_help {
 	echo "Released under the GNU GLP"
 	echo ""
 	echo "Navigation bot is a tool to automate navigation and data extraction on the internet."
-	echo "It is configured by little scripts coded with nbz-script languaje. You can find the"
+	echo "It is configured by little scripts coded with nbz-script language. You can find the"
 	echo "documentation in the github wiki: https://www.github.com/zurdi15/navigation_bot/wiki"
 	echo ""
 	echo "Options:"

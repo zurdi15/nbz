@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# Author: <Zurdi>
 
 # Navigation Bot uninstaller
 
