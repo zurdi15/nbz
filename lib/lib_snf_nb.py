@@ -36,30 +36,30 @@ def check_net_parameters(har, request):
 	for entry in har['log']['entries']:
 		param_list_aux = entry['request']['url'].split('?')
 		if len(param_list_aux) > 1:
-			param_list = param_list_aux[1].split('&')
-			if set(params).issubset(set(param_list)):
-                if value == 'times':
-                    times += 1
-                else:
-					request_ok = True
-					status_code = int(entry['response']['status'])
-					url = entry['request']['url']
-					timestamp = entry['startedDateTime'].replace('T', ' ')[:-10]
-					break
+		    param_list = param_list_aux[1].split('&')
+		    if set(params).issubset(set(param_list)):
+                        if value == 'times':
+                            times += 1
+                        else:
+			    request_ok = True
+			    status_code = int(entry['response']['status'])
+			    url = entry['request']['url']
+			    timestamp = entry['startedDateTime'].replace('T', ' ')[:-10]
+			    break
 	
 	if value == 'request_ok':
-		return request_ok
+	    return request_ok
 	elif value == 'url':
-		return url
+	    return url
 	elif value == 'status_code':
-		return status_code
+	    return status_code
 	elif value == 'timestamp':
-		return timestamp
-    elif value == 'times':
-		return times
+	    return timestamp
+        elif value == 'times':
+	    return times
 	else:
-		logger.log('ERROR', 'Can\'t find ' + str(value) + ' - invalid search')
-		sys.exit(-1)
+	    logger.log('ERROR', 'Can\'t find ' + str(value) + ' - invalid search')
+	    sys.exit(-1)
 
 def check_net_keyword(har, request):
 	"""

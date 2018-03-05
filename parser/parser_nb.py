@@ -68,12 +68,12 @@ def NBParser(instructions_path, interactive=False):
 		z_code.append(p[0])
 
 
-    def p_sent_assign_func(p):
-        '''sent_assign : ID ASSIGN sent_func SEMI'''
-        z_code.pop()
-		p[0] = ['assign', p[1], p[3]]
-		variables[p[1]] = ''
-		z_code.append(p[0])
+        def p_sent_assign_func(p):
+            '''sent_assign : ID ASSIGN sent_func SEMI'''
+            z_code.pop()
+	    p[0] = ['assign', p[1], p[3]]
+	    variables[p[1]] = ''
+	    z_code.append(p[0])
 
 	
 	# Function call expression

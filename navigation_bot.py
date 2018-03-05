@@ -90,11 +90,11 @@ class NavigationBot:
 		
 		try:
 			with open(self.script + 'code') as zcode:
-				self.instruction_set = pickle.load(zcode)
+			    self.instruction_set = pickle.load(zcode)
 			with open(self.script + 'vars') as zcode_vars:
-				self.vars_dict = pickle.load(zcode_vars)
+			    self.vars_dict = pickle.load(zcode_vars)
 			if self.debug:
-				logger.log('NOTE', 'Instructions: ' + str(self.instruction_set))
+			    logger.log('NOTE', 'Instructions: ' + str(self.instruction_set))
 			    logger.log('NOTE', 'Variables: ' + str(self.vars_dict))
 		except Exception as e:
 			logger.log('ERROR', 'Script not compiled (' + self.script + '): ' + str(e))
@@ -109,7 +109,7 @@ class NavigationBot:
 		self.net_reports_path = BASE_DIR + 'out/net_reports/' + self.script_name
 		self.complete_csv_path = self.net_reports_path + '/complete_net_log_' + params[0] + '.csv'
 		if not os.path.exists(self.net_reports_path):
-			os.makedirs(self.net_reports_path)
+		    os.makedirs(self.net_reports_path)
 		self.complete_csv = open(self.complete_csv_path, 'w')
 
 
@@ -314,24 +314,24 @@ class NavigationBot:
 
 
 def main():
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-script", help="script file", required=True)
-	parser.add_argument("-mode", help="compile/execution mode: -c (compile only) -x (execution only) -cx (compile & execution)", required=True)
-	parser.add_argument("-debug", help="debug mode", required=False)
-	args = parser.parse_args()
-	script = args.script
-	mode = args.mode
-	debug = args.debug
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-script", help="script file", required=True)
+    parser.add_argument("-mode", help="compile/execution mode: -c (compile only) -x (execution only) -cx (compile & execution)", required=True)
+    parser.add_argument("-debug", help="debug mode", required=False)
+    args = parser.parse_args()
+    script = args.script
+    mode = args.mode
+    debug = args.debug
     if debug == 'false':
         debug = False
     else:
         debug = True
-	NavigationBot(script, mode, debug)
+    NavigationBot(script, mode, debug)
 
 
 if __name__ == "__main__":
-	try:
-		sys.exit(main())
-	except Exception as e:
-		logger.log('ERROR', 'Printing traceback:\n' + traceback.format_exc())
-		sys.exit(-1)
+    try:
+        sys.exit(main())
+    except Exception as e:
+        logger.log('ERROR', 'Printing traceback:\n' + traceback.format_exc())
+	sys.exit(-1)
