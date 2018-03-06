@@ -1,4 +1,4 @@
 # Bot to automate internet browsing
 Project to automate browser navigation with self-scripting-language named nbz
 
-Documentation coming soon
+Documentation: https://github.com/zurdi15/navigation_bot/wiki/NBZ-Coding-guideline
