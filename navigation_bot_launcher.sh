@@ -19,7 +19,7 @@
 
 
 function show_help {
-	echo "Navigation bot - (C) 2017-2018 Zurdi Zurdo"
+	echo "Navigation bot v1.0 - (C) 2017-2018 Zurdi Zurdo"
 	echo "Released under the GNU GLP"
 	echo ""
 	echo "Navigation bot is a tool to automate navigation and data extraction on the internet."
