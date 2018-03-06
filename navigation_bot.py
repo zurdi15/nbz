@@ -225,6 +225,7 @@ class NavigationBot:
 					if instruction[1] == 'browser':
 						if not self.set_browser:
 							self.server, self.proxy = start_proxy(self.proxy_path)
+							self.proxy.new_har()
 							self.browser = instance_browser(self.proxy, params)
 							self.set_browser = True
 						else:
@@ -236,6 +237,11 @@ class NavigationBot:
 						pass
 					else:
 						try:
+							if instruction[1] == 'get_url':
+ 								self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
+ 								pprint(self.proxy.har['log']['entries'], self.complete_csv)
+ 								self.complete_csv.write('\n')
+ 								self.proxy.new_har()
 							if self.FEATURES[instruction[1]]:
 								self.FEATURES[instruction[1]](self.browser, params)
 							elif self.USER_FUNC[instruction[1]]:
@@ -304,7 +310,8 @@ class NavigationBot:
 		"""
 
 		if self.set_net_report:
-			pprint(self.proxy.har['log']['entries'], self.complete_csv)
+			self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
+ 			pprint(self.proxy.har['log']['entries'], self.complete_csv)
 			self.complete_csv.close()
 			logger.log('NOTE', 'Complete_net csv file exported to: ' + self.complete_csv.name)
 		self.browser.close()
