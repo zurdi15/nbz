@@ -20,25 +20,29 @@ PIP=$(which pip)
 NB_INST_PATH="/opt/navigation_bot"
 NB_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DRIVERS_PATH=${NB_PATH}/lib/drivers
+RED="\e[91"
+BLUE="\e[36m"
+GREEN="\e[92m"
+NC="\e[0m"
 
 if [ -z "$PYTHON" ]
 then
-	echo -e "\e[91mNavigation Bot - Error: Python is not installed. Please install python 2.7 in your system.\e[0m"
-	echo -e "\e[91mNavigation Bot - Error: (sudo apt install python2.7)\e[0m"
+	echo -e "${RED}Navigation Bot - Error: Python is not installed. Please install python 2.7 in your system.${NC}"
+	echo -e "${RED}Navigation Bot - Error: (sudo apt install python2.7)${NC}"
 	exit 1
 fi
 
 if [ -z "$JAVA" ]
 then
-	echo -e "\e[91mNavigation Bot - Error: Java is not installed. Please install it in your system.\e[0m"
-	echo -e "\e[91mNavigation Bot - Error: (sudo apt install openjdk-9-jdk)\e[0m"
+	echo -e "${RED}Navigation Bot - Error: Java is not installed. Please install it in your system.${NC}"
+	echo -e "${RED}Navigation Bot - Error: (sudo apt install openjdk-9-jdk)${NC}"
 	exit 1
 fi
 
 if [ -z "$PIP" ]
 then
-	echo -e "\e[91mNavigation Bot - Error: Python-pip is not installed. Please install it in your system.\e[0m"
-	echo -e "\e[91mNavigation Bot - Error: (sudo apt install python-pip)\e[0m"
+	echo -e "${RED}Navigation Bot - Error: Python-pip is not installed. Please install it in your system.${NC}"
+	echo -e "${RED}Navigation Bot - Error: (sudo apt install python-pip)${NC}"
 	exit 1
 fi
 
@@ -56,13 +60,13 @@ done
 sudo chown -R $(whoami):$(whoami) $NB_INST_PATH
 
 # Installing libraries
-echo -e "\e[36mInstalling dependencies...\e[0m"
+echo -e "${BLUE}Installing dependencies...${NC}"
 sudo -H pip install ply
 sudo -H pip install selenium
 sudo -H pip install browsermob-proxy
 
 # Copying drivers into /usr/bin
-echo -e "\e[36mInstalling drivers...\e[0m"
+echo -e "${BLUE}Installing drivers...${NC}"
 sudo cp ${DRIVERS_PATH}/geckodriver /usr/bin
 echo "Geckodriver installed in /usr/bin!"
 sudo cp ${DRIVERS_PATH}/chromedriver /usr/bin
@@ -75,4 +79,4 @@ echo -e $menu_entry > ~/.local/share/applications/navigation-bot.desktop
 
 echo "Menu entry created!"
 
-echo -e "\n\e[92mNavigation Bot installed succesfully!!\e[0m\n"
+echo -e "\n${GREEN}Navigation Bot installed succesfully!!${NC}\n"
