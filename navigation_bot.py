@@ -111,6 +111,17 @@ class NavigationBot:
 		if not os.path.exists(self.net_reports_path):
 		    os.makedirs(self.net_reports_path)
 		self.complete_csv = open(self.complete_csv_path, 'w')
+		
+
+	def reset_har(self):
+                """
+                Reset proxy's HAR to check new requests
+                """
+
+                self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
+                pprint(self.proxy.har['log']['entries'], self.complete_csv)
+                self.complete_csv.write('\n')
+                self.proxy.new_har()
 
 
 	def do_instructions(self, instruction_set):
@@ -231,17 +242,12 @@ class NavigationBot:
 						else:
 							logger.log('ERROR', 'Browser already instanced')
 					elif instruction[1] == 'export_net_report':
-							self.net_report(params)
-							self.set_net_report = True
+						self.net_report(params)
+						self.set_net_report = True
 					elif instruction[1] == 'check_net':
 						pass
 					else:
 						try:
-							if instruction[1] == 'get_url':
- 								self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
- 								pprint(self.proxy.har['log']['entries'], self.complete_csv)
- 								self.complete_csv.write('\n')
- 								self.proxy.new_har()
 							if self.FEATURES[instruction[1]]:
 								self.FEATURES[instruction[1]](self.browser, params)
 							elif self.USER_FUNC[instruction[1]]:
@@ -280,6 +286,10 @@ class NavigationBot:
 						element = get_value(instruction[1])
 						structure = self.vars_dict[get_value(instruction[2])]
 						for aux_element in structure:
+							if isinstance(structure, file):
+                                                                self.vars_dict[element] = aux_element[0:-1] # Avoiding newline character if we loop for a file lines
+                                                        else:
+                                                                self.vars_dict[element] = aux_element # All other structure types
 							self.vars_dict[element] = aux_element
 							self.do_instructions(instruction[3])							
 					else: # Standard For
