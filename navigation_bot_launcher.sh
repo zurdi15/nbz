@@ -96,8 +96,8 @@ fi
 
 NB_PATH=$(dirname $0)
 
-YELLOW='\e[93m'
-RED='\e[91m'
+YELLOW='\e[33m'
+RED='\e[31m'
 NC='\e[0m'
 
 #  - Remove trash files and Kill processes functions
