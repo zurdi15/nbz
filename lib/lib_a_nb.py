@@ -293,7 +293,7 @@ def get_html(browser, params):
 	fixed_html = unicodedata.normalize('NFKD', browser.page_source).encode('ascii','ignore')
 	html.write(fixed_html)
 	html.close()
-	logger.log('NOTE', 'HTML from ' + browser.current_url + ' saved on: ' + html_path)
+	logger.log('NOTE', 'HTML from ' + browser.current_url + ' saved on: ' + html_path + '/' + str(params[1]) + '.html')
     except Exception as e:
         logger.log('ERROR', 'Saving html source: ' + str(e))
 	sys.exit(-1)
@@ -323,7 +323,7 @@ def take_screenshot(browser, params):
 	    os.makedirs(params[0])
 	ss_path = params[0]
 	browser.save_screenshot(ss_path + '/' + params[1] + '.png')
-	logger.log('NOTE', "Screenshot '" + str(params[1]) + ".png' saved on '" + ss_path + "'")
+	logger.log('NOTE', 'Screenshot from ' + browser.current_url + ' saved on: ' + ss_path + '/' + str(params[1]) + '.png')
     except Exception as e:
         logger.log('ERROR', 'Error taking screenshot: ' + str(e))
         sys.exit(-1)
