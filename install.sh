@@ -2,14 +2,14 @@
 #
 # Author: <Zurdi>
 
-# Installer of Navigation Bot
+# Navigation Bot installer
 
 # To let the NB work, it is necesary to install three python libraries:
 #	- selenium
 #	- browsermob-proxy
 # 	- ply
 #
-# Also we need to install some web browser drivers in $PATH:
+# Also we need to install some web browser drivers in /opt/navigation_bot:
 # 	- chromedriver (Google Chrome / Chromium)
 #	- geckodriver (Firefox)
 
@@ -23,7 +23,7 @@ DRIVERS_PATH=${NB_PATH}/lib/drivers
 
 if [ -z "$PYTHON" ]
 then
-	secho -e "\e[91mNavigation Bot - Error: Python is not installed. Please install python 2.7 in your system.\e[0m"
+	echo -e "\e[91mNavigation Bot - Error: Python is not installed. Please install python 2.7 in your system.\e[0m"
 	echo -e "\e[91mNavigation Bot - Error: (sudo apt install python2.7)\e[0m"
 	exit 1
 fi
