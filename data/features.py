@@ -30,6 +30,7 @@ FEATURES_DICT = {
 
 # Sniffering functions
 'check_net'         : lib_snf_nb.check_net,
+'reset_har'          : '',
 'export_net_report' : '',
 
 # Advanced functions
