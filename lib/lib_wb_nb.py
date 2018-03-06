@@ -30,7 +30,6 @@ def start_proxy(proxy_path):
 		sys.exit(-1)
 	try:
 		proxy = server.create_proxy()
-		proxy.new_har()
 	except Exception as e:
 		logger.log('ERROR', 'Error configuring  proxy: ' + str(e))
 		sys.exit(-1)
