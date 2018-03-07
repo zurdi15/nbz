@@ -6,14 +6,14 @@
 
 import sys
 import pickle
-from lib_logger import *
+from lib_log_nbz import *
 logger = Logging()
 try:
 	import ply.yacc as yacc
 except Exception:
 	logger.log('ERROR', "Dependencies not installed. Please run install.sh.")
 	sys.exit(-1)
-from lexer_nb import tokens # Get the token map from the lexer
+from lexer_nbz import tokens # Get the token map from the lexer
 from features import FEATURES_DICT
 
 
