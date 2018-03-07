@@ -15,7 +15,6 @@ def cast_int(browser, params):
 	"""
 
 	try:
-		
 		return int(params[0])
 	except Exception as e:
 		logger.log('ERROR', 'Error casting ' + str(params[0]) + ' to integer: ' + str(e))
