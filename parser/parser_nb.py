@@ -84,7 +84,7 @@ def NBParser(instructions_path, interactive=False):
 			p[0] = ['func', p[1], p[3]]
 			z_code.append(p[0])
 		except LookupError:
-			logger.log('ERROR', 'Undefined function "' + str(p[1]) + '"  line ' + str(p.lineno(1)+1))
+			logger.log('ERROR', 'Undefined function "' + str(p[1]) + '"  line ' + str(lineno))
 			sys.exit(-1)
 	
 
@@ -100,7 +100,7 @@ def NBParser(instructions_path, interactive=False):
 					aux = variables[p[1]]
 					p[0] = [['var', p[1]]]
 				except LookupError:
-					logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '" line ' + str(p.lineno(1)+1))
+					logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '" line ' + str(lineno))
 					sys.exit(-1)
 			elif isinstance(p[1], list):
 				try:
@@ -108,7 +108,7 @@ def NBParser(instructions_path, interactive=False):
 					p[0] = [p[1]]
 					z_code.pop()
 				except LookupError:
-					logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '" line ' + str(p.lineno(1)+1))
+					logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '" line ' + str(lineno))
 					sys.exit(-1)
 		else:
 			p[0] = p[1]
@@ -117,7 +117,7 @@ def NBParser(instructions_path, interactive=False):
 					aux = variables[p[3]]
 					p[0].append(['var', p[3]])
 				except LookupError:
-					logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '" line ' + str(p.lineno(3)+1))
+					logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '" line ' + str(lineno))
 					sys.exit(-1)
 			elif isinstance(p[3], list):
 				try:
@@ -125,7 +125,7 @@ def NBParser(instructions_path, interactive=False):
 					p[0].append([p[3]])
 					z_code.pop()
 				except LookupError:
-					logger.log('ERROR', 'Undefined function "' + str(p[3][1]) + '" line ' + str(p.lineno(1)+1))
+					logger.log('ERROR', 'Undefined function "' + str(p[3][1]) + '" line ' + str(lineno))
 					sys.exit(-1)
 
 	def p_list_value(p):
@@ -292,7 +292,7 @@ def NBParser(instructions_path, interactive=False):
 		    z_code.pop()
 		    p[0] = p[1]
 		except LookupError:
-		    logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)+1))
+		    logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(lineno))
 		    sys.exit(-1)
 
 	
@@ -334,7 +334,7 @@ def NBParser(instructions_path, interactive=False):
 				aux = variables[p[1]]
 				p[0] = ['var', p[1]]
 			except LookupError:
-				logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '"  line ' + str(p.lineno(1)+1))
+				logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '"  line ' + str(lineno))
 				sys.exit(-1)
 		elif isinstance(p[1], list):
 			try:
@@ -342,7 +342,7 @@ def NBParser(instructions_path, interactive=False):
 				z_code.pop()
 				p[0] = p[1]
 			except LookupError:
-				logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)+1))
+				logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(lineno))
 				sys.exit(-1)
 
 
@@ -387,15 +387,17 @@ def NBParser(instructions_path, interactive=False):
 	# Error rule for syntax errors
 	def p_error(p):
 		if p is not None:
-			logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(p.lineno))
+			logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(lineno))
 			sys.exit(-1)
 		else:
-			logger.log('ERROR', 'Unexpected end of input')
+			logger.log('ERROR', 'Error at line: ' + str(lineno))
+                        sys.exit(-1)
 
 	
 	# Build the parser
 	parser = yacc.yacc(debug=1)
 	
+	lineno = 0
 	
 	if not interactive:
 		z_code_path = instructions_path + 'code'
@@ -403,13 +405,14 @@ def NBParser(instructions_path, interactive=False):
 		data = ''
 		with open(instructions_path, 'r') as f:
 			for line in f:
+				lineno += 1
 				if len(line)>1:
-					data += line
+					try:
+						parser.parse(line)
+					except EOFError:
+						logger.log('ERROR', 'General error parsing ' + instructions_path)
 					if not line: continue
-		try:
-			parser.parse(data)
-		except EOFError:
-			logger.log('ERROR', 'General error parsing ' + instructions_path)
+
 		with open(z_code_path, 'wb') as zcode:
 			pickle.dump(z_code, zcode)
 		with open(z_code_path_vars, 'wb') as zcode_vars:
