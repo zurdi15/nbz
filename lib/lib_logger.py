@@ -11,8 +11,8 @@ class Logging:
     @staticmethod
     def log(level, msg):
         if level == 'NOTE':
-            print('NB - Log' + ': ' + msg)
+            print('NBZ - Log' + ': ' + msg)
         elif level == 'ERROR':
-            print('NB - Error' + ': ' + msg)
+            print('NBZ - Error' + ': ' + msg)
         else:
             print('Not defined logger level: ' + str(level))
