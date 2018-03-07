@@ -117,18 +117,21 @@ def t_ID(t):
 	return t
 
 
-# - MISC -
+# --- MISC ---
 
-# Comments
-t_ignore_COMMENT = r'\#.*'
 
-# Ignored characters (spaces and tabs)
+# - Ignored characters
+
+# Spaces and tabs
 t_ignore  = ' \t'
 
-# Tracking line numbers rule
+# Comments
+def t_comment(t):
+        r'\#.*'
+
+# Newlines
 def t_newline(t):
-	r'\n+'
-	t.lexer.lineno += len(t.value)
+        r'\n'
 
 # Error handling rule
 def t_error(t):
