@@ -5,7 +5,7 @@
 
 import sys
 import urlparse
-from lib_logger import *
+from lib_log_nbz import *
 logger = Logging()
 try:
 	from selenium import webdriver
