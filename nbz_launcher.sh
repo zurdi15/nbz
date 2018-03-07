@@ -2,7 +2,7 @@
 #
 # Author: <Zurdi>
 
-# Navigation Bot  
+# NBZ Launcher 
 
 # Parameters:
 #  - $script: script file 
@@ -12,19 +12,19 @@
 
 # Structure:
 #  - Parameters
-#  - Remove trash files and Kill processes functions
-#  - Initialize virtual display
-#  - Launch navigation bot
+#  - Remove trash files and kill processes functions
+#  - Initialize virtual display (optional)
+#  - Launch NBZ
 ######
 
 
 function show_help {
-	echo "Navigation bot v1.0 - (C) 2017-2018 Zurdi Zurdo"
+	echo "NBZ v1.0 - (C) 2017-2018 Zurdi Zurdo"
 	echo "Released under the GNU GLP"
 	echo ""
-	echo "Navigation bot is a tool to automate navigation and data extraction on the internet."
+	echo "NBZ is a tool to automate navigation and data extraction on the internet."
 	echo "It is configured by little scripts coded with nbz-script language. You can find the"
-	echo "documentation in the github wiki: https://www.github.com/zurdi15/navigation_bot/wiki"
+	echo "documentation in the github wiki: https://github.com/zurdi15/nbz_v1.0/wiki"
 	echo ""
 	echo "Options:"
 	echo " -s    set the .nbz script"
@@ -94,13 +94,13 @@ else
 	fi
 fi
 
-NB_PATH=$(dirname $0)
+NBZ_PATH=$(dirname $0)
 
 YELLOW='\e[33m'
 RED='\e[31m'
 NC='\e[0m'
 
-#  - Remove trash files and Kill processes functions
+#  - Remove trash files and kill processes functions
 function remove_trash {	
 	if [ -f $(pwd)/server.log ]
 	then
@@ -117,8 +117,8 @@ function remove_trash {
 }
 
 function kill_processes {
-	pidsProcess=$(pstree $$ -p|egrep -o '[0-9]+')
-	for pid in ${pidsProcess}
+	pids_process=$(pstree $$ -p|egrep -o '[0-9]+')
+	for pid in ${pids_process}
 	do
 		kill -15 -${pid}
 	done
@@ -129,16 +129,16 @@ function kill_processes {
 #Xvfb :99 -ac 1>/dev/null 2>&1 &
 #export DISPLAY=:99
 
-#  - Launch navigation bot
+#  - Launch NBZ
 echo
-echo -e "${YELLOW}########################## STARTING NAVIGATION BOT ##########################${NC}"
+echo -e "${YELLOW}########################## STARTING NBZ ##########################${NC}"
 echo
 
-python ${NB_PATH}/navigation_bot.py -script ${script} -mode ${mode} -debug ${debug}
+python ${NB_PATH}/nbz.py -script ${script} -mode ${mode} -debug ${debug}
 
 if [[ $? != 0 ]]; then
     echo
-	echo -e "${RED}************************ ERROR ENDING NAVIGATION BOT ************************${NC}"
+	echo -e "${RED}************************ ERROR ENDING NBZ ************************${NC}"
 	remove_trash
 	kill_processes
         exit 1
@@ -146,7 +146,7 @@ fi
 
 remove_trash
 echo
-echo -e "${YELLOW}############################# END NAVIGATION BOT ############################${NC}"
+echo -e "${YELLOW}############################# END NBZ ############################${NC}"
 kill_processes
 
 
