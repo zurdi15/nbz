@@ -4,6 +4,12 @@
 # Author: <Zurdi>
 
 
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
+sys.path.append(BASE_DIR + 'lib')
+
 import lib_a_nb
 import lib_b_nb
 import lib_snf_nb
