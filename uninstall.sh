@@ -2,7 +2,7 @@
 #
 # Author: <Zurdi>
 
-# Navigation Bot uninstaller
+# NBZ uninstaller
 
 RED="\e[91"
 BLUE="\e[36m"
@@ -20,7 +20,7 @@ echo "Geckodriver removed!"
 sudo rm /usr/bin/chromedriver
 echo "Chromedriver removed!"
 
-rm ~/.local/share/applications/navigation-bot.desktop
+rm ~/.local/share/applications/nbz.desktop
 echo "Menu entry removed!"
 
-echo -e "\n${GREEN}Navigation Bot succesfully uninstalled!!${NC}\n"
+echo -e "\n${GREEN}NBZ succesfully uninstalled!!${NC}\n"
