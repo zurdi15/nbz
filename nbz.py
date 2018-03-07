@@ -18,15 +18,15 @@ sys.path.append(BASE_DIR + 'lib')
 sys.path.append(BASE_DIR + 'data')
 sys.path.append(BASE_DIR + 'parser')
 
-from lib_logger import Logging
+from lib_log_z import Logging
 logger = Logging()
-from lib_wb_nb import *
-from lib_snf_nb import check_net
-from parser_nb import NBParser
+from lib_wb_nbz import *
+from lib_snf_nbz import check_net
+from parser_nbz import NBZParser
 from features import FEATURES_DICT
 
 
-class NavigationBot:
+class NBZ:
 
 	def __init__(self, script, mode, debug=True):
 
@@ -80,7 +80,7 @@ class NavigationBot:
 		Compile z_code into object file ready to be executed
 		"""
 		
-		NBParser(self.script)
+		NBZParser(self.script)
 
 
 	def get_z_code(self):
@@ -343,7 +343,7 @@ def main():
         debug = False
     else:
         debug = True
-    NavigationBot(script, mode, debug)
+    NBZ(script, mode, debug)
 
 
 if __name__ == "__main__":
