@@ -7,7 +7,7 @@ import sys
 import time
 import unicodedata
 from selenium.webdriver.common.keys import Keys
-from lib_logger import *
+from lib_log_nbz import *
 logger = Logging()
 
 
