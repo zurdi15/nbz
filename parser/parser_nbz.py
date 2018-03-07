@@ -17,7 +17,7 @@ from lexer_nbz import tokens # Get the token map from the lexer
 from features import FEATURES_DICT
 
 
-def NBParser(instructions_path, interactive=False):
+def NBZParser(script_path, interactive=False):
 
 	# Dictionary of variables
 	variables = {}
@@ -400,24 +400,24 @@ def NBParser(instructions_path, interactive=False):
 	lineno = 0
 	
 	if not interactive:
-		z_code_path = instructions_path + 'code'
-		z_code_path_vars = instructions_path + 'vars'
-		data = ''
-		with open(instructions_path, 'r') as f:
-			for line in f:
+		z_code_path = script_path + 'code'
+		z_code_path_vars = script_path + 'vars'
+
+		with open(script_path, 'r') as s:
+			for line in s:
 				lineno += 1
 				if len(line)>1:
 					try:
 						parser.parse(line)
 					except EOFError:
-						logger.log('ERROR', 'General error parsing ' + instructions_path)
+						logger.log('ERROR', 'General error parsing ' + script_path)
 					if not line: continue
 
 		with open(z_code_path, 'wb') as zcode:
 			pickle.dump(z_code, zcode)
 		with open(z_code_path_vars, 'wb') as zcode_vars:
-			pickle.dump(variables, zcode_vars)
-		return z_code, variables
+			pickle.dump(z_code_vars, zcode_vars)
+		return z_code, z_code_vars
 	else:
 		while True:
 			s = raw_input('input(sentence) > ')
@@ -428,4 +428,4 @@ def NBParser(instructions_path, interactive=False):
 
 # Interactive mode
 if __name__ == "__main__":
-	NBParser('interactive', True)
+	NBZParser('interactive', True)
