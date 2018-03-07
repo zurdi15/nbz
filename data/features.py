@@ -10,10 +10,10 @@ import sys
 BASE_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
 sys.path.append(BASE_DIR + 'lib')
 
-import lib_a_nb
-import lib_b_nb
-import lib_snf_nb
-import lib_d_nb
+import lib_a_nbz
+import lib_b_nbz
+import lib_snf_nbz
+import lib_d_nbz
 
 
 # BOT FEATURES DICTIONARY
