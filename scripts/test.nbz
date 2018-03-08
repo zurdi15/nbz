@@ -1,4 +1,4 @@
-browser('chrome', 'Chrome on Ubuntu');
+browser('chrome');
 
 get_url('http://www.elmundo.es/elmundo/2017/datos/sep/s4/salarios_comparador/form-comparative.html');
 fill('/html/body/div/div[1]/div[1]/div[1]/div/input', '1500');

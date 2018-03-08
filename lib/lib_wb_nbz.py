@@ -41,33 +41,34 @@ def instance_browser(proxy, params):
 	Start web browser
 	"""
 
-	if len(params) < 2:
+	if len(params) < 1:
 		logger.log('ERROR', 'Browser incorrectly defined, please check your script.')
 		sys.exit(-1)
 	else:
 		try:
-			try:
-				user_agent = USER_AGENT_DICT[params[1]]
-			except LookupError:
-				user_agent = params[1]
-			logger.log('NOTE', 'Launching Browser: ' + str(params[0]) + ' (user-agent = ' + str(params[1]) + ')...')
+			if len(params) == 2:
+				try:
+					user_agent = USER_AGENT_DICT[params[1]]
+				except LookupError:
+					logger.log('ERROR', 'Not supported user-agent: ' + str(params[1]))
+					sys.exit(-1)
+			else:
+				user_agent = 'default'
+			if user_agent != 'default':
+				logger.log('NOTE', 'Launching Browser: ' + str(params[0]) + ' (user-agent = ' + str(params[1]) + ')...')
+			else:
+				logger.log('NOTE', 'Launching Browser: ' + str(params[0]) + ' (user-agent = ' + str(user_agent) + ')...')
 			if params[0] == 'chrome':
 				ch_opt = webdriver.ChromeOptions()
 				proxy_url = urlparse.urlparse(proxy.proxy).path
 				ch_opt.add_argument("--proxy-server=" + proxy_url)
-				try:
+				if user_agent != 'default':
 					ch_opt.add_argument("--user-agent=" + user_agent)
-				except Exception:
-					logger.log('ERROR', 'Not supported user-agent: ' + str(params[1]))
-					sys.exit(-1)
 				browser = webdriver.Chrome(chrome_options=ch_opt)
 			elif params[0] == 'firefox':
 				ff_prf = webdriver.FirefoxProfile()
-				try:
+				if user_agent != 'default':
 					ff_prf.set_preference("general.useragent.override", user_agent)
-				except Exception:
-					logger.log('ERROR', 'Not supported user-agent: ' + str(params[1]))
-					sys.exit(-1)
 				browser = webdriver.Firefox(firefox_profile=ff_prf, proxy=proxy.selenium_proxy())
 			else:
 				logger.log('ERROR', 'Not supported browser: ' + params[0])
