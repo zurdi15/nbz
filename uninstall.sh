@@ -14,6 +14,8 @@ sudo -H pip uninstall -y selenium
 sudo -H pip uninstall -y ply
 sudo -H pip uninstall -y browsermob-proxy
 
+sudo rm -rf /opt/nbz
+
 echo -e "${BLUE}Uninstalling drivers...${NC}"
 sudo rm /usr/bin/geckodriver
 echo "Geckodriver removed!"

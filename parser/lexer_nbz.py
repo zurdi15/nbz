@@ -119,7 +119,6 @@ def t_ID(t):
 
 # --- MISC ---
 
-
 # - Ignored characters
 
 # Spaces and tabs
@@ -131,7 +130,8 @@ def t_comment(t):
 
 # Newlines
 def t_newline(t):
-        r'\n'
+	r'\n+'
+	t.lexer.lineno += len(t.value)
 
 # Error handling rule
 def t_error(t):

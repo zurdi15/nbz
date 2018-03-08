@@ -73,7 +73,7 @@ sudo cp ${DRIVERS_PATH}/chromedriver /usr/bin
 echo "Chromedriver installed in /usr/bin!"
 
 # Creating menu entry
-menu_entry="[Desktop Entry]\nVersion=1.0\nType=Application\nName=NBZ\nGenericName=NBZ\nIcon=${NBZ_INST_PATH}/nbz_icon.png\nExec=${NBZ_INST_PATH}/nbz_launcher.sh -s ${NBZ_INST_PATH}/scripts/bdfutbol.nbz\nPath=${NBZ_INST_PATH}\nNoDisplay=False\nCategories=Development;\nStartupNotify=false\nTerminal=true"
+menu_entry="[Desktop Entry]\nVersion=1.0\nType=Application\nName=NBZ\nGenericName=NBZ\nIcon=${NBZ_INST_PATH}/nbz_icon.png\nExec=${NBZ_INST_PATH}/nbz_launcher.sh -s ${NBZ_INST_PATH}/scripts/test.nbz\nPath=${NBZ_INST_PATH}\nNoDisplay=False\nCategories=Development;\nStartupNotify=false\nTerminal=true"
 
 echo -e $menu_entry > ~/.local/share/applications/nbz.desktop
 

@@ -134,7 +134,7 @@ echo
 echo -e "${YELLOW}########################## STARTING NBZ ##########################${NC}"
 echo
 
-python ${NB_PATH}/nbz.py -script ${script} -mode ${mode} -debug ${debug}
+python ${NBZ_PATH}/nbz.py -script ${script} -mode ${mode} -debug ${debug}
 
 if [[ $? != 0 ]]; then
     echo

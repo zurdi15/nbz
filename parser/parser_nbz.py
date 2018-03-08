@@ -19,10 +19,10 @@ from features import FEATURES_DICT
 
 def NBZParser(script_path, interactive=False):
 
-	# Dictionary of variables
-	variables = {}
+	# z_code_vars dictionary
+	z_code_vars = {}
 
-	# Dictionary of functions
+	# Functions dictionary
 	functions = FEATURES_DICT
 
 	# z_code structure
@@ -64,7 +64,7 @@ def NBZParser(script_path, interactive=False):
 					   | ID ASSIGN expr_arithm SEMI
 					   | ID ASSIGN logic_list SEMI'''
 		p[0] = ['assign', p[1], p[3]]
-		variables[p[1]] = ''
+		z_code_vars[p[1]] = ''
 		z_code.append(p[0])
 
 
@@ -72,7 +72,7 @@ def NBZParser(script_path, interactive=False):
             '''sent_assign : ID ASSIGN sent_func SEMI'''
             z_code.pop()
 	    p[0] = ['assign', p[1], p[3]]
-	    variables[p[1]] = ''
+	    z_code_vars[p[1]] = ''
 	    z_code.append(p[0])
 
 	
@@ -84,7 +84,7 @@ def NBZParser(script_path, interactive=False):
 			p[0] = ['func', p[1], p[3]]
 			z_code.append(p[0])
 		except LookupError:
-			logger.log('ERROR', 'Undefined function "' + str(p[1]) + '"  line ' + str(lineno))
+			logger.log('ERROR', 'Undefined function "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
 			sys.exit(-1)
 	
 
@@ -97,10 +97,10 @@ def NBZParser(script_path, interactive=False):
 		if len(p) == 2:
 			if isinstance(p[1], str):
 				try:
-					aux = variables[p[1]]
+					aux = z_code_vars[p[1]]
 					p[0] = [['var', p[1]]]
 				except LookupError:
-					logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '" line ' + str(lineno))
+					logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '" line ' + str(p.lineno(1)))
 					sys.exit(-1)
 			elif isinstance(p[1], list):
 				try:
@@ -108,16 +108,16 @@ def NBZParser(script_path, interactive=False):
 					p[0] = [p[1]]
 					z_code.pop()
 				except LookupError:
-					logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '" line ' + str(lineno))
+					logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '" line ' + str(p.lineno(1)))
 					sys.exit(-1)
 		else:
 			p[0] = p[1]
 			if isinstance(p[3], str):
 				try:
-					aux = variables[p[3]]
+					aux = z_code_vars[p[3]]
 					p[0].append(['var', p[3]])
 				except LookupError:
-					logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '" line ' + str(lineno))
+					logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '" line ' + str(p.lineno(1)))
 					sys.exit(-1)
 			elif isinstance(p[3], list):
 				try:
@@ -125,7 +125,7 @@ def NBZParser(script_path, interactive=False):
 					p[0].append([p[3]])
 					z_code.pop()
 				except LookupError:
-					logger.log('ERROR', 'Undefined function "' + str(p[3][1]) + '" line ' + str(lineno))
+					logger.log('ERROR', 'Undefined function "' + str(p[3][1]) + '" line ' + str(p.lineno(1)))
 					sys.exit(-1)
 
 	def p_list_value(p):
@@ -159,7 +159,7 @@ def NBZParser(script_path, interactive=False):
 				| FOR LPAREN ID IN ID RPAREN LBRACE sent_list RBRACE'''
 		if len(p) == 10:
 			p[0] = ['for', p[3], p[5], p[8]]
-			variables[p[3]] = ''
+			z_code_vars[p[3]] = ''
 			for i in xrange(0, len(p[8])):
 				z_code.pop()
 		else:
@@ -292,7 +292,7 @@ def NBZParser(script_path, interactive=False):
 		    z_code.pop()
 		    p[0] = p[1]
 		except LookupError:
-		    logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(lineno))
+		    logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)))
 		    sys.exit(-1)
 
 	
@@ -331,10 +331,10 @@ def NBZParser(script_path, interactive=False):
                        | sent_func'''
 		if isinstance(p[1], str):
 			try:
-				aux = variables[p[1]]
+				aux = z_code_vars[p[1]]
 				p[0] = ['var', p[1]]
 			except LookupError:
-				logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '"  line ' + str(lineno))
+				logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
 				sys.exit(-1)
 		elif isinstance(p[1], list):
 			try:
@@ -342,7 +342,7 @@ def NBZParser(script_path, interactive=False):
 				z_code.pop()
 				p[0] = p[1]
 			except LookupError:
-				logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(lineno))
+				logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)))
 				sys.exit(-1)
 
 
@@ -387,32 +387,30 @@ def NBZParser(script_path, interactive=False):
 	# Error rule for syntax errors
 	def p_error(p):
 		if p is not None:
-			logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(lineno))
+			logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(p.lineno(1)))
 			sys.exit(-1)
 		else:
-			logger.log('ERROR', 'Error at line: ' + str(lineno))
-                        sys.exit(-1)
+			logger.log('ERROR', 'Error at line: ' + str(p.lineno(1)))
+			sys.exit(-1)
 
 	
 	# Build the parser
 	parser = yacc.yacc(debug=1)
 	
-	lineno = 0
-	
 	if not interactive:
 		z_code_path = script_path + 'code'
 		z_code_path_vars = script_path + 'vars'
+		
+		data = ''
 
 		with open(script_path, 'r') as s:
 			for line in s:
-				lineno += 1
-				if len(line)>1:
-					try:
-						parser.parse(line)
-					except EOFError:
-						logger.log('ERROR', 'General error parsing ' + script_path)
-					if not line: continue
-
+				data += line
+				if not line: continue
+		try:
+			parser.parse(data)
+		except EOFError:
+			logger.log('ERROR', 'General error parsing ' + script_path)	
 		with open(z_code_path, 'wb') as zcode:
 			pickle.dump(z_code, zcode)
 		with open(z_code_path_vars, 'wb') as zcode_vars:

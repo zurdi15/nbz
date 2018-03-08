@@ -15,7 +15,7 @@ jornada=1;
 get_url('http://www.bdfutbol.com');
 
 # Bucle principal para iterar sobre las temporadas (años)
-for(0, 48, +){
+for (0, 48, +){
 
 	# Entrar a la url destino
 	get_url('http://www.bdfutbol.com/t/t'+i+'-'+j+'.html');

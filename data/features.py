@@ -36,18 +36,18 @@ FEATURES_DICT = {
 
 # Sniffering functions
 'check_net'         : lib_snf_nbz.check_net,
-'reset_har'          : '',
+'reset_har'         : '',
 'export_net_report' : '',
 
 # Advanced functions
 'print'             : lib_a_nbz.print_,
-'random'	          : lib_a_nbz.random,
+'random'            : lib_a_nbz.random,
 'get_timestamp'	    : lib_a_nbz.get_timestamp,
 'timestamp_diff'    : lib_a_nbz.timestamp_diff,
-'open'		          : lib_a_nbz.open_file,
-'write'		          : lib_a_nbz.write_file,
+'open'              : lib_a_nbz.open_file,
+'write'             : lib_a_nbz.write_file,
 'write_table_as_csv': lib_a_nbz.write_table_as_csv,
-'close'		          : lib_a_nbz.close_file,
+'close'             : lib_a_nbz.close_file,
 'get_local_storage' : lib_a_nbz.get_local_storage,
 'set_local_storage' : lib_a_nbz.set_local_storage,
 'get_cookie'        : lib_a_nbz.get_cookie,
@@ -64,11 +64,11 @@ FEATURES_DICT = {
 'screenshot'        : lib_a_nbz.take_screenshot,
 
 # Data types functions
-'int'		            : lib_d_nbz.cast_int,
-'float'		          : lib_d_nbz.cast_float,
-'str'		            : lib_d_nbz.cast_str,
-'sub_str'	          : lib_d_nbz.sub_str,
-'len'		            : lib_d_nbz.lenght,
-'find'		          : lib_d_nbz.find,
+'int'               : lib_d_nbz.cast_int,
+'float'             : lib_d_nbz.cast_float,
+'str'               : lib_d_nbz.cast_str,
+'sub_str'           : lib_d_nbz.sub_str,
+'len'               : lib_d_nbz.lenght,
+'find'              : lib_d_nbz.find,
 
 }
