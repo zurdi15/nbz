@@ -387,10 +387,10 @@ def NBZParser(script_path, interactive=False):
 	# Error rule for syntax errors
 	def p_error(p):
 		if p is not None:
-			logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(p.lineno(1)))
+			logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(p.lineno))
 			sys.exit(-1)
 		else:
-			logger.log('ERROR', 'Error at line: ' + str(p.lineno(1)))
+			logger.log('ERROR', 'Error at line: ' + str(p.lineno))
 			sys.exit(-1)
 
 	
