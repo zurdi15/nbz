@@ -21,7 +21,7 @@ def print_(browser, params):
     """
 	
     try:
-        if not params[0]:
+        if params[0] == None:
             logger.log('NOTE', '')
         else:
 	    logger.log('NOTE', str(params[0]))

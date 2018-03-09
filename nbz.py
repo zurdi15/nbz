@@ -296,7 +296,8 @@ class NBZ:
                                                         else:
                                                                 self.vars_dict[element] = aux_element # All other structure types
 							self.vars_dict[element] = aux_element
-							self.do_instructions(instruction[3])							
+                                                        if isinstance(instruction[3], list):
+							    self.do_instructions(instruction[3])							
 					else: # Standard For
 						if instruction[3] == '+':
 							for i in xrange(get_value(instruction[1]), get_value(instruction[2]), 1):
