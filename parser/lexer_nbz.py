@@ -63,6 +63,8 @@ tokens = [
 	'COLON',
 	'LBRACE',
 	'RBRACE',
+	'LBRACKET',
+	'RBRACKET',
 	'ID',
 
 ] + list(reserved.values())
@@ -111,6 +113,8 @@ t_SEMI		= r'\;'
 t_COLON		= r'\:'
 t_LBRACE	= r'\{'
 t_RBRACE	= r'\}'
+t_LBRACKET	= r'\['
+t_RBRACKET	= r'\]'
 def t_ID(t):
 	r'[a-z_A-Z]([a-z_A-Z0-9])*'
 	t.type = reserved.get(t.value.lower(),'ID') # Check for reserved words (lower() to avoid case-sensitive)

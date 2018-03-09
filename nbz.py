@@ -118,9 +118,10 @@ class NBZ:
                 Reset proxy's HAR to check new requests
                 """
 
-                self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
-                pprint(self.proxy.har['log']['entries'], self.complete_csv)
-                self.complete_csv.write('\n')
+                if self.set_net_report:
+                    self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
+                    pprint(self.proxy.har['log']['entries'], self.complete_csv)
+                    self.complete_csv.write('\n')
                 self.proxy.new_har()
 
 
@@ -163,6 +164,7 @@ class NBZ:
 			"""
 
 			if isinstance(instruction, list):
+                            if len(instruction) > 0:
 				if instruction[0] == 'var':
 					return self.vars_dict[instruction[1]]
 
@@ -216,9 +218,12 @@ class NBZ:
 						except Exception as e:
 							logger.log('ERROR', 'Error with function ' + str(e))
 							sys.exit(-1)
-
+                                else:
+                                    return instruction
+                            else:
+                                return instruction
 			else:
-				return instruction
+			    return instruction
 
 		# Main execution loop
 		for instruction in instruction_set:

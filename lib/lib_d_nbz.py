@@ -84,3 +84,18 @@ def find(browser, params):
 	except Exception as e:
 		logger.log('ERROR', 'Error searching substring into ' + str(params[0]) + ': ' + str(e))
 		sys.exit(-1)
+
+
+def append(browser, params):
+	"""
+	Append an element into a list
+	"""
+
+	try:
+		return params[0].append(params[1])
+	except Exception as e:
+		logger.log('ERROR', 'Error appending ' + str(params[1]) + ' into ' + str(params[0]))
+		sys.exit(-1)
+
+
+

@@ -62,7 +62,8 @@ def NBZParser(script_path, interactive=False):
 	def p_sent_assign_expr(p):
 		'''sent_assign : ID ASSIGN expr_type SEMI
 					   | ID ASSIGN expr_arithm SEMI
-					   | ID ASSIGN logic_list SEMI'''
+					   | ID ASSIGN logic_list SEMI
+					   | ID ASSIGN expr_list SEMI'''
 		p[0] = ['assign', p[1], p[3]]
 		z_code_vars[p[1]] = ''
 		z_code.append(p[0])
@@ -347,11 +348,32 @@ def NBZParser(script_path, interactive=False):
 
 
 	def p_arithm_valid_num(p):
-		'''expr_arithm : expr_type'''
-		p[0] = p[1]
+	    '''expr_arithm : expr_type'''
+	    p[0] = p[1]
 			
 
 	# Type definitions
+	def p_expr_list(p):
+            '''expr_list : LBRACKET expr_inside_list RBRACKET'''
+            p[0] = p[2]
+
+
+	def p_list_expr_inside_list(p):
+		'''expr_inside_list : expr_inside_list COMMA expr_type
+		             	    | expr_inside_list COMMA expr_bool
+		             	    | expr_type
+							| empty'''
+		if len(p) == 2:
+			if p[1] is None:
+				p[0] = []
+			else:
+				p[0] = [p[1]]
+		else:
+	            p[0] = p[1]
+	            p[0].append(p[3])
+
+
+
 	def p_expr_type(p):
 		'''expr_type : expr_num
 			     	 | expr_string'''
