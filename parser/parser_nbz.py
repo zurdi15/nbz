@@ -340,6 +340,7 @@ def NBZParser(script_path, interactive=False):
         '''expr_inside_list : expr_inside_list COMMA expr_type
                             | expr_inside_list COMMA expr_bool
                             | expr_type
+                            | expr_bool
                             | empty'''
         if len(p) == 2:
             if p[1] is None:
