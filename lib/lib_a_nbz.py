@@ -7,7 +7,6 @@
 import sys
 import os
 import time
-import csv
 from datetime import datetime
 from random import randint
 import unicodedata
@@ -19,28 +18,28 @@ def print_(browser, params):
     """
     Print string
     """
-	
+
     try:
         if params[0] == None:
             logger.log('NOTE', '')
         else:
-	    logger.log('NOTE', str(params[0]))
+            logger.log('NOTE', str(params[0]))
     except Exception as e:
         logger.log('ERROR', 'Error printing "' + str(params) + '": ' + str(e))
-	sys.exit(-1)
+        sys.exit(-1)
 
 
 def random(browser, params):
     """
     Return randome number
     """
-	
+
     try:
         return randint(params[0], params[1])
     except Exception as e:
         logger.log('ERROR', 'Error getting random number: ' + str(e))
         sys.exit(-1)
-	
+
 
 def get_timestamp(browser, params):
     """
@@ -49,12 +48,12 @@ def get_timestamp(browser, params):
 
     try:
         if not params[0]:
-	    return time.strftime("%Y-%m-%d %H:%M:%S")
-	else:
-	    return time.strftime(params[0])
+            return time.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            return time.strftime(params[0])
     except Exception as e:
         logger.log('ERROR', 'Error getting actual timestamp: ' + str(e))
-	sys.exit(-1)
+        sys.exit(-1)
 
 
 def timestamp_diff(browser, params):
@@ -64,7 +63,7 @@ def timestamp_diff(browser, params):
 
     try:
         d1 = datetime.strptime(params[0], "%Y-%m-%d %H:%M:%S")
-	d2 = datetime.strptime(params[1], "%Y-%m-%d %H:%M:%S")
+        d2 = datetime.strptime(params[1], "%Y-%m-%d %H:%M:%S")
         return d1 - d2
     except Exception as e:
         logger.log('ERROR', 'Error substracting dates: ' + str(e))
@@ -78,13 +77,13 @@ def open_file(browser, params):
 
     try:
         if len(params) < 2:
-	    logger.log('ERROR', 'Error opening ' + str(params[0]) + ' open mode needed')
-	    sys.exit(-1)
-	else:
-	    return open(params[0], params[1])
+            logger.log('ERROR', 'Error opening ' + str(params[0]) + ' open mode needed')
+            sys.exit(-1)
+        else:
+            return open(params[0], params[1])
     except Exception as e:
         logger.log('ERROR', 'Error opening "' + str(params[0]) + '": ' + str(e))
-	sys.exit(-1)
+        sys.exit(-1)
 
 
 def write_file(browser, params):
@@ -94,11 +93,11 @@ def write_file(browser, params):
 
     try:
         sentences = params[1].split('\\n')
-	for sent in sentences:
-	    sent = unicode(sent)
-	    fixed_sent = unicodedata.normalize('NFKD', sent).encode('ascii', 'ignore')
-	    params[0].write(fixed_sent)
-	    params[0].write('\n')
+        for sent in sentences:
+            sent = unicode(sent)
+            fixed_sent = unicodedata.normalize('NFKD', sent).encode('ascii', 'ignore')
+            params[0].write(fixed_sent)
+            params[0].write('\n')
     except Exception as e:
         logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
         sys.exit(-1)
@@ -111,36 +110,36 @@ def write_table_as_csv(browser, params):
 
     try:
         if not os.path.exists(params[1]):
-	    os.makedirs(params[1])
-	file_ = params[1]
-	delimiter = params[2]
-	row_ = ''
-	if len(params) == 4:
-	    add = params[3]
-	else:
-	    add = ''
-	for row in params[0].find_elements_by_tag_name('tr'):
-	    for cell in row.find_elements_by_tag_name('td'):
-		row_ += unicodedata.normalize('NFKD', cell.text).encode('ascii', 'ignore') + delimiter
-		row_ = add + row_ + '\n'
-	    file_.write(row_)
-	    row_ = ''
+            os.makedirs(params[1])
+        file_ = params[1]
+        delimiter = params[2]
+        row_ = ''
+        if len(params) == 4:
+            add = params[3]
+        else:
+            add = ''
+        for row in params[0].find_elements_by_tag_name('tr'):
+            for cell in row.find_elements_by_tag_name('td'):
+                row_ += unicodedata.normalize('NFKD', cell.text).encode('ascii', 'ignore') + delimiter
+                row_ = add + row_ + '\n'
+            file_.write(row_)
+            row_ = ''
     except Exception as e:
-	logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
-	sys.exit(-1)
+        logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
+        sys.exit(-1)
 
 
 def close_file(browser, params):
     """
     Close selected file
     """
-		
+
     try:
         params[0].close()
     except Exception as e:
         logger.log('ERROR', 'Error closing "' + str(params[0]) + '": ' + str(e))
-	sys.exit(-1)
-		
+        sys.exit(-1)
+
 
 def get_local_storage(browser, params):
     """
@@ -151,7 +150,7 @@ def get_local_storage(browser, params):
         return browser.execute_script("return localStorage.getItem('" + params[0] + "');")
     except Exception as e:
         logger.log('ERROR', 'Error getting "' + str(params[0]) + '" from local storage: ' + str(e))
-	sys.exit(-1)
+        sys.exit(-1)
 
 
 def set_local_storage(browser, params):
@@ -171,7 +170,7 @@ def get_cookie(browser, params):
     """
     Returns selected cookie
     """
-	
+
     try:
         return browser.get_cookie(params[0])['value']
     except Exception as e:
@@ -259,7 +258,7 @@ def execute_js(browser, params):
     """
     Execute any instruction in javascript on the browser
     """
-	
+
     try:
         logger.log('NOTE', 'Executing js: ' + params[0])
         return browser.execute_script(params[0])
@@ -288,15 +287,15 @@ def get_html(browser, params):
     try:
         if not os.path.exists(params[0]):
             os.makedirs(params[0])
-	html_path = params[0]
-	html = open(html_path + '/' + str(params[1]) + '.html', 'w')
-	fixed_html = unicodedata.normalize('NFKD', browser.page_source).encode('ascii','ignore')
-	html.write(fixed_html)
-	html.close()
-	logger.log('NOTE', 'HTML from ' + browser.current_url + ' saved on: ' + html_path + '/' + str(params[1]) + '.html')
+        html_path = params[0]
+        html = open(html_path + '/' + str(params[1]) + '.html', 'w')
+        fixed_html = unicodedata.normalize('NFKD', browser.page_source).encode('ascii','ignore')
+        html.write(fixed_html)
+        html.close()
+        logger.log('NOTE', 'HTML from ' + browser.current_url + ' saved on: ' + html_path + '/' + str(params[1]) + '.html')
     except Exception as e:
         logger.log('ERROR', 'Saving html source: ' + str(e))
-	sys.exit(-1)
+        sys.exit(-1)
 
 
 def get_element_html(browser, params):
@@ -320,10 +319,10 @@ def take_screenshot(browser, params):
 
     try:
         if not os.path.exists(params[0]):
-	    os.makedirs(params[0])
-	ss_path = params[0]
-	browser.save_screenshot(ss_path + '/' + params[1] + '.png')
-	logger.log('NOTE', 'Screenshot from ' + browser.current_url + ' saved on: ' + ss_path + '/' + str(params[1]) + '.png')
+            os.makedirs(params[0])
+        ss_path = params[0]
+        browser.save_screenshot(ss_path + '/' + params[1] + '.png')
+        logger.log('NOTE', 'Screenshot from ' + browser.current_url + ' saved on: ' + ss_path + '/' + str(params[1]) + '.png')
     except Exception as e:
         logger.log('ERROR', 'Error taking screenshot: ' + str(e))
         sys.exit(-1)

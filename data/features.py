@@ -42,7 +42,7 @@ FEATURES_DICT = {
 # Advanced functions
 'print'             : lib_a_nbz.print_,
 'random'            : lib_a_nbz.random,
-'get_timestamp'	    : lib_a_nbz.get_timestamp,
+'get_timestamp'     : lib_a_nbz.get_timestamp,
 'timestamp_diff'    : lib_a_nbz.timestamp_diff,
 'open'              : lib_a_nbz.open_file,
 'write'             : lib_a_nbz.write_file,

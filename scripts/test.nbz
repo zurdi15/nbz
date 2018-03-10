@@ -6,6 +6,10 @@ a='';
 
 for(a in l){}
 
+b = l;
+
+print(b);
+
 #browser('chrome');
 #
 #get_url('http://www.elmundo.es/elmundo/2017/datos/sep/s4/salarios_comparador/form-comparative.html');

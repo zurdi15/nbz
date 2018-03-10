@@ -42,59 +42,59 @@ script=""
 mode="cx"
 debug="false"
 
-if [ $# = 0 ]
+if [ ${#} = 0 ]
 then
 	show_help
 	exit 0
 else
 	while getopts ":s:m:hd" opt
 	do
-		case $opt in
+		case ${opt} in
 			h)
 				show_help
 				exit 0			
 				;;
 			s)
 				ext="${OPTARG##*.}"
-				if [ $ext = "nbz" ]
+				if [ ${ext} = "nbz" ]
 				then
-					script=$OPTARG >&2
+					script=${OPTARG} >&2
 				else
 					echo "Error: Not compatible script (.${ext}). Extension must be .nbz"
 					exit 1
 				fi
 				;;
 			m)
-				mode=$OPTARG >&2
+				mode=${OPTARG} >&2
 				;;
 			d)
 				debug="true" >&2
 				;;
 			\?)
-				echo "Error: invalid option -$OPTARG" >&2
+				echo "Error: invalid option -${OPTARG}" >&2
 				exit 1
 				;;
 			:)
-				echo "Error: option -$OPTARG requires an argument" >&2
+				echo "Error: option -${OPTARG} requires an argument" >&2
 				exit 1
 				;;
 		esac
 	done
 fi
 
-if [ -z $script ]
+if [ -z ${script} ]
 then
 	echo "Error: Script required."
 	exit 1
 else
-	if [ ! -f $script ]
+	if [ ! -f ${script} ]
 	then
 		echo -e "Error: script \"${script}\" does not exist."
 		exit 1
 	fi
 fi
 
-NBZ_PATH=$(dirname $0)
+NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 YELLOW='\e[33m'
 RED='\e[31m'

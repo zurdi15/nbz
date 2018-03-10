@@ -3,6 +3,7 @@
 #
 # Author: <Zurdi>
 
+
 class Logging:
 
     def __init__(self):
