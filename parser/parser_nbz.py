@@ -35,7 +35,10 @@ def NBZParser(script_path, interactive=False):
 			     	 | sent
 			     	 | empty'''
 		if len(p) == 2:
-			p[0] = [p[1]]
+                        if p[1] is None:
+                            p[0] = []
+                        else:
+			    p[0] = [p[1]]
 		else:
 			p[0] = p[1]
 			p[0].append(p[2])

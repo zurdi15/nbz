@@ -4,9 +4,7 @@ print(l);
 
 a='';
 
-for(a in l){
-	print(a);
-}
+for(a in l){}
 
 #browser('chrome');
 #
