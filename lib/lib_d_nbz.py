@@ -96,3 +96,15 @@ def append(browser, params):
     except Exception as e:
         logger.log('ERROR', 'Error appending ' + str(params[1]) + ' into ' + str(params[0]) + ': ' + str(e))
         sys.exit(-1)
+
+
+def remove(browser, params):
+    """
+    Remove and element from a list
+    """
+
+    try:
+        return params[0].remove(params[1])
+    except Exception as e:
+        logger.log('ERROR', 'Error removing ' + str(params[1]) + ' from ' + str(params[0]) + ': ' + str(e))
+        sys.exit(-1)
