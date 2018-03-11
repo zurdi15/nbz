@@ -129,14 +129,14 @@ class NBZ:
                             instruction[1] -> id
                             instruction[2] -> block of sentences
 
-            - func:			instruction[1] -> id
+            - func:         instruction[1] -> id
                             instruction[2] -> parameters list
 
-            - if:			instruction[1] -> condition
+            - if:	    instruction[1] -> condition
                             instruction[2] -> block of sentences (if)
                             instruction[3] -> block of sentences (else)
 
-            - for(normal):	instruction[1] -> start index
+            - for(normal):  instruction[1] -> start index
                             instruction[2] -> end index
                             instruction[3] -> mode (+ | ++ | - | --)
                             instruction[4] -> block of sentences
@@ -145,7 +145,7 @@ class NBZ:
                             instruction[2] -> list
                             instruction[3] -> block of sentences
 
-            - while:		instruction[1] -> condition
+            - while:	    instruction[1] -> condition
                             instruction[2] -> block of sentences
         """
 
