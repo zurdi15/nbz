@@ -93,7 +93,10 @@ def write_file(browser, params):
 
     try:
         file_ = params[0]
-        sentences = params[1].split('\\n')
+ 		try:
+ 			sentences = params[1].split('\\n')
+ 		except:
+ 			sentences = params[1]
         for sent in sentences:
             if isinstance(sent, unicode):
                 file_.write(sent.encode('utf-8') + '\n')
