@@ -165,21 +165,23 @@ class NBZ:
                         return instruction[1]
                     elif instruction[0] == 'arithm':
                         if instruction[3] == '+':
-                            op_1 = get_value(instruction[1])
-                            op_2 = get_value(instruction[2])
+                            try:
+                                    op_1 = get_value(instruction[1]).encode('utf-8')
+                            except:
+                                    op_1 = get_value(instruction[1])
+                            try:
+                                    op_2 = get_value(instruction[2]).encode('utf-8')
+                            except:
+                                    op_2 = get_value(instruction[2])
                             if isinstance(op_1, str) or isinstance(op_2, str):
-                                return str(op_1) + str(op_2)
+                                    return str(op_1) + str(op_2)
                             else:
-                                return op_1 + op_2
-                        elif instruction[3] == '-':
-                            return get_value(instruction[1]) - get_value(instruction[2])
-                        elif instruction[3] == '*':
-                            return get_value(instruction[1]) * get_value(instruction[2])
-                        elif instruction[3] == '/':
-                            return get_value(instruction[1]) / get_value(instruction[2])
+                                    return op_1 + op_2
+                        else:
+                            return eval(str(get_value(instruction[1])) + instruction[3] + str(get_value(instruction[2])))
                     elif instruction[0] == 'boolean':
                         if instruction[3] != 'not':
-                            return eval(str(get_value(instruction[1])) + ' ' +  instruction[3] + ' ' + str(get_value(instruction[2])))
+                            return eval(str(get_value(instruction[1])) + instruction[3] + str(get_value(instruction[2])))
                         else:
                             return not get_value(instruction[1])
                     elif instruction[0] == 'func':
