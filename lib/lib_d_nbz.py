@@ -108,3 +108,15 @@ def remove(browser, params):
     except Exception as e:
         logger.log('ERROR', 'Error removing ' + str(params[1]) + ' from ' + str(params[0]) + ': ' + str(e))
         sys.exit(-1)
+        
+        
+def replace(browser, params):
+    """
+    Replace substrnig into string
+    """
+
+    try:
+        return params[0].replace(params[1], params[2])
+    except Exception as e:
+        logger.log('ERROR', 'Error replacing: ' + str(params[0]) + '(' + str(params[1]) + ',' + str(params[2]) + '): ' + str(e))
+        sys.exit(-1)
