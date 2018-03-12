@@ -70,6 +70,7 @@ FEATURES_DICT = {
 'sub_str'           : lib_d_nbz.sub_str,
 'len'               : lib_d_nbz.lenght,
 'find'              : lib_d_nbz.find,
+'replace'           : lib_d_nbz.replace,
 'append'            : lib_d_nbz.append,
 'remove'            : lib_d_nbz.remove,
 
