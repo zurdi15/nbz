@@ -25,7 +25,7 @@ def print_(browser, params):
         else:
             logger.log('NOTE', str(params[0]))
     except Exception as e:
-        logger.log('ERROR', 'Error printing "' + str(params) + '": ' + str(e))
+        logger.log('ERROR', 'Error printing "' + str(params[0]) + '": ' + str(e))
         sys.exit(-1)
 
 
@@ -92,12 +92,10 @@ def write_file(browser, params):
     """
 
     try:
+        file_ = params[0]
         sentences = params[1].split('\\n')
         for sent in sentences:
-            sent = unicode(sent)
-            fixed_sent = unicodedata.normalize('NFKD', sent).encode('ascii', 'ignore')
-            params[0].write(fixed_sent)
-            params[0].write('\n')
+            file_.write(sent.encode('utf-8') + '\n')
     except Exception as e:
         logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
         sys.exit(-1)
@@ -120,8 +118,8 @@ def write_table_as_csv(browser, params):
             add = ''
         for row in params[0].find_elements_by_tag_name('tr'):
             for cell in row.find_elements_by_tag_name('td'):
-                row_ += unicodedata.normalize('NFKD', cell.text).encode('ascii', 'ignore') + delimiter
-                row_ = add + row_ + '\n'
+                row_ += cell.text.encode('utf-8') + delimiter
+            row_ = add + row_+ '\n'
             file_.write(row_)
             row_ = ''
     except Exception as e:
