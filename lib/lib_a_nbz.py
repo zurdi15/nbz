@@ -95,7 +95,10 @@ def write_file(browser, params):
         file_ = params[0]
         sentences = params[1].split('\\n')
         for sent in sentences:
-            file_.write(sent.encode('utf-8') + '\n')
+            if isinstance(sent, unicode):
+                file_.write(sent.encode('utf-8') + '\n')
+            else:
+                file_.write(sent + '\n')
     except Exception as e:
         logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
         sys.exit(-1)
@@ -118,9 +121,11 @@ def write_table_as_csv(browser, params):
             add = ''
         for row in params[0].find_elements_by_tag_name('tr'):
             for cell in row.find_elements_by_tag_name('td'):
-                row_ += cell.text.encode('utf-8') + delimiter
-            row_ = add + row_+ '\n'
-            file_.write(row_)
+                if isinstance(cell.text, unicode):
+                    row_ += cell.text.encode('utf-8') + delimiter
+                else:
+                    row_ += cell.text + delimiter
+            file_.write(add + row_+ '\n')
             row_ = ''
     except Exception as e:
         logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
