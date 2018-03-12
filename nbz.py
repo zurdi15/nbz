@@ -178,23 +178,9 @@ class NBZ:
                         elif instruction[3] == '/':
                             return get_value(instruction[1]) / get_value(instruction[2])
                     elif instruction[0] == 'boolean':
-                        if instruction[3] == 'or':
-                            return get_value(instruction[1]) or get_value(instruction[2])
-                        elif instruction[3] == 'and':
-                            return get_value(instruction[1]) and get_value(instruction[2])
-                        if instruction[3] == '==':
-                            return get_value(instruction[1]) == get_value(instruction[2])
-                        if instruction[3] == '<':
-                            return get_value(instruction[1]) < get_value(instruction[2])
-                        if instruction[3] == '<=':
-                            return get_value(instruction[1]) <= get_value(instruction[2])
-                        if instruction[3] == '>':
-                            return get_value(instruction[1]) > get_value(instruction[2])
-                        if instruction[3] == '>=':
-                            return get_value(instruction[1]) >= get_value(instruction[2])
-                        if instruction[3] == '!=':
-                            return get_value(instruction[1]) != get_value(instruction[2])
-                        if instruction[3] == 'not':
+                        if instruction[3] != 'not':
+                            return eval(str(get_value(instruction[1])) + ' ' +  instruction[3] + ' ' + str(get_value(instruction[2])))
+                        else:
                             return not get_value(instruction[1])
                     elif instruction[0] == 'func':
                         params = []
