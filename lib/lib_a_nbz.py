@@ -92,6 +92,8 @@ def write_file(browser, params):
     """
 
     try:
+        if not os.path.exists(params[0]):
+            os.makedirs(params[0])
         file_ = params[0]
  		try:
  			sentences = params[1].split('\\n')
