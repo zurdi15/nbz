@@ -8,4 +8,4 @@ out
 *.nbzcode
 parser/parser.out
 parser/parsetab.py
-NBZ_1.wiki
+NBZ-1.wiki
