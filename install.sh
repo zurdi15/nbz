@@ -72,7 +72,6 @@ sudo apt-get install toilet
 echo -e "${BLUE}Installing drivers...${NC}"
 sudo cp ${DRIVERS_PATH}/geckodriver /usr/bin
 echo "Geckodriver installed in /usr/bin!"
-echo $DRIVERS_PATH
 sudo cp ${DRIVERS_PATH}/chromedriver /usr/bin
 echo "Chromedriver installed in /usr/bin!"
 # Creating menu entry
