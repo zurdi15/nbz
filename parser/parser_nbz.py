@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
@@ -384,7 +384,8 @@ def NBZParser(script_path, interactive=False):
             logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(p.lineno))
             sys.exit(-1)
         else:
-            logger.log('ERROR', 'Error at line: ' + str(p.lineno))
+            logger.log('ERROR', 'General error: error at the end of the script.')
+            logger.log('ERROR', 'Probably one structure is not built properly.')
             sys.exit(-1)
 
     # Build the parser

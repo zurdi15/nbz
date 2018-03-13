@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Author: <Zurdi>
 
@@ -66,19 +66,19 @@ echo -e "${BLUE}Installing dependencies...${NC}"
 sudo -H pip install ply
 sudo -H pip install selenium
 sudo -H pip install browsermob-proxy
+sudo apt-get install toilet
 
 # Copying drivers into /usr/bin
 echo -e "${BLUE}Installing drivers...${NC}"
 sudo cp ${DRIVERS_PATH}/geckodriver /usr/bin
 echo "Geckodriver installed in /usr/bin!"
+echo $DRIVERS_PATH
 sudo cp ${DRIVERS_PATH}/chromedriver /usr/bin
 echo "Chromedriver installed in /usr/bin!"
-
 # Creating menu entry
 menu_entry="[Desktop Entry]\nVersion=1.0\nType=Application\nName=NBZ\nGenericName=NBZ\nIcon=${NBZ_INST_PATH}/nbz_icon.png\nExec=${NBZ_INST_PATH}/nbz_launcher.sh -s ${NBZ_INST_PATH}/scripts/test.nbz\nPath=${NBZ_INST_PATH}\nNoDisplay=False\nCategories=Development;\nStartupNotify=false\nTerminal=true"
 
 echo -e ${menu_entry} > ~/.local/share/applications/nbz.desktop
-
 echo "Menu entry created!"
 
 echo -e "\n${GREEN}NBZ installed succesfully!!${NC}\n"

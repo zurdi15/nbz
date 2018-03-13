@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
@@ -12,8 +12,8 @@ class Logging:
     @staticmethod
     def log(level, msg):
         if level == 'NOTE':
-            print('NBZ - Log' + ': ' + msg)
+            print("\033[92m" + '  - NBZ Log' + ': ' + "\033[0m" + msg)
         elif level == 'ERROR':
-            print('NBZ - Error' + ': ' + msg)
+            print("\033[91m" + '  - NBZ Error' + ': ' + "\033[0m" + msg)
         else:
             print('Not defined logger level: ' + str(level))

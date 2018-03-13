@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Author: <Zurdi>
 
@@ -130,15 +130,18 @@ function kill_processes {
 #export DISPLAY=:99
 
 #  - Launch NBZ
-echo
-echo -e "${YELLOW}########################## STARTING NBZ ##########################${NC}"
+clear
+header=$(toilet -t -f mono12 -F gay "  NBZ  ")
+echo -e "${YELLOW}${header}${NC}"
+echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
 
 python ${NBZ_PATH}/nbz.py -script ${script} -mode ${mode} -debug ${debug}
 
 if [[ $? != 0 ]]; then
-    echo
-	echo -e "${RED}************************ ERROR ENDING NBZ ************************${NC}"
+	echo
+	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
+	echo
 	remove_trash
 	kill_processes
         exit 1
@@ -146,8 +149,7 @@ fi
 
 remove_trash
 echo
-echo -e "${YELLOW}############################# END NBZ ############################${NC}"
-kill_processes
-
+echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
+echo
 
 exit 0

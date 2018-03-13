@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
@@ -95,10 +95,10 @@ def write_file(browser, params):
         if not os.path.exists(params[0]):
             os.makedirs(params[0])
         file_ = params[0]
- 		try:
- 			sentences = params[1].split('\\n')
- 		except:
- 			sentences = params[1]
+ 	try:
+            sentences = params[1].split('\\n')
+        except:
+            sentences = params[1]
         for sent in sentences:
             if isinstance(sent, unicode):
                 file_.write(sent.encode('utf-8') + '\n')
