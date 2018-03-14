@@ -230,7 +230,7 @@ def page_load_time(browser, params):
     """
 
     try:
-        return browser.execute_script('return performance.timing.loadEventEnd - performance.timing.navigationStart;')
+        return browser.execute_script('return performance.timing.loadEventEnd - performance.timing.navigationStart;') / 1000.0
     except Exception as e:
         logger.log('ERROR', 'Error getting load page time: ' + str(e))
         sys.exit(-1)
