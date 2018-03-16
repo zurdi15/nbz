@@ -25,12 +25,8 @@ def get_url(browser, params):
     Open given url
     """
 
-    try:
-        logger.log('NOTE', 'Loading: ' + str(params[0]))
-        browser.get(params[0])
-    except Exception as e:
-        logger.log('ERROR', 'Error loading url [' + str(params[0]) + '] - Invalid url?: ' + str(e))
-        sys.exit(-1)
+    logger.log('NOTE', 'Loading: ' + str(params[0]))
+    browser.get(params[0])
 
 
 def fill_field(browser, params):

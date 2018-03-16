@@ -43,6 +43,9 @@ class NBZ:
         self.server = None
         self.proxy = None
         self.browser = None
+        self.get_url_retries = 1
+        self.get_url_retries_set = 1
+        self.get_url_retries_wait_time = 1
 
         self.instruction_set = ''
         self.vars_dict = {}
@@ -222,6 +225,24 @@ class NBZ:
                             self.set_browser = True
                         else:
                             logger.log('ERROR', 'Browser already instanced')
+                    elif instruction == 'get_url':
+                        if self.get_url_retries > 0:
+                            try:
+                                self.FEATURES[instruction[1]](self.browser, params)
+                                self.get_url_retries = self.get_url_retries_set
+                            except Exception as e:
+                                logger.log('ERROR', 'Error loading url [' + str(params[0]) + '] - (Invalid url?, Timeout?)')
+                                self.get_url_retries -= 1
+                                logger.log('ERROR', 'Error loading url, retries left: ' + str(self.get_url_retries) + ', waiting ' + str(self.get_url_retries_wait_time) + ' seconds')
+                                time.sleep(self.get_url_retries_wait_time)
+                                self.do_instructions([instruction])
+                        else:
+                            logger.log('ERROR', 'Get url retries limit exceded')
+                            sys.exit(-1)
+                    elif instruction[1] == 'set_get_url_retries':
+                        self.get_url_retries = params[0]
+                        self.get_url_retries_set = params[0]
+                        self.get_url_retries_wait_time = params[1]
                     elif instruction[1] == 'export_net_report':
                         self.net_report(params)
                         self.set_net_report = True

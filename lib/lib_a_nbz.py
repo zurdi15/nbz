@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 from random import randint
 import unicodedata
+import bs4
 from lib_log_nbz import *
 logger = Logging()
 
@@ -92,8 +93,6 @@ def write_file(browser, params):
     """
 
     try:
-        if not os.path.exists(params[0]):
-            os.makedirs(params[0])
         file_ = params[0]
  	try:
             sentences = params[1].split('\\n')
@@ -115,8 +114,7 @@ def write_table_as_csv(browser, params):
     """
 
     try:
-        if not os.path.exists(params[1]):
-            os.makedirs(params[1])
+        table = params[0]
         file_ = params[1]
         delimiter = params[2]
         row_ = ''
@@ -124,6 +122,15 @@ def write_table_as_csv(browser, params):
             add = params[3]
         else:
             add = ''
+        
+        
+        #html = table.get_attribute('outerHTML')
+        #soup = bs4.BeautifulSoup(html, 'lxml')
+        #for tr in soup.findAll('tr', class_="tableRow1Font"):
+        #    for td in tr.findAll('td'):
+        #        print td.text
+
+
         for row in params[0].find_elements_by_tag_name('tr'):
             for cell in row.find_elements_by_tag_name('td'):
                 if isinstance(cell.text, unicode):
@@ -132,8 +139,10 @@ def write_table_as_csv(browser, params):
                     row_ += cell.text + delimiter
             file_.write(add + row_+ '\n')
             row_ = ''
+
+
     except Exception as e:
-        logger.log('ERROR', 'Error writing "' + str(params[0]) + '": ' + str(e))
+        logger.log('ERROR', 'Error writing "' + str(params[1]) + '": ' + str(e))
         sys.exit(-1)
 
 
@@ -293,12 +302,13 @@ def get_html(browser, params):
     """
 
     try:
-        if not os.path.exists(params[0]):
-            os.makedirs(params[0])
         html_path = params[0]
         html = open(html_path + '/' + str(params[1]) + '.html', 'w')
-        fixed_html = unicodedata.normalize('NFKD', browser.page_source).encode('ascii','ignore')
-        html.write(fixed_html)
+        html_text = browser.page_source
+        if isinstance(html_text, unicode):
+            html.write(html_text.encode('utf-8'))
+        else:
+            html.write(html_text)
         html.close()
         logger.log('NOTE', 'HTML from ' + browser.current_url + ' saved on: ' + html_path + '/' + str(params[1]) + '.html')
     except Exception as e:
@@ -313,8 +323,11 @@ def get_element_html(browser, params):
 
     try:
         element = browser.find_element_by_xpath(params[0])
-        fixed_element_html = unicodedata.normalize('NFKD', element.get_attribute('outerHTML')).encode('ascii', 'ignore')
-        return fixed_element_html
+        html = element.get_attribute('outerHTML')
+        if isinstance(html, unicode):
+            return html.encode('utf-8')
+        else:
+            return html
     except Exception as e:
         logger.log('ERROR', 'Error getting html from [' + str(params[0] + ']: ' + str(e)))
         sys.exit(-1)
@@ -326,8 +339,6 @@ def take_screenshot(browser, params):
     """
 
     try:
-        if not os.path.exists(params[0]):
-            os.makedirs(params[0])
         ss_path = params[0]
         browser.save_screenshot(ss_path + '/' + params[1] + '.png')
         logger.log('NOTE', 'Screenshot from ' + browser.current_url + ' saved on: ' + ss_path + '/' + str(params[1]) + '.png')

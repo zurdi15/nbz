@@ -23,6 +23,7 @@ FEATURES_DICT = {
 # Basic functions
 'browser'           : '',
 'get_url'           : lib_b_nbz.get_url,
+'set_get_url_retries': '',
 'fill'              : lib_b_nbz.fill_field,
 'clear'             : lib_b_nbz.clear_field,
 'click'             : lib_b_nbz.click_element,

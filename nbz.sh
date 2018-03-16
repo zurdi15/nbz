@@ -126,8 +126,8 @@ function kill_processes {
 
 #  - Initialize virtual display
 # If you do not have desktop enviroment, you should use this:
-#Xvfb :99 -ac 1>/dev/null 2>&1 &
-#export DISPLAY=:99
+Xvfb :99 -ac 1>/dev/null 2>&1 &
+export DISPLAY=:99
 
 #  - Launch NBZ
 clear
