@@ -10,7 +10,6 @@ import time
 from datetime import datetime
 from random import randint
 import unicodedata
-import bs4
 from lib_log_nbz import *
 logger = Logging()
 

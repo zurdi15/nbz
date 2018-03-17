@@ -41,13 +41,14 @@ function show_help {
 script=""
 mode="cx"
 debug="false"
+scren="false"
 
 if [ ${#} = 0 ]
 then
 	show_help
 	exit 0
 else
-	while getopts ":s:m:hd" opt
+	while getopts ":s:m:hxd" opt
 	do
 		case ${opt} in
 			h)
@@ -69,6 +70,9 @@ else
 				;;
 			d)
 				debug="true" >&2
+				;;
+			x)	
+				screen="true" >&2
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
@@ -126,8 +130,11 @@ function kill_processes {
 
 #  - Initialize virtual display
 # If you do not have desktop enviroment, you should use this:
-Xvfb :99 -ac 1>/dev/null 2>&1 &
-export DISPLAY=:99
+if [ ${screen} == "false" ]
+then
+	Xvfb :99 -ac 1>/dev/null 2>&1 &
+	export DISPLAY=:99
+fi
 
 #  - Launch NBZ
 clear
