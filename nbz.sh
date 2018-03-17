@@ -28,6 +28,7 @@ function show_help {
 	echo ""
 	echo "Options:"
 	echo " -s    set the .nbz script"
+	echo " -x    enable screen emulation (server)"
 	echo " -m    set the compilation/execution mode; cx is set by default"
 	echo "         c: compile only"
 	echo "         x: execute only"
@@ -130,7 +131,7 @@ function kill_processes {
 
 #  - Initialize virtual display
 # If you do not have desktop enviroment, you should use this:
-if [ ${screen} == "false" ]
+if [ ${screen} == "true" ]
 then
 	Xvfb :99 -ac 1>/dev/null 2>&1 &
 	export DISPLAY=:99

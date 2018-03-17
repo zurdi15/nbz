@@ -64,6 +64,7 @@ sudo chown -R $(whoami):$(whoami) ${NBZ_INST_PATH}
 # Installing libraries
 echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
+sudo apt-get install xvfb
 sudo -H pip install ply
 sudo -H pip install selenium
 sudo -H pip install browsermob-proxy
