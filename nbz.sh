@@ -28,7 +28,7 @@ function show_help {
 	echo ""
 	echo "Options:"
 	echo " -s    set the .nbz script"
-	echo " -x    enable screen emulation (server)"
+	echo " -x    enable screen emulation (server) / hides browser screen (desktop)"
 	echo " -m    set the compilation/execution mode; cx is set by default"
 	echo "         c: compile only"
 	echo "         x: execute only"
