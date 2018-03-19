@@ -86,7 +86,19 @@ def find(browser, params):
         sys.exit(-1)
 
 
-def append(browser, params):
+def replace(browser, params):
+    """
+    Replace substrnig into string
+    """
+
+    try:
+        return params[0].replace(params[1], params[2])
+    except Exception as e:
+        logger.log('ERROR', 'Error replacing: ' + str(params[0]) + '(' + str(params[1]) + ',' + str(params[2]) + '): ' + str(e))
+        sys.exit(-1)
+
+
+def append_list(browser, params):
     """
     Append an element into a list
     """
@@ -98,7 +110,7 @@ def append(browser, params):
         sys.exit(-1)
 
 
-def remove(browser, params):
+def remove_list(browser, params):
     """
     Remove and element from a list
     """
@@ -110,13 +122,13 @@ def remove(browser, params):
         sys.exit(-1)
         
         
-def replace(browser, params):
+def get_element_list(browser, params):
     """
-    Replace substrnig into string
+    Return element from list with index
     """
-
+    
     try:
-        return params[0].replace(params[1], params[2])
+        return params[0][params[1]]
     except Exception as e:
-        logger.log('ERROR', 'Error replacing: ' + str(params[0]) + '(' + str(params[1]) + ',' + str(params[2]) + '): ' + str(e))
+        logger.log('ERROR', 'Error getting element [' + str(params[1]) + '] from list ' + params[0] + ': ' + str(e))
         sys.exit(-1)
