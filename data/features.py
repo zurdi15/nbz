@@ -20,6 +20,9 @@ import lib_d_nbz
 
 FEATURES_DICT = {
 
+
+'exit'              : '',
+
 # Basic functions
 'browser'           : '',
 'get_url'           : lib_b_nbz.get_url,

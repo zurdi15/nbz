@@ -217,7 +217,9 @@ class NBZ:
                     params = []
                     for param in instruction[2]:
                         params.append(get_value(param))
-                    if instruction[1] == 'browser':
+                    if instruction[1] == 'exit':
+                        sys.exit(0)
+                    elif instruction[1] == 'browser':
                         if not self.set_browser:
                             self.server, self.proxy = start_proxy(self.proxy_path)
                             self.proxy.new_har()
