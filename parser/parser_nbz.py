@@ -344,7 +344,7 @@ def NBZParser(script_path, interactive=False):
                              | ID LBRACKET INTEGER RBRACKET'''
         if not isinstance(p[1], list):
             try:
-                aux = variables[p[1]]
+                aux = z_code_vars[p[1]]
                 p[0] = ['func', 'get_element_list', [['var', p[1]], p[3]]]
                 z_code.append(p[0])
             except LookupError:
