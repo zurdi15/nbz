@@ -110,6 +110,19 @@ def append_list(browser, params):
         sys.exit(-1)
 
 
+def update_list(browser, params):
+    """
+    Update an element on a list
+    """
+
+    try:
+        params[0][params[1]] = params[2]
+        return params[0]
+    except Exception as e:
+        logger.log('ERROR', 'Error updating ' + str(params[0]) + ' into ' + str(params[1]) + ' with ' + str(params[2]) + ': ' + str(e))
+        sys.exit(-1)
+
+
 def remove_list(browser, params):
     """
     Remove and element from a list

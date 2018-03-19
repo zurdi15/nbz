@@ -73,6 +73,7 @@ FEATURES_DICT = {
 'find'              : lib_d_nbz.find,
 'replace'           : lib_d_nbz.replace,
 'append_list'       : lib_d_nbz.append_list,
+'update_list'       : lib_d_nbz.update_list,
 'remove_list'       : lib_d_nbz.remove_list,
 'get_element_list'  : lib_d_nbz.get_element_list,
 

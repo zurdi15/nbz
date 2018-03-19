@@ -335,6 +335,24 @@ def NBZParser(script_path, interactive=False):
         p[0] = p[1]
 
     # Type definitions
+    def p_sent_func_index_list(p):
+        '''sent_func : sent_acuesta_list'''
+        p[0] = p[1]
+
+    def p_index_list(p):
+        '''sent_acuesta_list : sent_acuesta_list LBRACKET INTEGER RBRACKET
+                             | ID LBRACKET INTEGER RBRACKET'''
+        if not isinstance(p[1], list):
+            try:
+                aux = variables[p[1]]
+                p[0] = ['func', 'get_element_list', [['var', p[1]], p[3]]]
+                z_code.append(p[0])
+            except LookupError:
+                logger.log('ERROR', 'Undefined list "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
+                sys.exit(-1)
+        else:
+            p[0] = ['func', 'get_element_list', [p[1], p[3]]]
+
     def p_expr_list(p):
         '''expr_list : LBRACKET expr_inside_list RBRACKET'''
         p[0] = p[2]
