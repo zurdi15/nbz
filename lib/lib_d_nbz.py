@@ -143,5 +143,5 @@ def get_element_list(browser, params):
     try:
         return params[0][params[1]]
     except Exception as e:
-        logger.log('ERROR', 'Error getting element [' + str(params[1]) + '] from list ' + params[0] + ': ' + str(e))
+        logger.log('ERROR', 'Error getting element [' + str(params[1]) + '] from list ' + str(params[0]) + ': ' + str(e))
         sys.exit(-1)

@@ -19,23 +19,25 @@
 
 
 function show_help {
-	echo "NBZ v1.0 - (C) 2017-2018 Zurdi Zurdo"
+	echo "NBZ-1 v1.0.1 - (C) 2017-2018 Zurdi Zurdo"
 	echo "Released under the GNU GLP"
 	echo ""
 	echo "NBZ is a tool to automate navigation and data extraction on the internet."
 	echo "It is configured by little scripts coded with nbz-script language. You can find the"
-	echo "documentation in the github wiki: https://github.com/zurdi15/nbz_v1.0/wiki"
+	echo "documentation in the github wiki: https://github.com/zurdi15/NBZ-1/wiki"
 	echo ""
-	echo "Options:"
-	echo " -s    set the .nbz script"
-	echo " -x    enable screen emulation (server) / hide browser screen (desktop)"
-	echo " -m    set the compilation/execution mode; cx is set by default"
+	echo "-s    Set the .nbz script"
+	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
+	echo "-m    Set the compilation/execution mode; cx is set by default"
 	echo "         c: compile only"
 	echo "         x: execute only"
 	echo "         cx: compile and execute only"
-	echo " -d    enable debug mode; it is disabled by default"
+	echo "-d    Enable debug mode; it is disabled by default"
 }
 
+function show_version {
+	echo "NBZ-1 v1.0.1 - (C) 2017-2018 Zurdi Zurdo"
+}
 
 #  - Parameters
 
@@ -49,12 +51,16 @@ then
 	show_help
 	exit 0
 else
-	while getopts ":s:m:hxd" opt
+	while getopts ":s:m:hvxd" opt
 	do
 		case ${opt} in
 			h)
 				show_help
 				exit 0			
+				;;
+			v)
+				show_version
+				exit 0
 				;;
 			s)
 				ext="${OPTARG##*.}"
