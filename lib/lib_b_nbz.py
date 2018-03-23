@@ -72,8 +72,13 @@ def click_element(browser, params):
 
     try:
         element = browser.find_element_by_xpath(params[0])
+        if element.text:
+            logger.log('NOTE', 'Button clicked ' + '[' + element.text + ']')
+        elif element.get_attribute('value'):
+            logger.log('NOTE', 'Button clicked ' + '[' + element.get_attribute('value') + ']')
+        else:
+            logger.log('NOTE', 'Button clicked')
         element.click()
-        logger.log('NOTE', 'Button clicked')
         time.sleep(TIME_)
     except Exception as e:
         logger.log('ERROR', 'Error with button ' + str(params[0]) + ': ' + str(e))
