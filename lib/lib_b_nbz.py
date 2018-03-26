@@ -41,6 +41,8 @@ def fill_field(browser, params):
             key = str(key)
             if key in SPECIALS:
                 box.send_keys(SPECIALS[key])
+                if key == 'TAB':
+                    box = browser.switch_to.active_element
                 logger.log('NOTE', 'Value: ' + key)
             else:
                 box.send_keys(key)
@@ -92,11 +94,11 @@ def select_option(browser, params):
 
     try:
         select = browser.find_element_by_xpath(params[0])
+        logger.log('NOTE', 'Option selected ' + '[' + option.text + ']')
         select.click()
         time.sleep(TIME_)
         option = browser.find_element_by_xpath(params[1])
         option.click()
-        logger.log('NOTE', 'Option selected ' + '[' + option.text + ']')
         time.sleep(TIME_)
     except Exception as e:
         logger.log('ERROR', 'Error with selector [' + str(params) + ']: ' + str(e))
@@ -164,7 +166,7 @@ def get_text(browser, params):
 
     try:
         element = browser.find_element_by_xpath(params[0])
-        logger.log('NOTE', 'Getting element: ' + params[0])
+        logger.log('NOTE', 'Getting element: ' + str(params[0]))
         return unicodedata.normalize('NFKD', element.text).encode('ascii','ignore')
     except Exception as e:
         logger.log('ERROR', 'Error with element ' + str(params) + ': ' + str(e))
