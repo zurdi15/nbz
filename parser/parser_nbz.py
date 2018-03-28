@@ -19,14 +19,14 @@ from features import FEATURES_DICT
 
 def NBZParser(script_path, interactive=False):
 
+    # z_code structure
+    z_code = []
+
     # z_code_vars dictionary
     z_code_vars = {}
 
     # Functions dictionary
     functions = FEATURES_DICT
-
-    # z_code structure
-    z_code = []
 
     # Initial state
     def p_sent_list(p):
@@ -268,7 +268,7 @@ def NBZParser(script_path, interactive=False):
         elif p[2] == '>':
             p[0] = ['boolean', p[1], p[3], '>']
         elif p[2] == '>=':
-            p[0] = ['boolean', p[1], p[3], '=>']
+            p[0] = ['boolean', p[1], p[3], '>=']
         elif p[2] == '!=':
             p[0] = ['boolean', p[1], p[3], '!=']
         else:
@@ -335,13 +335,13 @@ def NBZParser(script_path, interactive=False):
         p[0] = p[1]
 
     # Type definitions
-    def p_sent_func_index_list(p):
-        '''sent_func : sent_acuesta_list'''
+    def p_sent_index_list(p):
+        '''sent_func : sent_index_list'''
         p[0] = p[1]
 
     def p_index_list(p):
-        '''sent_acuesta_list : sent_acuesta_list LBRACKET INTEGER RBRACKET
-                             | ID LBRACKET INTEGER RBRACKET'''
+        '''sent_index_list : sent_index_list LBRACKET INTEGER RBRACKET
+                           | ID LBRACKET INTEGER RBRACKET'''
         if not isinstance(p[1], list):
             try:
                 aux = z_code_vars[p[1]]

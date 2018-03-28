@@ -10,5 +10,4 @@ def salary(){
 		print('times: ' + times);
 	}
 }
-
 salary();

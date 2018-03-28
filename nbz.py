@@ -184,7 +184,7 @@ class NBZ:
                             return eval(str(get_value(instruction[1])) + instruction[3] + str(get_value(instruction[2])))
                     elif instruction[0] == 'boolean':
                         if instruction[3] != 'not':
-                            return eval(str(get_value(instruction[1])) + instruction[3] + str(get_value(instruction[2])))
+                            return eval(str(get_value(instruction[1])) + ' ' + instruction[3] + ' ' + str(get_value(instruction[2])))
                         else:
                             return not get_value(instruction[1])
                     elif instruction[0] == 'func':
