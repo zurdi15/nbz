@@ -19,8 +19,10 @@ sys.path.append(BASE_DIR + 'parser')
 
 from lib_log_nbz import Logging
 logger = Logging()
-from lib_wb_nbz import *
-from lib_snf_nbz import check_net
+from lib_wb_nbz import LibWb
+lib_wb_nbz = LibWb()
+from lib_snf_nbz import LibSnf
+lib_snf_nbz = LibSnf()
 from parser_nbz import NBZParser
 from features import FEATURES_DICT
 
@@ -43,9 +45,6 @@ class NBZ:
         self.server = None
         self.proxy = None
         self.browser = None
-        self.get_url_retries = 1
-        self.get_url_retries_set = 1
-        self.get_url_retries_wait_time = 1
 
         self.instruction_set = ''
         self.vars_dict = {}
@@ -221,30 +220,12 @@ class NBZ:
                         sys.exit(0)
                     elif instruction[1] == 'browser':
                         if not self.set_browser:
-                            self.server, self.proxy = start_proxy(self.proxy_path)
+                            self.server, self.proxy = lib_wb_nbz.start_proxy(self.proxy_path)
                             self.proxy.new_har()
-                            self.browser = instance_browser(self.proxy, params)
+                            self.browser = lib_wb_nbz.instance_browser(self.proxy, params)
                             self.set_browser = True
                         else:
                             logger.log('ERROR', 'Browser already instanced')
-                    elif instruction == 'get_url':
-                        if self.get_url_retries > 0:
-                            try:
-                                self.FEATURES[instruction[1]](self.browser, params)
-                                self.get_url_retries = self.get_url_retries_set
-                            except Exception as e:
-                                logger.log('ERROR', 'Error loading url [' + str(params[0]) + '] - (Invalid url?, Timeout?)')
-                                self.get_url_retries -= 1
-                                logger.log('ERROR', 'Error loading url, retries left: ' + str(self.get_url_retries) + ', waiting ' + str(self.get_url_retries_wait_time) + ' seconds')
-                                time.sleep(self.get_url_retries_wait_time)
-                                self.do_instructions([instruction])
-                        else:
-                            logger.log('ERROR', 'Get url retries limit exceded')
-                            sys.exit(-1)
-                    elif instruction[1] == 'set_get_url_retries':
-                        self.get_url_retries = params[0]
-                        self.get_url_retries_set = params[0]
-                        self.get_url_retries_wait_time = params[1]
                     elif instruction[1] == 'export_net_report':
                         self.net_report(params)
                         self.set_net_report = True

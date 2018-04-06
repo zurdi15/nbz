@@ -10,23 +10,27 @@ import sys
 BASE_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
 sys.path.append(BASE_DIR + 'lib')
 
-import lib_a_nbz
-import lib_b_nbz
-import lib_snf_nbz
-import lib_d_nbz
+from lib_a_nbz import LibA
+lib_a_nbz = LibA()
+from lib_b_nbz import LibB
+lib_b_nbz = LibB()
+from lib_d_nbz import LibD
+lib_d_nbz = LibD()
 
 
 # BOT FEATURES DICTIONARY
 
 FEATURES_DICT = {
 
-
+# System functions
 'exit'              : '',
 
-# Basic functions
+# Browser functions
 'browser'           : '',
+
+# Basic functions
 'get_url'           : lib_b_nbz.get_url,
-'set_get_url_retries': '',
+'set_get_url_retries': lib_b_nbz.set_get_url_retries,
 'fill'              : lib_b_nbz.fill_field,
 'clear'             : lib_b_nbz.clear_field,
 'click'             : lib_b_nbz.click_element,
@@ -39,7 +43,7 @@ FEATURES_DICT = {
 'current_url'       : lib_b_nbz.current_url,
 
 # Sniffering functions
-'check_net'         : lib_snf_nbz.check_net,
+'check_net'         : '',
 'reset_har'         : '',
 'export_net_report' : '',
 
@@ -59,7 +63,9 @@ FEATURES_DICT = {
 'get_element'       : lib_a_nbz.get_element,
 'children_num'      : lib_a_nbz.children_num,
 'page_load_time'    : lib_a_nbz.page_load_time,
+'scroll_down'       : lib_a_nbz.scroll_down,
 'scroll_to_bottom'  : lib_a_nbz.scroll_to_bottom,
+'scroll_up'         : lib_a_nbz.scroll_up,
 'scroll_to_top'     : lib_a_nbz.scroll_to_top,
 'execute_js'        : lib_a_nbz.execute_js,
 'set_timeout'       : lib_a_nbz.set_timeout,

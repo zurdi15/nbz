@@ -339,7 +339,31 @@ def NBZParser(script_path, interactive=False):
         '''sent_func : sent_index_list'''
         p[0] = p[1]
 
-    def p_index_list(p):
+    def p_index_list_var(p):
+        '''sent_index_list : sent_index_list LBRACKET ID RBRACKET
+                           | ID LBRACKET ID RBRACKET'''
+        if not isinstance(p[1], list):
+            try:
+                aux = variables[p[1]]
+            except LookupError:
+                logger.log('ERROR', 'Undefined list "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
+                sys.exit(-1)
+            try:
+                aux = variables[p[3]]
+            except LookupError:
+                logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '"  line ' + str(p.lineno(1)))
+                sys.exit(-1)
+            p[0] = ['func', 'get_element_list', [['var', p[1]], ['var', p[3]]]]
+            z_code.append(p[0])
+        else:
+            try:
+                aux = variables[p[3]]
+            except LookupError:
+                logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '"  line ' + str(p.lineno(1)))
+                sys.exit(-1)
+            p[0] = ['func', 'get_element_list', [p[1], ['var', p[3]]]]
+
+    def p_index_list_value(p):
         '''sent_index_list : sent_index_list LBRACKET INTEGER RBRACKET
                            | ID LBRACKET INTEGER RBRACKET'''
         if not isinstance(p[1], list):
