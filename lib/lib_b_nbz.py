@@ -127,10 +127,10 @@ class LibB:
     
         try:
             select = browser.find_element_by_xpath(params[0])
-            logger.log('NOTE', 'Option selected ' + '[' + option.text + ']')
             select.click()
             time.sleep(TIME_)
             option = browser.find_element_by_xpath(params[1])
+            logger.log('NOTE', 'Option selected ' + '[' + option.text + ']')
             option.click()
             time.sleep(TIME_)
         except Exception as e:
