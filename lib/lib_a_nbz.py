@@ -123,17 +123,15 @@ class LibA:
             file_ = params[1]
             delimiter = params[2]
             row_ = ''
-            if len(params) == 4:
-                add = params[3]
-            else:
-                add = ''
+            add_left = params[3]
+            add_right = params[4]
             for row in params[0].find_elements_by_tag_name('tr'):
                 for cell in row.find_elements_by_tag_name('td'):
                     if isinstance(cell.text, unicode):
                         row_ += cell.text.encode('utf-8') + delimiter
                     else:
                         row_ += cell.text + delimiter
-                file_.write(add + row_+ '\n')
+                file_.write(add_left + row_+ add_right + '\n')
                 row_ = ''
     
     
