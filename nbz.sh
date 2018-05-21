@@ -28,11 +28,11 @@ function show_help {
 	echo ""
 	echo "-s    Set the .nbz script"
 	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
-	echo "-m    Set the compilation/execution mode; cx is set by default"
+	echo "-m    Set the compilation/execution mode; cx by default"
 	echo "         c: compile only"
 	echo "         x: execute only"
 	echo "         cx: compile and execute only"
-	echo "-d    Enable debug mode; it is disabled by default"
+	echo "-d    Enable debug mode"
 }
 
 function show_version {

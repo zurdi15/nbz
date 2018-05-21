@@ -11,11 +11,11 @@ import argparse
 import pickle
 from pprint import pprint
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-sys.path.append(BASE_DIR + 'lib')
-sys.path.append(BASE_DIR + 'data')
-sys.path.append(BASE_DIR + 'parser')
+sys.path.append('{base_dir}/lib'.format(base_dir=BASE_DIR))
+sys.path.append('{base_dir}/data'.format(base_dir=BASE_DIR))
+sys.path.append('{base_dir}/parser'.format(base_dir=BASE_DIR))
 
 from lib_log_nbz import Logging
 logger = Logging()
@@ -40,7 +40,7 @@ class NBZ:
         self.mode = mode
         self.debug = debug
 
-        self.proxy_path = BASE_DIR + 'proxy/bin/browsermob-proxy'  # Proxy binaries to execute the sniffer
+        self.proxy_path = '{base_dir}/proxy/bin/browsermob-proxy'.format(base_dir=BASE_DIR)  # Proxy binaries to execute the sniffer
         self.set_browser = False # Flag to instance browser once (even if z_code has more than one instance)
         self.server = None
         self.proxy = None
@@ -60,12 +60,12 @@ class NBZ:
             self.get_z_code()
         elif self.mode == 'c':
             self.compile_z_code()
-            logger.log('NOTE', 'Successful compilation of ' + self.script)
+            logger.log('NOTE', 'Successful compilation of {script}'.format(script=self.script))
             sys.exit(0)
         elif self.mode == 'x':
             self.get_z_code()
         else:
-            logger.log('ERROR', 'Not defined compile/execution mode ' + self.mode)
+            logger.log('ERROR', 'Not defined compile/execution mode {mode}'.format(mode=self.mode))
             sys.exit(-1)
 
         # Do instructions
@@ -75,6 +75,7 @@ class NBZ:
         if self.set_browser:
             self.close_all()
 
+
     def compile_z_code(self):
         """
         Compile z_code into object file ready to be executed
@@ -82,33 +83,36 @@ class NBZ:
 
         NBZParser(self.script)
 
+
     def get_z_code(self):
         """
         Get the compiled z_code object file
         """
 
         try:
-            with open(self.script + 'code') as zcode:
+            with open('{script}code'.format(script=self.script)) as zcode:
                 self.instruction_set = pickle.load(zcode)
-            with open(self.script + 'vars') as zcode_vars:
+            with open('{script}vars'.format(script=self.script)) as zcode_vars:
                 self.vars_dict = pickle.load(zcode_vars)
             if self.debug:
-                logger.log('NOTE', 'Instructions: ' + str(self.instruction_set))
-                logger.log('NOTE', 'Variables: ' + str(self.vars_dict))
+                logger.log('NOTE', 'Instructions: {instructions}'.format(instructions=self.instruction_set))
+                logger.log('NOTE', 'Variables: {variables}'.format(variables=self.vars_dict))
         except Exception as e:
-            logger.log('ERROR', 'Script not compiled (' + self.script + '): ' + str(e))
+            logger.log('ERROR', 'Script not compiled ({script}): {exception}'.format(script=self.script, exception=e))
             sys.exit(-1)
+
 
     def net_report(self, params):
         """
         Create net report csv
         """
 
-        self.net_reports_path = BASE_DIR + 'out/net_reports/' + self.script_name
-        self.complete_csv_path = self.net_reports_path + '/complete_net_log_' + params[0] + '.csv'
+        self.net_reports_path = '{base_dir}/out/net_reports/{script_name}'.format(base_dir=BASE_DIR, script_name=self.script_name)
+        self.complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(net_reports_path=self.net_reports_path, report_name=params[0])
         if not os.path.exists(self.net_reports_path):
             os.makedirs(self.net_reports_path)
         self.complete_csv = open(self.complete_csv_path, 'w')
+
 
     def reset_har(self):
         """
@@ -116,10 +120,10 @@ class NBZ:
         """
 
         if self.set_net_report:
-            self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
+            self.complete_csv.write('URL: {url}\n\n'.format(url=self.browser.current_url))
             pprint(self.proxy.har['log']['entries'], self.complete_csv)
-            self.complete_csv.write('\n')
         self.proxy.new_har()
+
 
     def do_instructions(self, instruction_set):
         """
@@ -196,7 +200,7 @@ class NBZ:
                             try:
                                 return self.FEATURES[instruction[1]](self.browser, params)
                             except Exception as e:
-                                logger.log('ERROR', 'Error with function ' + str(e))
+                                logger.log('ERROR', 'Error with function {exception}'.format(exception=e))
                                 sys.exit(-1)
                     else:
                         return instruction
@@ -240,7 +244,7 @@ class NBZ:
                             else:
                                 logger.log('ERROR', 'Not defined function')
                         except Exception as e:
-                            logger.log('ERROR', 'Error with function ' + str(e))
+                            logger.log('ERROR', 'Error with function {exception}'.format(exception=e))
                             sys.exit(-1)
                 elif instruction[0] == 'if':
                     if get_value(instruction[1]):
@@ -292,16 +296,17 @@ class NBZ:
             except Exception as e:
                 logger.log('ERROR', 'Error executing instruction ' + str(instruction) + ': ' + str(e))
 
+
     def close_all(self):
         """
         Close all connections and export har log
         """
 
         if self.set_net_report:
-            self.complete_csv.write('URL: ' + self.browser.current_url + '\n\n')
+            self.complete_csv.write('URL: {url}\n\n'.format(url=self.browser.current_url))
             pprint(self.proxy.har['log']['entries'], self.complete_csv)
             self.complete_csv.close()
-            logger.log('NOTE', 'Complete_net csv file exported to: ' + self.complete_csv.name)
+            logger.log('NOTE', 'Complete_net csv file exported to: {net_report_csv}'.format(net_report_csv=self.complete_csv.name))
         self.browser.close()
         self.proxy.close()
         self.server.stop()
@@ -328,5 +333,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        logger.log('ERROR', 'Printing traceback:\n' + traceback.format_exc())
+        logger.log('ERROR', 'Printing traceback: {traceback}\n'.format(traceback=traceback.format_exc()))
         sys.exit(-1)

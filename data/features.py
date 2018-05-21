@@ -7,8 +7,8 @@
 import os
 import sys
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
-sys.path.append(BASE_DIR + 'lib')
+BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file__)))
+sys.path.append('{base_dir}/lib'.format(base_dir=BASE_DIR))
 
 from lib_a_nbz import LibA
 lib_a_nbz = LibA()
