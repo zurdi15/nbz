@@ -8,7 +8,7 @@ import os
 import sys
 
 BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file__)))
-sys.path.append('{base_dir}/lib'.format(base_dir=BASE_DIR))
+sys.path.append(os.path.join(BASE_DIR, 'lib'))
 
 from lib_a_nbz import LibA
 lib_a_nbz = LibA()
@@ -18,9 +18,9 @@ from lib_d_nbz import LibD
 lib_d_nbz = LibD()
 
 
-# BOT FEATURES DICTIONARY
+# BOT NATIVES
 
-FEATURES_DICT = {
+NATIVES = {
 
 # System functions
 'exit'              : '',
@@ -69,7 +69,7 @@ FEATURES_DICT = {
 'scroll_to_top'     : lib_a_nbz.scroll_to_top,
 'execute_js'        : lib_a_nbz.execute_js,
 'set_timeout'       : lib_a_nbz.set_timeout,
-'get_html'          : lib_a_nbz.get_html,
+'export_html'       : lib_a_nbz.export_html,
 'get_element_html'  : lib_a_nbz.get_element_html,
 'screenshot'        : lib_a_nbz.take_screenshot,
 
@@ -81,6 +81,7 @@ FEATURES_DICT = {
 'len'               : lib_d_nbz.lenght,
 'find'              : lib_d_nbz.find,
 'replace'           : lib_d_nbz.replace,
+'split'             : lib_d_nbz.split,
 'append_list'       : lib_d_nbz.append_list,
 'update_list'       : lib_d_nbz.update_list,
 'remove_list'       : lib_d_nbz.remove_list,

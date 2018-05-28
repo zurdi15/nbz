@@ -5,16 +5,15 @@
 
 import sys
 import urlparse
-import time
 from lib_log_nbz import *
 logger = Logging()
 try:
     from selenium import webdriver
     from browsermobproxy import Server
-except Exception:
+except LookupError:
     logger.log('ERROR', "Dependencies not installed. Please run install.sh")
     sys.exit(-1)
-from user_agent import USER_AGENT_DICT
+from user_agents import USER_AGENTS
 
 
 class LibWb:
@@ -23,7 +22,9 @@ class LibWb:
     def __init__(self):
         pass
 
-    def start_proxy(self, proxy_path):
+
+    @staticmethod
+    def start_proxy(proxy_path):
         """
         Start proxy to capture net traffic
         """
@@ -33,76 +34,59 @@ class LibWb:
             server = Server(proxy_path)
             server.start()
         except Exception as e:
-            logger.log('ERROR', 'Error launching server: ' + str(e))
+            logger.log('ERROR', 'Error launching server: {exception}'.format(exception=e))
             sys.exit(-1)
         try:
             proxy = server.create_proxy()
-        except Exception as e:
+        except LookupError:
             time.sleep(5)
             try:
                 proxy = server.create_proxy()
             except Exception as e:
-                logger.log('ERROR', 'Error configuring  proxy: ' + str(e))
+                logger.log('ERROR', 'Error configuring  proxy: {exception}'.format(exception=e))
                 sys.exit(-1)
         return server, proxy
     
-    
-    def instance_browser(self, proxy, params):
+
+    @staticmethod
+    def instance_browser(proxy, params):
         """
         Start web browser
         """
-    
-        if len(params) < 1:
-                logger.log('ERROR', 'Error launching browser')
-                logger.log('ERROR', 'Browser incorrectly defined')
+
+        try:
+            engine = params[0]
+            user_agent = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function browser(): 2 arguments needed')
+            sys.exit(-1)
+
+        try:
+            logger.log('NOTE', 'Launching Browser: {engine} (user-agent: {user_agent})'.format(engine=engine, user_agent=user_agent))
+
+            if engine == 'chrome':
+                ch_opt = webdriver.ChromeOptions()
+                proxy_url = urlparse.urlparse(proxy.proxy).path
+                ch_opt.add_argument("--proxy-server=" + proxy_url)
+                if user_agent != 'default':
+                    ch_opt.add_argument("--user-agent=" + USER_AGENTS[user_agent])
+                try:
+                    browser = webdriver.Chrome(chrome_options=ch_opt)
+                except LookupError:
+                    time.sleep(5)
+                    browser = webdriver.Chrome(chrome_options=ch_opt)
+
+            elif engine == 'firefox':
+                ff_prf = webdriver.FirefoxProfile()
+                if user_agent != 'default':
+                    ff_prf.set_preference("general.useragent.override", USER_AGENTS[user_agent])
+                browser = webdriver.Firefox(firefox_profile=ff_prf, proxy=proxy.selenium_proxy())
+
+            else:
+                logger.log('ERROR', 'Not supported browser: {engine}'.format(engine=engine))
                 sys.exit(-1)
-        else:
-            try:
-    
-                user_agent, user_agent_log = self.get_user_agent(params)
-                logger.log('NOTE', 'Launching Browser: ' + str(params[0]) + ' (user-agent: ' + user_agent_log + ')')
-    
-                if params[0] == 'chrome':
-                    ch_opt = webdriver.ChromeOptions()
-                    proxy_url = urlparse.urlparse(proxy.proxy).path
-                    ch_opt.add_argument("--proxy-server=" + proxy_url)
-                    if user_agent != 'default':
-                        ch_opt.add_argument("--user-agent=" + user_agent)
-                    try:
-                        browser = webdriver.Chrome(chrome_options=ch_opt)
-                    except Exception as e:
-                        browser = webdriver.Chrome(chrome_options=ch_opt)
-    
-                elif params[0] == 'firefox':
-                    ff_prf = webdriver.FirefoxProfile()
-                    if user_agent != 'default':
-                        ff_prf.set_preference("general.useragent.override", user_agent)
-                    browser = webdriver.Firefox(firefox_profile=ff_prf, proxy=proxy.selenium_proxy())
-    
-                else:
-                    logger.log('ERROR', 'Not supported browser: ' + params[0])
-                    sys.exit(-1)
-    
-            except Exception as e:
-                logger.log('ERROR', 'Error launching ' + str(params[0]) + '(' + str(params[1]) + '): ' + str(e))
-                sys.exit(-1)
-            return browser
-    
-    
-    def get_user_agent(self, params):
-        """
-        Return user_agent found in params, or default instead
-        """
-    
-        if len(params) == 2:
-            try:
-                user_agent = USER_AGENT_DICT[params[1]]
-                user_agent_log = params[1]
-            except LookupError:
-                logger.log('ERROR', 'Not supported user-agent: ' + str(params[1]))
-                sys.exit(-1)
-        else:
-            user_agent = 'default'
-            user_agent_log = 'default'
-    
-        return user_agent, user_agent_log
+
+        except Exception as e:
+            logger.log('ERROR', 'Error launching {engine} ({user_agent}): {exception}'.format(engine=engine, user_agent=user_agent, exception=e))
+            sys.exit(-1)
+        return browser

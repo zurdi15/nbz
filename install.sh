@@ -4,7 +4,7 @@
 
 # NBZ installer
 
-# To let the NBZ work, it is necesary to install three python libraries:
+# To let the NBZ work, it is necessary to install three python libraries:
 #	- selenium
 #	- browsermob-proxy
 # 	- ply
@@ -81,4 +81,4 @@ menu_entry="[Desktop Entry]\nVersion=1.0\nType=Application\nName=NBZ\nName[en_US
 echo -e ${menu_entry} > ~/.local/share/applications/nbz.desktop
 echo "Menu entry created!"
 
-echo -e "\n${GREEN}NBZ installed succesfully!!${NC}\n"
+echo -e "\n${GREEN}NBZ installed successfully!!${NC}\n"

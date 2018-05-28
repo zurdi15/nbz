@@ -16,139 +16,230 @@ class LibD:
         pass
 
 
-    def cast_int(self, browser, params):
+    @staticmethod
+    def cast_int(browser, params):
         """
         Cast numeric string | float value to integer
         """
-    
+
+        value = params[0]
+
         try:
-            return int(params[0])
+            return int(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting ' + str(params[0]) + ' to integer: ' + str(e))
+            logger.log('ERROR', 'Error casting {value} to integer: {exception}'.format(value=value, exception=e))
             sys.exit(-1)
-    
-    
-    def cast_float(self, browser, params):
+
+
+    @staticmethod
+    def cast_float(browser, params):
         """
         Cast numeric string | integer value to float
         """
-    
+
+        value = params[0]
+
         try:
-            return float(params[0])
+            return float(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting ' + str(params[0]) + ' to float: ' + str(e))
+            logger.log('ERROR', 'Error casting {value} to float: {exception}'.format(value=value, exception=e))
             sys.exit(-1)
-    
-    
-    def cast_str(self, browser, params):
+
+
+    @staticmethod
+    def cast_str(browser, params):
         """
         Cast numeric value to string
         """
-    
+
+        value = params[0]
+
         try:
-            return str(params[0])
+            return str(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting ' + str(params[0]) + ' to string: ' + str(e))
+            logger.log('ERROR', 'Error casting {value} to str: {exception}'.format(value=value, exception=e))
             sys.exit(-1)
-    
-    
-    def sub_str(self, browser, params):
+
+
+    @staticmethod
+    def sub_str(browser, params):
         """
         Returns substring from bigger string
         """
-    
+
+        try:
+            string = params[0]
+            substring_index_start = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function sub_str(): at least 2 arguments needed')
+            sys.exit(-1)
+
         try:
             if len(params) == 2:
-                return params[0][params[1]:]
+                return string[substring_index_start:]
             else:
-                return params[0][params[1]:params[2]]
+                substring_index_end = params[2]
+                return string[substring_index_start:substring_index_end]
         except Exception as e:
-            logger.log('ERROR', 'Error getting subtring from ' + str(params[0]) + ': ' + str(e))
+            logger.log('ERROR', 'Error getting substring from {string}: {exception}'.format(string=string, exception=e))
             sys.exit(-1)
-    
-    
-    def lenght(self, browser, params):
+
+
+    @staticmethod
+    def length(browser, params):
         """
-        Returns lenght from any compatible data
+        Returns length from any compatible data
         """
-    
+
+        data = params[0]
+
         try:
-            return len(params[0])
+            return len(data)
         except Exception as e:
-            logger.log('ERROR', 'Error getting lenght from ' + str(params[0]) + ': ' + str(e))
+            logger.log('ERROR', 'Error getting length from {data}: {exception}'.format(data=data, exception=e))
             sys.exit(-1)
-    
-    
-    def find(self, browser, params):
+
+
+    @staticmethod
+    def find(browser, params):
         """
         Search one string into another string
         If it is found, returns starting position of the string searched
-        If dont, returns -1
+        If don't, returns -1
         """
-    
+
         try:
-            return params[0].find(params[1])
-        except Exception as e:
-            logger.log('ERROR', 'Error searching substring into ' + str(params[0]) + ': ' + str(e))
+            string = params[0]
+            substring = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function find(): 2 arguments needed')
             sys.exit(-1)
-    
-    
-    def replace(self, browser, params):
-        """
-        Replace substrnig into string
-        """
-    
+
         try:
-            return params[0].replace(params[1], params[2])
+            return string.find(substring)
         except Exception as e:
-            logger.log('ERROR', 'Error replacing: ' + str(params[0]) + '(' + str(params[1]) + ',' + str(params[2]) + '): ' + str(e))
+            logger.log('ERROR', 'Error searching substring into {string}: {exception}'.format(string=string, exception=e))
             sys.exit(-1)
-    
-    
-    def append_list(self, browser, params):
+
+
+    @staticmethod
+    def replace(browser, params):
+        """
+        Replace substring into string
+        """
+
+        try:
+            string = params[0]
+            substring_old = params[1]
+            substring_new = params[2]
+        except LookupError:
+            logger.log('ERROR', 'Function replace(): 3 arguments needed')
+            sys.exit(-1)
+
+        try:
+            return string.replace(substring_old, substring_new)
+        except Exception as e:
+            logger.log('ERROR', 'Error replacing: {string}({old}, {new}): {exception}'.format(string=string, old=substring_old, new=substring_new, exception=e))
+            sys.exit(-1)
+
+
+    @staticmethod
+    def split(browser, params):
+        """
+        Split string into some strings with a delimiter
+        """
+
+        try:
+            string = params[0]
+            delimiter = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function split(): 2 arguments needed')
+            sys.exit(-1)
+
+        try:
+            return string.split(delimiter)
+        except Exception as e:
+            logger.log('ERROR', 'Error splitting: {string} with {delimiter}: {exception}'.format(string=string, delimiter=delimiter, exception=e))
+            sys.exit(-1)
+
+
+    @staticmethod
+    def append_list(browser, params):
         """
         Append an element into a list
         """
-    
+
         try:
-            return params[0].append(params[1])
-        except Exception as e:
-            logger.log('ERROR', 'Error appending ' + str(params[1]) + ' into ' + str(params[0]) + ': ' + str(e))
+            list_ = params[0]
+            element = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function append(): 2 arguments needed')
             sys.exit(-1)
-    
-    
-    def update_list(self, browser, params):
+
+        try:
+            return list_.append(element)
+        except Exception as e:
+            logger.log('ERROR', 'Error appending {element} into {list}: {exception}'.format(element=element, list=list_, exception=e))
+            sys.exit(-1)
+
+
+    @staticmethod
+    def update_list(browser, params):
         """
         Update an element on a list
         """
-    
+
         try:
-            params[0][params[1]] = params[2]
-            return params[0]
-        except Exception as e:
-            logger.log('ERROR', 'Error updating ' + str(params[0]) + ' into ' + str(params[1]) + ' with ' + str(params[2]) + ': ' + str(e))
+            list_ = params[0]
+            index = params[1]
+            element = params[2]
+        except LookupError:
+            logger.log('ERROR', 'Function update(): 3 arguments needed')
             sys.exit(-1)
-    
-    
-    def remove_list(self, browser, params):
+
+        try:
+            list_[index] = element
+            return list_
+        except Exception as e:
+            logger.log('ERROR', 'Error updating {index} into {list} with {element}: {exception}'.format(index=index, list=list_, element=element, exception=e))
+            sys.exit(-1)
+
+
+    @staticmethod
+    def remove_list(browser, params):
         """
         Remove and element from a list
         """
-    
+
         try:
-            return params[0].remove(params[1])
-        except Exception as e:
-            logger.log('ERROR', 'Error removing ' + str(params[1]) + ' from ' + str(params[0]) + ': ' + str(e))
+            list_ = params[0]
+            element = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function remove(): 2 arguments needed')
             sys.exit(-1)
-            
-            
-    def get_element_list(self, browser, params):
+
+        try:
+            return list_.remove(element)
+        except Exception as e:
+            logger.log('ERROR', 'Error removing {element} from {list}: {exception}'.format(element=element, list=list_, exception=e))
+            sys.exit(-1)
+
+
+    @staticmethod
+    def get_element_list(browser, params):
         """
         Return element from list with index
         """
-        
+
         try:
-            return params[0][params[1]]
+            list_ = params[0]
+            index = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function get_element_list(): 2 arguments needed')
+            sys.exit(-1)
+
+        try:
+            return list_[index]
         except Exception as e:
-            logger.log('ERROR', 'Error getting element [' + str(params[1]) + '] from list ' + str(params[0]) + ': ' + str(e))
+            logger.log('ERROR', 'Error getting element {index} from list {list}: {exception}'.format(index=index, list=list_, exception=e))
             sys.exit(-1)

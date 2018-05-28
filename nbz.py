@@ -13,9 +13,9 @@ from pprint import pprint
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-sys.path.append('{base_dir}/lib'.format(base_dir=BASE_DIR))
-sys.path.append('{base_dir}/data'.format(base_dir=BASE_DIR))
-sys.path.append('{base_dir}/parser'.format(base_dir=BASE_DIR))
+sys.path.append(os.path.join(BASE_DIR, 'lib'))
+sys.path.append(os.path.join(BASE_DIR, 'data'))
+sys.path.append(os.path.join(BASE_DIR, 'parser'))
 
 from lib_log_nbz import Logging
 logger = Logging()
@@ -24,15 +24,16 @@ lib_wb_nbz = LibWb()
 from lib_snf_nbz import LibSnf
 lib_snf_nbz = LibSnf()
 from parser_nbz import NBZParser
-from features import FEATURES_DICT
+from natives import NATIVES
 
 
 class NBZ:
 
+
     def __init__(self, script, mode, debug=True):
 
         # Attributes
-        self.FEATURES = FEATURES_DICT
+        self.NATIVES = NATIVES
         self.USER_FUNC = {}
 
         self.script = script
@@ -195,10 +196,10 @@ class NBZ:
                         for param in instruction[2]:
                             params.append(get_value(param))
                         if instruction[1] == 'check_net':
-                            return check_net(self.proxy.har, params)
+                            return lib_snf_nbz.check_net(self.proxy.har, params)
                         else:
                             try:
-                                return self.FEATURES[instruction[1]](self.browser, params)
+                                return self.NATIVES[instruction[1]](self.browser, params)
                             except Exception as e:
                                 logger.log('ERROR', 'Error with function {exception}'.format(exception=e))
                                 sys.exit(-1)
@@ -237,8 +238,8 @@ class NBZ:
                         pass
                     else:
                         try:
-                            if self.FEATURES[instruction[1]]:
-                                self.FEATURES[instruction[1]](self.browser, params)
+                            if self.NATIVES[instruction[1]]:
+                                self.NATIVES[instruction[1]](self.browser, params)
                             elif self.USER_FUNC[instruction[1]]:
                                 self.do_instructions(self.USER_FUNC[instruction[1]])
                             else:
@@ -334,4 +335,5 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as e:
         logger.log('ERROR', 'Printing traceback: {traceback}\n'.format(traceback=traceback.format_exc()))
+        logger.log('ERROR', str(e))
         sys.exit(-1)

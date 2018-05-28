@@ -4,7 +4,6 @@
 # Author: <Zurdi>
 
 import sys
-import time
 import unicodedata
 from selenium.webdriver.common.keys import Keys
 from lib_log_nbz import *
@@ -15,8 +14,8 @@ class LibB:
 
 
     def __init__(self):
-        TIME_ = 0.5
-        SPECIALS = {
+        self.TIME = 0.5
+        self.SPECIALS = {
             'ENTER': Keys.ENTER,
             'ESC': Keys.ESCAPE,
             'RETURN': Keys.RETURN,
@@ -37,7 +36,7 @@ class LibB:
             self.url_retries_set = params[0]
             self.url_retries_wait_time = params[1]
         except Exception as e:
-            logger.log('ERROR', 'Error setting get url retries')
+            logger.log('ERROR', 'Error setting get url retries: {exception}'.format(exception=e))
             sys.exit(-1)
 
 
@@ -46,19 +45,21 @@ class LibB:
         Open given url
         """
    
+        url = str(params[0])
+   
         if self.url_retries > 0:
             try:
-                logger.log('NOTE', 'Loading: ' + str(params[0]))
-                browser.get(params[0])
+                logger.log('NOTE', 'Loading: {url}'.format(url=url))
+                browser.get(url)
                 self.url_retries = self.url_retries_set
             except Exception as e:
-                logger.log('ERROR', 'Error loading url [' + str(params[0]) + '] - (Invalid url?, Timeout?)')
+                logger.log('ERROR', 'Error loading url: {exception}'.format(exception=e))
                 self.url_retries -= 1
-                logger.log('ERROR', 'Error loading url, retries left: ' + str(self.url_retries) + ', waiting ' + str(self.url_retries_wait_time) + ' seconds')
+                logger.log('ERROR', 'Error loading url, retries left: {url_retries}, waiting {time} seconds'.format(url_retries=self.url_retries, time=self.url_retries_wait_time))
                 time.sleep(self.url_retries_wait_time)
                 self.get_url(browser, params)
         else:
-            logger.log('ERROR', 'Get url retries limit exceded')
+            logger.log('ERROR', 'Get url retries limit exceeded')
             sys.exit(-1)
     
     
@@ -68,35 +69,44 @@ class LibB:
         """
     
         try:
-            box = browser.find_element_by_xpath(params[0])
+            xpath = params[0]
             keys = params[1:]
-            for key in keys:
-                key = str(key)
-                if key in SPECIALS:
-                    box.send_keys(SPECIALS[key])
-                    if key == 'TAB':
-                        box = browser.switch_to.active_element
-                    logger.log('NOTE', 'Value: ' + key)
-                else:
-                    box.send_keys(key)
-                    logger.log('NOTE', 'Value: ' + key)
-                time.sleep(TIME_)
-        except Exception as e:
-            logger.log('ERROR', 'Error with textbox ' + str(params) + ': ' + str(e))
+        except LookupError:
+            logger.log('ERROR', 'Function fill(): at least 2 arguments needed')
             sys.exit(-1)
     
+        try:
+            field = browser.find_element_by_xpath(xpath)
+            for key in keys:
+                key = str(key)
+                if key in self.SPECIALS:
+                    field.send_keys(self.SPECIALS[key])
+                    if key == 'TAB':
+                        field = browser.switch_to.active_element
+                    logger.log('NOTE', 'Value: {key}'.format(key=key))
+                else:
+                    field.send_keys(key)
+                    logger.log('NOTE', 'Value: {key}'.format(key=key))
+                time.sleep(self.TIME)
+        except Exception as e:
+            logger.log('ERROR', 'Error with field {xpath): {exception}'.format(xpath=xpath, exception=e))
+            sys.exit(-1)
     
-    def clear_field(self, browser, params):
+
+    @staticmethod
+    def clear_field(browser, params):
         """
         Clear given field
         """
-    
+
+        xpath = params[0]
+
         try:
-            box = browser.find_element_by_xpath(params[0])
-            box.clear()
-            logger.log('NOTE', 'Textbox cleared')
+            field = browser.find_element_by_xpath(xpath)
+            field.clear()
+            logger.log('NOTE', 'Field cleared')
         except Exception as e:
-            logger.log('ERROR', 'Error with textbox ' + str(params) + ': ' + str(e))
+            logger.log('ERROR', 'Error with field {xpath}: {exception}'.format(xpath=xpath, exception=e))
             sys.exit(-1)
     
     
@@ -104,19 +114,21 @@ class LibB:
         """
         Click given element
         """
-    
+
+        xpath = params[0]
+
         try:
-            element = browser.find_element_by_xpath(params[0])
+            element = browser.find_element_by_xpath(xpath)
             if element.text:
-                logger.log('NOTE', 'Button clicked ' + '[' + element.text + ']')
+                logger.log('NOTE', 'Button clicked {text}'.format(text=element.text))
             elif element.get_attribute('value'):
-                logger.log('NOTE', 'Button clicked ' + '[' + element.get_attribute('value') + ']')
+                logger.log('NOTE', 'Button clicked {text}'.format(text=element.get_attribute('value')))
             else:
                 logger.log('NOTE', 'Button clicked')
             element.click()
-            time.sleep(TIME_)
+            time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with button ' + str(params[0]) + ': ' + str(e))
+            logger.log('ERROR', 'Error with button {xpath}: {exception}'.format(xpath=xpath, exception=e))
             sys.exit(-1)
     
     
@@ -124,30 +136,40 @@ class LibB:
         """
         Select an option from given selector
         """
-    
+
         try:
-            select = browser.find_element_by_xpath(params[0])
+            selector_xpath = params[0]
+            option_xpath = params[1]
+        except LookupError:
+            logger.log('ERROR', 'Function select(): 2 arguments needed')
+            sys.exit(-1)
+
+        try:
+            select = browser.find_element_by_xpath(selector_xpath)
             select.click()
-            time.sleep(TIME_)
-            option = browser.find_element_by_xpath(params[1])
-            logger.log('NOTE', 'Option selected ' + '[' + option.text + ']')
+            time.sleep(self.TIME)
+            option = browser.find_element_by_xpath(option_xpath)
+            logger.log('NOTE', 'Option selected {option}'.format(option=option.text))
             option.click()
-            time.sleep(TIME_)
+            time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with selector [' + str(params) + ']: ' + str(e))
+            logger.log('ERROR', 'Error with selector {selector_xpath}: {exception}'.format(selector_xpath=selector_xpath, exception=e))
             sys.exit(-1)
     
-    
-    def wait_time(self, browser, params):
+
+    @staticmethod
+    def wait_time(browser, params):
         """
         Just wait given seconds
         """
-    
+
+        wait_time = params[0]
+
         try:
-            logger.log('NOTE', 'Waiting ' + str(params) + ' seconds')
-            time.sleep(float(params[0]))
+            logger.log('NOTE', 'Waiting {wait_time} seconds'.format(wait_time=wait_time))
+            time.sleep(float(wait_time))
         except Exception as e:
-            logger.log('ERROR', 'Error in explicit waiting: ' + str(e))
+            logger.log('ERROR', 'Error in explicit waiting: {exception}'.format(exception=e))
             sys.exit(-1)
     
     
@@ -159,9 +181,9 @@ class LibB:
         try:
             browser.back()
             logger.log('NOTE', 'Going back')
-            time.sleep(TIME_)
+            time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error going back: ' + str(e))
+            logger.log('ERROR', 'Error going back: {exception}'.format(exception=e))
             sys.exit(-1)
     
     
@@ -173,13 +195,14 @@ class LibB:
         try:
             browser.forward()
             logger.log('NOTE', 'Going forward')
-            time.sleep(TIME_)
+            time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error going forward: ' + str(e))
+            logger.log('ERROR', 'Error going forward: {exception}'.format(exception=e))
             sys.exit(-1)
     
-    
-    def refresh(self, browser, params):
+
+    @staticmethod
+    def refresh(browser, params):
         """
         Refresh the page
         """
@@ -188,25 +211,29 @@ class LibB:
             browser.refresh()
             logger.log('NOTE', 'Refreshing...')
         except Exception as e:
-            logger.log('ERROR', 'Error refreshing the web page')
+            logger.log('ERROR', 'Error refreshing the web page: {exception}'.format(exception=e))
             sys.exit(-1)
     
-    
-    def get_text(self, browser, params):
+
+    @staticmethod
+    def get_text(browser, params):
         """
         Returns text from selected element
         """
-    
+
+        web_element = params[0]
+
         try:
-            element = browser.find_element_by_xpath(params[0])
-            logger.log('NOTE', 'Getting element: ' + str(params[0]))
+            element = browser.find_element_by_xpath(web_element)
+            logger.log('NOTE', 'Getting element: {web_element}'.format(web_element=web_element))
             return unicodedata.normalize('NFKD', element.text).encode('ascii','ignore')
         except Exception as e:
-            logger.log('ERROR', 'Error with element ' + str(params) + ': ' + str(e))
+            logger.log('ERROR', 'Error with element {web_element}: {exception}'.format(web_element=web_element, exception=e))
             sys.exit(-1)
     
-    
-    def current_url(self, browser, params):
+
+    @staticmethod
+    def current_url(browser, params):
         """
         Returns current url
         """
@@ -214,5 +241,5 @@ class LibB:
         try:
             return browser.current_url
         except Exception as e:
-            logger.log('ERROR', 'Error getting current url: ' + str(e))
+            logger.log('ERROR', 'Error getting current url: {exception}'.format(exception=e))
             sys.exit(-1)
