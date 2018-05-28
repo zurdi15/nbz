@@ -23,6 +23,7 @@ class LibSnf:
             return self.check_net_keywords(har, request)
         else:
             logger.log('ERROR', 'Not admited request type: ' + request[0])
+            sys.exit(-1)
     
     
     def check_net_parameters(self, har, request):
