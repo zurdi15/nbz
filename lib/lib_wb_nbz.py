@@ -68,7 +68,10 @@ class LibWb:
                     ch_opt.add_argument("--proxy-server=" + proxy_url)
                     if user_agent != 'default':
                         ch_opt.add_argument("--user-agent=" + user_agent)
-                    browser = webdriver.Chrome(chrome_options=ch_opt)
+                    try:
+                        browser = webdriver.Chrome(chrome_options=ch_opt)
+                    except Exception as e:
+                        browser = webdriver.Chrome(chrome_options=ch_opt)
     
                 elif params[0] == 'firefox':
                     ff_prf = webdriver.FirefoxProfile()
