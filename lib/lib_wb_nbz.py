@@ -5,6 +5,7 @@
 
 import sys
 import urlparse
+import time
 from lib_log_nbz import *
 logger = Logging()
 try:
@@ -37,8 +38,12 @@ class LibWb:
         try:
             proxy = server.create_proxy()
         except Exception as e:
-            logger.log('ERROR', 'Error configuring  proxy: ' + str(e))
-            sys.exit(-1)
+            time.sleep(5)
+            try:
+                proxy = server.create_proxy()
+            except Exception as e:
+                logger.log('ERROR', 'Error configuring  proxy: ' + str(e))
+                sys.exit(-1)
         return server, proxy
     
     
