@@ -150,7 +150,7 @@ echo -e "${YELLOW}${header}${NC}"
 echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
 
-python ${NBZ_PATH}/nbz.py -script ${script} -mode ${mode} -debug ${debug}
+python ${NBZ_PATH}/nbz_interface.py -script ${script} -mode ${mode} -debug ${debug}
 
 if [[ $? != 0 ]]; then
 	echo
