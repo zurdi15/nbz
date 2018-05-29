@@ -56,7 +56,10 @@ class LibWb:
 
         try:
             engine = params[0]
-            user_agent = params[1]
+            try:
+                user_agent = USER_AGENTS[params[1]]
+            except LookupError:
+                user_agent = params[1]
         except LookupError:
             logger.log('ERROR', 'Function browser(): 2 arguments needed')
             sys.exit(-1)
@@ -69,7 +72,7 @@ class LibWb:
                 proxy_url = urlparse.urlparse(proxy.proxy).path
                 ch_opt.add_argument("--proxy-server=" + proxy_url)
                 if user_agent != 'default':
-                    ch_opt.add_argument("--user-agent=" + USER_AGENTS[user_agent])
+                    ch_opt.add_argument("--user-agent=" + user_agent)
                 try:
                     browser = webdriver.Chrome(chrome_options=ch_opt)
                 except LookupError:
@@ -79,7 +82,7 @@ class LibWb:
             elif engine == 'firefox':
                 ff_prf = webdriver.FirefoxProfile()
                 if user_agent != 'default':
-                    ff_prf.set_preference("general.useragent.override", USER_AGENTS[user_agent])
+                    ff_prf.set_preference("general.useragent.override", user_agent)
                 browser = webdriver.Firefox(firefox_profile=ff_prf, proxy=proxy.selenium_proxy())
 
             else:

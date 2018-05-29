@@ -26,7 +26,7 @@ from natives import NATIVES
 class NBZInterface:
 
 
-    def __init__(self, script, mode, debug=True):
+    def __init__(self, script, debug=True):
 
         # Attributes
         self.core_attributes = {
@@ -36,7 +36,6 @@ class NBZInterface:
 
             'script'            : script,
             'script_name'       : os.path.basename(script)[0:-4], # Avoiding file extension
-            'mode'              : mode,
             'debug'             : debug,
 
             'proxy_path'        : '{base_dir}/proxy/bin/browsermob-proxy'.format(base_dir=BASE_DIR),  # Proxy binaries to execute the sniffer
@@ -51,19 +50,9 @@ class NBZInterface:
             'complete_csv'      : None,
         }
 
-        # Execute selected mode
-        if self.core_attributes['mode'] == 'cx':
-            self.compile_z_code()
-            self.get_z_code()
-        elif self.core_attributes['mode'] == 'c':
-            self.compile_z_code()
-            logger.log('NOTE', 'Successful compilation of {script}'.format(script=self.core_attributes['script']))
-            sys.exit(0)
-        elif self.core_attributes['mode'] == 'x':
-            self.get_z_code()
-        else:
-            logger.log('ERROR', 'Not defined compile/execution mode {mode}'.format(mode=self.core_attributes['mode']))
-            sys.exit(-1)
+        # Compile z_code
+        self.compile_z_code()
+        self.get_z_code()
 
         # Instance core class and execute instructions
         nbz_core = NBZCore(self.core_attributes)
@@ -121,17 +110,15 @@ class NBZInterface:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-script", help="script file", required=True)
-    parser.add_argument("-mode", help="compile/execution mode: -c (compile only) -x (execution only) -cx (compile & execution)", required=True)
     parser.add_argument("-debug", help="debug mode", required=False)
     args = parser.parse_args()
     script = args.script
-    mode = args.mode
     debug = args.debug
     if debug == 'false':
         debug = False
     else:
         debug = True
-    NBZInterface(script, mode, debug)
+    NBZInterface(script, debug)
 
 
 if __name__ == "__main__":

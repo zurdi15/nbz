@@ -5,8 +5,7 @@
 # NBZ Launcher 
 
 # Parameters:
-#  - $script: script file 
-#  - $mode: execute/compile mode
+#  - $script: script file
 #  - $debug: disable/enable debug
 ######
 
@@ -28,10 +27,6 @@ function show_help {
 	echo ""
 	echo "-s    Set the .nbz script"
 	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
-	echo "-m    Set the compilation/execution mode; cx by default"
-	echo "         c: compile only"
-	echo "         x: execute only"
-	echo "         cx: compile and execute only"
 	echo "-d    Enable debug mode"
 }
 
@@ -42,7 +37,6 @@ function show_version {
 #  - Parameters
 
 script=""
-mode="cx"
 debug="false"
 screen="false"
 
@@ -51,7 +45,7 @@ then
 	show_help
 	exit 0
 else
-	while getopts ":s:m:hvxd" opt
+	while getopts ":s:hvxd" opt
 	do
 		case ${opt} in
 			h)
@@ -71,9 +65,6 @@ else
 					echo "Error: Not compatible script (.${ext}). Extension must be .nbz"
 					exit 1
 				fi
-				;;
-			m)
-				mode=${OPTARG} >&2
 				;;
 			d)
 				debug="true" >&2
@@ -150,7 +141,7 @@ echo -e "${YELLOW}${header}${NC}"
 echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
 
-python ${NBZ_PATH}/nbz_interface.py -script ${script} -mode ${mode} -debug ${debug}
+python ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug}
 
 if [[ $? != 0 ]]; then
 	echo

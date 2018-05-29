@@ -284,8 +284,8 @@ def NBZParser(script_path, interactive=False):
             logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)))
             sys.exit(-1)
 
-    def p_logic_valid_num(p):
-        '''expr_bool : expr_num
+    def p_logic_valid_type(p):
+        '''expr_bool : expr_type
                      | expr_arithm'''
         p[0] = p[1]
 

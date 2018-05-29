@@ -6,7 +6,6 @@
 
 import sys
 import os
-from pprint import pprint
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -14,8 +13,6 @@ from lib_log_nbz import Logging
 logger = Logging()
 from lib_wb_nbz import LibWb
 lib_wb_nbz = LibWb()
-from lib_snf_nbz import LibSnf
-lib_snf_nbz = LibSnf()
 
 
 class NBZCore:
@@ -29,31 +26,6 @@ class NBZCore:
 
     def get_attributes(self):
         return self.attributes
-
-
-    def net_report(self, params):
-        """
-        Create net report csv
-        """
-
-        file_name = params[0]
-
-        self.attributes['net_reports_path'] = '{base_dir}/out/net_reports/{script_name}'.format(base_dir=BASE_DIR, script_name=self.attributes['script_name'])
-        self.attributes['complete_csv_path'] = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(net_reports_path=self.attributes['net_reports_path'], report_name=file_name)
-        if not os.path.exists(self.attributes['net_reports_path']):
-            os.makedirs(self.attributes['net_reports_path'])
-        self.attributes['complete_csv'] = open(self.attributes['complete_csv_path'], 'w')
-
-
-    def reset_har(self):
-        """
-        Reset proxy's HAR to check new requests
-        """
-
-        if self.attributes['set_net_report']:
-            self.attributes['complete_csv'].write('URL: {url}\n\n'.format(url=self.attributes['browser'].current_url))
-            pprint(self.attributes['proxy'].har['log']['entries'], self.attributes['complete_csv'])
-        self.attributes['proxy'].new_har()
 
 
     def execute_instructions(self, instruction_set):
@@ -118,7 +90,13 @@ class NBZCore:
                             return eval(str(get_value(sub_instruction[1])) + sub_instruction[3] + str(get_value(sub_instruction[2])))
                     elif sub_instruction[0] == 'boolean':
                         if sub_instruction[3] != 'not':
-                            return eval(str(get_value(sub_instruction[1])) + ' ' + sub_instruction[3] + ' ' + str(get_value(sub_instruction[2])))
+                            op_1 = get_value(sub_instruction[1])
+                            op_2 = get_value(sub_instruction[2])
+                            if isinstance(op_1, str):
+                                op_1 = "'{op_1}'".format(op_1=op_1)
+                            if isinstance(op_2, str):
+                                op_2 = "'{op_2}'".format(op_2=op_2)
+                            return eval(str(op_1) + ' ' + sub_instruction[3] + ' ' + str(get_value(op_2)))
                         else:
                             return not get_value(sub_instruction[1])
                     elif sub_instruction[0] == 'func':
@@ -126,7 +104,7 @@ class NBZCore:
                         for sub_param in sub_instruction[2]:
                             sub_params.append(get_value(sub_param))
                         if sub_instruction[1] == 'check_net':
-                            return lib_snf_nbz.check_net(self.attributes['proxy'].har, params)
+                            return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har, params)
                         else:
                             return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'], params)
                     else:
@@ -158,8 +136,10 @@ class NBZCore:
                         else:
                             logger.log('ERROR', 'Browser already instanced')
                     elif instruction[1] == 'export_net_report':
-                        self.net_report(params)
+                        self.attributes['complete_csv'] = self.attributes['NATIVES']['net_report'](params, self.attributes['script_name'])
                         self.attributes['set_net_report'] = True
+                    elif instruction[1] == 'reset_har':
+                        self.attributes['NATIVES']['reset_hat'](self.attributes['set_ner_report'], self.attributes['complete_csv'], self.attributes['browser'].current_url, self.attributes['proxy'])
                     elif instruction[1] == 'check_net':
                         pass
                     else:

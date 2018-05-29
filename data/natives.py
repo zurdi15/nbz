@@ -16,6 +16,8 @@ from lib_b_nbz import LibB
 lib_b_nbz = LibB()
 from lib_d_nbz import LibD
 lib_d_nbz = LibD()
+from lib_snf_nbz import LibSnf
+lib_snf_nbz = LibSnf()
 
 
 # BOT NATIVES
@@ -23,10 +25,8 @@ lib_d_nbz = LibD()
 NATIVES = {
 
 # System functions
-'exit'              : '',
-
-# Browser functions
 'browser'           : '',
+'exit'              : '',
 
 # Basic functions
 'get_url'           : lib_b_nbz.get_url,
@@ -42,10 +42,10 @@ NATIVES = {
 'get_text'          : lib_b_nbz.get_text,
 'current_url'       : lib_b_nbz.current_url,
 
-# Sniffering functions
-'check_net'         : '',
-'reset_har'         : '',
-'export_net_report' : '',
+# Sniffing functions
+'check_net'         : lib_snf_nbz.check_net,
+'reset_har'         : lib_snf_nbz.reset_har,
+'export_net_report' : lib_snf_nbz.net_report,
 
 # Advanced functions
 'print'             : lib_a_nbz.print_,
