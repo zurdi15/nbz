@@ -12,21 +12,28 @@ from pprint import pprint
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
+if os.name == 'posix':
+    sys.path.append(os.path.join(BASE_DIR, 'lib', 'drivers', 'geckodriver'))
+    PROXY_PATH = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
+elif os.name == 'nt':
+    sys.path.append(os.path.join(BASE_DIR, 'lib', 'drivers', 'geckodriver.exe'))
+    PROXY_PATH = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
+
 sys.path.append(os.path.join(BASE_DIR, 'lib'))
 sys.path.append(os.path.join(BASE_DIR, 'data'))
 sys.path.append(os.path.join(BASE_DIR, 'parser'))
 
 from nbz_core import NBZCore
-from lib_log_nbz import Logging
-logger = Logging()
 from parser_nbz import NBZParser
 from natives import NATIVES
+from lib_log_nbz import Logging
+logger = Logging()
 
 
 class NBZInterface:
 
 
-    def __init__(self, script, debug=True):
+    def __init__(self, script, debug=False):
 
         # Attributes
         self.core_attributes = {
@@ -38,8 +45,10 @@ class NBZInterface:
             'script_name'       : os.path.basename(script)[0:-4], # Avoiding file extension
             'debug'             : debug,
 
-            'proxy_path'        : '{base_dir}/proxy/bin/browsermob-proxy'.format(base_dir=BASE_DIR),  # Proxy binaries to execute the sniffer
-            'set_browser'       : False, # Flag to instance browser once (even if z_code has more than one instance)
+            # Proxy binaries to execute the sniffer
+            'proxy_path'        : PROXY_PATH,
+            # Flag to instance browser once (even if z_code has more than one instance)
+            'set_browser'       : False,
             'server'            : None,
             'proxy'             : None,
             'browser'           : None,
@@ -114,10 +123,6 @@ def main():
     args = parser.parse_args()
     script = args.script
     debug = args.debug
-    if debug == 'false':
-        debug = False
-    else:
-        debug = True
     NBZInterface(script, debug)
 
 

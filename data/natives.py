@@ -11,8 +11,6 @@ BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file_
 sys.path.append(os.path.join(BASE_DIR, 'lib'))
 
 
-from lib_wb_nbz import LibWb
-lib_wb_nbz = LibWb()
 from lib_snf_nbz import LibSnf
 lib_snf_nbz = LibSnf()
 from lib_a_nbz import LibA
@@ -28,12 +26,12 @@ lib_d_nbz = LibD()
 NATIVES = {
 
 # System functions
-'browser'           : lib_wb_nbz.instance_browser,
+'browser'           : '',
 'exit'              : '',
 
 # Basic functions
 'get_url'           : lib_b_nbz.get_url,
-'set_get_url_retries': lib_b_nbz.set_get_url_retries,
+'set_url_retries'   : lib_b_nbz.set_url_retries,
 'fill'              : lib_b_nbz.fill_field,
 'clear'             : lib_b_nbz.clear_field,
 'click'             : lib_b_nbz.click_element,

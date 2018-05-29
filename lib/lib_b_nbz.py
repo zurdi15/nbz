@@ -26,7 +26,7 @@ class LibB:
         self.url_retries_wait_time = 0
 
 
-    def set_get_url_retries(self, browser, params):
+    def set_url_retries(self, browser, params):
         """
         Defines url retries options
         """

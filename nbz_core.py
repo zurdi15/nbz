@@ -9,6 +9,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
+from lib_wb_nbz import LibWb
+lib_wb_nbz = LibWb()
 from lib_log_nbz import Logging
 logger = Logging()
 
@@ -127,7 +129,11 @@ class NBZCore:
                         sys.exit(0)
                     elif instruction[1] == 'browser':
                         if not self.attributes['set_browser']:
-                            self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = self.attributes['NATIVES']['instance_browser'](self.attributes['proxy_path'], params)
+                            try:
+                                self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
+                            except Exception as e:
+                                print str(e)
+                                sys.exit(-1)
                             self.attributes['set_browser'] = True
                         else:
                             logger.log('ERROR', 'Browser already instanced')
@@ -139,13 +145,14 @@ class NBZCore:
                     elif instruction[1] == 'check_net':
                         pass
                     else:
-                        if self.attributes['NATIVES'][instruction[1]]:
+                        try:
                             self.attributes['NATIVES'][instruction[1]](self.attributes['browser'], params)
-                        elif self.attributes['USER_FUNC'][instruction[1]]:
-                            self.execute_instructions(self.attributes['USER_FUNC'][instruction[1]])
-                        else:
-                            logger.log('ERROR', 'Not defined function')
-                            sys.exit(-1)
+                        except LookupError:
+                            try:
+                                self.execute_instructions(self.attributes['USER_FUNC'][instruction[1]])
+                            except LookupError:
+                                logger.log('ERROR', 'Not defined function')
+                                sys.exit(-1)
                 elif instruction[0] == 'if':
                     if get_value(instruction[1]):
                         self.execute_instructions(instruction[2])
@@ -195,3 +202,4 @@ class NBZCore:
                         self.execute_instructions(instruction[2])
             except Exception as e:
                 logger.log('ERROR', 'Error executing instruction {type}: {exception}'.format(type=instruction[0], exception=e))
+                sys.exit(-1)

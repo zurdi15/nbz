@@ -404,7 +404,6 @@ class LibA:
             sys.exit(-1)
 
         try:
-
             html = open('{html_path}/{html_name}.html'.format(html_path=html_path, html_name=html_name), 'w')
             html_text = browser.page_source
             if isinstance(html_text, unicode):
@@ -452,7 +451,6 @@ class LibA:
             sys.exit(-1)
 
         try:
-
             browser.save_screenshot('{ss_path}/{ss_name}.png'.format(ss_path=ss_path, ss_name=ss_name))
             logger.log('NOTE', 'Screenshot from {current_url} saved on: {ss_path}/{ss_name}.png'.format(current_url=browser.current_url, ss_path=ss_path, ss_name=ss_name))
         except Exception as e:

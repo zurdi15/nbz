@@ -3,8 +3,13 @@
 #
 # Author: <Zurdi>
 
+
+import os
 import sys
 import urlparse
+
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 from lib_log_nbz import *
 logger = Logging()
 try:
@@ -23,8 +28,7 @@ class LibWb:
         pass
     
 
-    @staticmethod
-    def instance_browser(proxy_path, params):
+    def instance_browser(self, proxy_path, params):
         """
         Start web browser
         """
@@ -49,6 +53,7 @@ class LibWb:
 
         try:
             engine = params[0]
+            driver_path = self.get_driver_path(engine)
             try:
                 user_agent = USER_AGENTS[params[1]]
             except LookupError:
@@ -58,7 +63,8 @@ class LibWb:
             sys.exit(-1)
 
         try:
-            logger.log('NOTE', 'Launching Browser: {engine} (user-agent: {user_agent})'.format(engine=engine, user_agent=user_agent))
+            logger.log('NOTE', 'Launching Browser: {engine} (user-agent: {user_agent})'.format(engine=engine,
+                                                                                               user_agent=user_agent))
 
             if engine == 'chrome':
                 ch_opt = webdriver.ChromeOptions()
@@ -67,22 +73,52 @@ class LibWb:
                 if user_agent != 'default':
                     ch_opt.add_argument("--user-agent=" + user_agent)
                 try:
-                    browser = webdriver.Chrome(chrome_options=ch_opt)
+                    browser = webdriver.Chrome(executable_path=driver_path, chrome_options=ch_opt)
                 except LookupError:
                     time.sleep(5)
-                    browser = webdriver.Chrome(chrome_options=ch_opt)
+                    browser = webdriver.Chrome(executable_path=driver_path, chrome_options=ch_opt)
 
             elif engine == 'firefox':
                 ff_prf = webdriver.FirefoxProfile()
                 if user_agent != 'default':
                     ff_prf.set_preference("general.useragent.override", user_agent)
-                browser = webdriver.Firefox(firefox_profile=ff_prf, proxy=proxy.selenium_proxy())
-
+                try:
+                    browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf,
+                                                proxy=proxy.selenium_proxy())
+                except LookupError:
+                    time.sleep(5)
+                    browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf,
+                                                proxy=proxy.selenium_proxy())
             else:
                 logger.log('ERROR', 'Not supported browser: {engine}'.format(engine=engine))
                 sys.exit(-1)
 
         except Exception as e:
-            logger.log('ERROR', 'Error launching {engine} ({user_agent}): {exception}'.format(engine=engine, user_agent=user_agent, exception=e))
+            logger.log('ERROR', 'Error launching {engine} ({user_agent}): {exception}'.format(engine=engine,
+                                                                                              user_agent=user_agent,
+                                                                                              exception=e))
             sys.exit(-1)
         return server, proxy, browser
+
+
+    @staticmethod
+    def get_driver_path(engine):
+        if engine == 'chrome':
+            if os.name == 'posix':
+                driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver')
+            elif os.name == 'nt':
+                driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver.exe')
+            else:
+                logger.log('ERROR', 'Operative System not supported')
+                sys.exit(-1)
+        elif engine == 'firefox':
+            if os.name == 'posix':
+                driver_path = os.path.join(BASE_DIR, 'drivers', 'geckodriver')
+            elif os.name == 'nt':
+                driver_path = os.path.join(BASE_DIR, 'drivers', 'geckodriver.exe')
+            else:
+                logger.log('ERROR', 'Operative System not supported')
+                sys.exit(-1)
+        else:
+            driver_path = ''
+        return driver_path
