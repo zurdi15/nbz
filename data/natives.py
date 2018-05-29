@@ -10,14 +10,17 @@ import sys
 BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, 'lib'))
 
+
+from lib_wb_nbz import LibWb
+lib_wb_nbz = LibWb()
+from lib_snf_nbz import LibSnf
+lib_snf_nbz = LibSnf()
 from lib_a_nbz import LibA
 lib_a_nbz = LibA()
 from lib_b_nbz import LibB
 lib_b_nbz = LibB()
 from lib_d_nbz import LibD
 lib_d_nbz = LibD()
-from lib_snf_nbz import LibSnf
-lib_snf_nbz = LibSnf()
 
 
 # BOT NATIVES
@@ -25,7 +28,7 @@ lib_snf_nbz = LibSnf()
 NATIVES = {
 
 # System functions
-'browser'           : '',
+'browser'           : lib_wb_nbz.instance_browser,
 'exit'              : '',
 
 # Basic functions

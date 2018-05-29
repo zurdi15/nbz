@@ -21,14 +21,14 @@ class LibWb:
 
     def __init__(self):
         pass
-
+    
 
     @staticmethod
-    def start_proxy(proxy_path):
+    def instance_browser(proxy_path, params):
         """
-        Start proxy to capture net traffic
+        Start web browser
         """
-    
+
         logger.log('NOTE', 'Launching proxy server...')
         try:
             server = Server(proxy_path)
@@ -45,14 +45,7 @@ class LibWb:
             except Exception as e:
                 logger.log('ERROR', 'Error configuring  proxy: {exception}'.format(exception=e))
                 sys.exit(-1)
-        return server, proxy
-    
-
-    @staticmethod
-    def instance_browser(proxy, params):
-        """
-        Start web browser
-        """
+        proxy.new_har()
 
         try:
             engine = params[0]
@@ -92,4 +85,4 @@ class LibWb:
         except Exception as e:
             logger.log('ERROR', 'Error launching {engine} ({user_agent}): {exception}'.format(engine=engine, user_agent=user_agent, exception=e))
             sys.exit(-1)
-        return browser
+        return server, proxy, browser

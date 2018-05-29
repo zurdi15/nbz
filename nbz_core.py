@@ -11,8 +11,6 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 from lib_log_nbz import Logging
 logger = Logging()
-from lib_wb_nbz import LibWb
-lib_wb_nbz = LibWb()
 
 
 class NBZCore:
@@ -129,9 +127,7 @@ class NBZCore:
                         sys.exit(0)
                     elif instruction[1] == 'browser':
                         if not self.attributes['set_browser']:
-                            self.attributes['server'], self.attributes['proxy'] = lib_wb_nbz.start_proxy(self.attributes['proxy_path'])
-                            self.attributes['proxy'].new_har()
-                            self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy'], params)
+                            self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = self.attributes['NATIVES']['instance_browser'](self.attributes['proxy_path'], params)
                             self.attributes['set_browser'] = True
                         else:
                             logger.log('ERROR', 'Browser already instanced')
@@ -150,7 +146,6 @@ class NBZCore:
                         else:
                             logger.log('ERROR', 'Not defined function')
                             sys.exit(-1)
-
                 elif instruction[0] == 'if':
                     if get_value(instruction[1]):
                         self.execute_instructions(instruction[2])
