@@ -25,4 +25,4 @@ echo "Chromedriver removed!"
 rm ~/.local/share/applications/nbz.desktop
 echo "Menu entry removed!"
 
-echo -e "\n${GREEN}NBZ succesfully uninstalled!!${NC}\n"
+echo -e "\n${GREEN}NBZ successfully uninstalled!!${NC}\n"

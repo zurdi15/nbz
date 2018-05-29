@@ -21,9 +21,7 @@ class Logging:
 
         if level == 'NOTE':
             print("\033[92m  -  NBZ Log\033[93m[{st}]: \033[0m{msg}".format(st=st, msg=msg))
-            #print("\033[92m" + '  - NBZ Log\033[93m[' + st + ']: ' + "\033[0m" + msg)
         elif level == 'ERROR':
             print("\033[91m  -  NBZ Log\033[93m[{st}]: \033[0m{msg}".format(st=st, msg=msg))
-            #print("\033[91m" + '  - NBZ Error\033[93m[' + st + ']: ' + "\033[0m" + msg)
         else:
             print('Not defined logger level: {level}'.format(level=level))

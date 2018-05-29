@@ -10,11 +10,11 @@ from lib_log_nbz import *
 logger = Logging()
 try:
     import ply.yacc as yacc
-except Exception:
+except LookupError:
     logger.log('ERROR', "Dependencies not installed. Please run install.sh.")
     sys.exit(-1)
 from lexer_nbz import tokens # Get the token map from the lexer
-from features import FEATURES_DICT
+from natives import NATIVES
 
 
 def NBZParser(script_path, interactive=False):
@@ -26,7 +26,7 @@ def NBZParser(script_path, interactive=False):
     z_code_vars = {}
 
     # Functions dictionary
-    functions = FEATURES_DICT
+    functions = NATIVES
 
     # Initial state
     def p_sent_list(p):
@@ -94,14 +94,14 @@ def NBZParser(script_path, interactive=False):
         if len(p) == 2:
             if isinstance(p[1], str):
                 try:
-                    aux = z_code_vars[p[1]]
+                    check = z_code_vars[p[1]]
                     p[0] = [['var', p[1]]]
                 except LookupError:
                     logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '" line ' + str(p.lineno(1)))
                     sys.exit(-1)
             elif isinstance(p[1], list):
                 try:
-                    aux = functions[p[1][1]]
+                    check = functions[p[1][1]]
                     p[0] = [p[1]]
                     z_code.pop()
                 except LookupError:
@@ -111,14 +111,14 @@ def NBZParser(script_path, interactive=False):
             p[0] = p[1]
             if isinstance(p[3], str):
                 try:
-                    aux = z_code_vars[p[3]]
+                    check = z_code_vars[p[3]]
                     p[0].append(['var', p[3]])
                 except LookupError:
                     logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '" line ' + str(p.lineno(1)))
                     sys.exit(-1)
             elif isinstance(p[3], list):
                 try:
-                    aux = functions[p[3][1]]
+                    check = functions[p[3][1]]
                     p[0].append([p[3]])
                     z_code.pop()
                 except LookupError:
@@ -277,7 +277,7 @@ def NBZParser(script_path, interactive=False):
     def p_logic_valid_var(p):
         '''expr_bool : sent_func'''
         try:
-            aux = functions[p[1][1]]
+            check = functions[p[1][1]]
             z_code.pop()
             p[0] = p[1]
         except LookupError:
@@ -316,14 +316,14 @@ def NBZParser(script_path, interactive=False):
                        | sent_func'''
         if isinstance(p[1], str):
             try:
-                aux = z_code_vars[p[1]]
+                check = z_code_vars[p[1]]
                 p[0] = ['var', p[1]]
             except LookupError:
                 logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
                 sys.exit(-1)
         elif isinstance(p[1], list):
             try:
-                aux = functions[p[1][1]]
+                check = functions[p[1][1]]
                 z_code.pop()
                 p[0] = p[1]
             except LookupError:
@@ -344,12 +344,12 @@ def NBZParser(script_path, interactive=False):
                            | ID LBRACKET ID RBRACKET'''
         if not isinstance(p[1], list):
             try:
-                aux = variables[p[1]]
+                check = z_code_vars[p[1]]
             except LookupError:
                 logger.log('ERROR', 'Undefined list "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
                 sys.exit(-1)
             try:
-                aux = variables[p[3]]
+                check = z_code_vars[p[3]]
             except LookupError:
                 logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '"  line ' + str(p.lineno(1)))
                 sys.exit(-1)
@@ -357,7 +357,7 @@ def NBZParser(script_path, interactive=False):
             z_code.append(p[0])
         else:
             try:
-                aux = variables[p[3]]
+                check = z_code_vars[p[3]]
             except LookupError:
                 logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '"  line ' + str(p.lineno(1)))
                 sys.exit(-1)
@@ -368,7 +368,7 @@ def NBZParser(script_path, interactive=False):
                            | ID LBRACKET INTEGER RBRACKET'''
         if not isinstance(p[1], list):
             try:
-                aux = z_code_vars[p[1]]
+                check = z_code_vars[p[1]]
                 p[0] = ['func', 'get_element_list', [['var', p[1]], p[3]]]
                 z_code.append(p[0])
             except LookupError:

@@ -33,6 +33,8 @@ class NBZ:
     def __init__(self, script, mode, debug=True):
 
         # Attributes
+        self.instruction_set = ''
+        self.vars_dict = {}
         self.NATIVES = NATIVES
         self.USER_FUNC = {}
 
@@ -46,9 +48,6 @@ class NBZ:
         self.server = None
         self.proxy = None
         self.browser = None
-
-        self.instruction_set = ''
-        self.vars_dict = {}
 
         self.set_net_report = False
         self.net_reports_path = ''
@@ -174,11 +173,11 @@ class NBZ:
                         if instruction[3] == '+':
                             try:
                                     op_1 = get_value(instruction[1]).encode('utf-8')
-                            except:
+                            except TypeError:
                                     op_1 = get_value(instruction[1])
                             try:
                                     op_2 = get_value(instruction[2]).encode('utf-8')
-                            except:
+                            except TypeError:
                                     op_2 = get_value(instruction[2])
                             if isinstance(op_1, str) or isinstance(op_2, str):
                                     return str(op_1) + str(op_2)
@@ -295,7 +294,7 @@ class NBZ:
                     while get_value(instruction[1]):
                         self.do_instructions(instruction[2])
             except Exception as e:
-                logger.log('ERROR', 'Error executing instruction ' + str(instruction) + ': ' + str(e))
+                logger.log('ERROR', 'Error executing instruction {type}: {exception}'.format(type=instruction[0], exception=e))
 
 
     def close_all(self):

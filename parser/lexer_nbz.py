@@ -91,7 +91,7 @@ def t_STRING(t): # Trimming strings rule (avoiding " in the string token)
     return t
 
 
-# Aritmethic operators
+# Arithmetic operators
 t_PLUS          = r'\+'
 t_MINUS         = r'-'
 t_MULTIPLY      = r'\*'

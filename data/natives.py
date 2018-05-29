@@ -78,7 +78,7 @@ NATIVES = {
 'float'             : lib_d_nbz.cast_float,
 'str'               : lib_d_nbz.cast_str,
 'sub_str'           : lib_d_nbz.sub_str,
-'len'               : lib_d_nbz.lenght,
+'len'               : lib_d_nbz.length,
 'find'              : lib_d_nbz.find,
 'replace'           : lib_d_nbz.replace,
 'split'             : lib_d_nbz.split,

@@ -44,7 +44,7 @@ function show_version {
 script=""
 mode="cx"
 debug="false"
-scren="false"
+screen="false"
 
 if [ ${#} = 0 ]
 then
@@ -136,7 +136,7 @@ function kill_processes {
 }
 
 #  - Initialize virtual display
-# If you do not have desktop enviroment, you should use this:
+# If you do not have desktop environment, you should use this:
 if [ ${screen} == "true" ]
 then
 	Xvfb :99 -ac 1>/dev/null 2>&1 &
