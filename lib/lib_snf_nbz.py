@@ -13,7 +13,7 @@ class LibSnf:
 
 
     def __init__(self):
-        self.request_attr = {
+        self.sniffer_attr = {
             'request_ok'    : False,
             'url'           : '',
             'status_code'   : '404',
@@ -54,15 +54,15 @@ class LibSnf:
                 param_list = param_list_aux[1].split('&')
                 if set(params).issubset(set(param_list)):
                     if attribute == 'times':
-                        self.request_attr['times'] += 1
+                        self.sniffer_attr['times'] += 1
                     else:
-                        self.request_attr['request_ok'] = True
-                        self.request_attr['status_code'] = int(entry['response']['status'])
-                        self.request_attr['url'] = entry['request']['url']
-                        self.request_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
+                        self.sniffer_attr['request_ok'] = True
+                        self.sniffer_attr['status_code'] = int(entry['response']['status'])
+                        self.sniffer_attr['url'] = entry['request']['url']
+                        self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
                         break
         try:
-            return self.request_attr[attribute]
+            return self.sniffer_attr[attribute]
         except LookupError:
             logger.log('ERROR', 'Can\'t find {attribute} - invalid search'.format(attribute=attribute))
             sys.exit(-1)
@@ -79,13 +79,13 @@ class LibSnf:
     
         for entry in har['log']['entries']:
             if entry['request']['url'].find(keyword) != -1:
-                self.request_attr['request_ok'] = True
-                self.request_attr['status_code'] = int(entry['response']['status'])
-                self.request_attr['url'] = entry['request']['url']
-                self.request_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
+                self.sniffer_attr['request_ok'] = True
+                self.sniffer_attr['status_code'] = int(entry['response']['status'])
+                self.sniffer_attr['url'] = entry['request']['url']
+                self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
                 break
         try:
-            return self.request_attr[attribute]
+            return self.sniffer_attr[attribute]
         except LookupError:
             logger.log('ERROR', 'Can\'t find {attribute} - invalid search'.format(attribute=attribute))
             sys.exit(-1)
