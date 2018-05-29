@@ -13,11 +13,9 @@ from pprint import pprint
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 if os.name == 'posix':
-    sys.path.append(os.path.join(BASE_DIR, 'lib', 'drivers', 'geckodriver'))
-    PROXY_PATH = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
+    proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
 elif os.name == 'nt':
-    sys.path.append(os.path.join(BASE_DIR, 'lib', 'drivers', 'geckodriver.exe'))
-    PROXY_PATH = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
+    proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
 sys.path.append(os.path.join(BASE_DIR, 'lib'))
 sys.path.append(os.path.join(BASE_DIR, 'data'))
@@ -46,7 +44,7 @@ class NBZInterface:
             'debug'             : debug,
 
             # Proxy binaries to execute the sniffer
-            'proxy_path'        : PROXY_PATH,
+            'proxy_path'        : proxy_path,
             # Flag to instance browser once (even if z_code has more than one instance)
             'set_browser'       : False,
             'server'            : None,
