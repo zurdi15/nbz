@@ -156,16 +156,15 @@ if [[ $? != 0 ]]; then
 	echo
 	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
 	echo
-	read -p "Press a key to exit..."
 	remove_trash
 	kill_processes
         exit 1
 fi
 
-remove_trash
 echo
 echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
 echo
-read -p "Press a key to exit..."
+remove_trash
+kill_processes
 
 exit 0
