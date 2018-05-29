@@ -6,6 +6,7 @@
 
 import sys
 import os
+import psutil
 import argparse
 import pickle
 from pprint import pprint
@@ -109,8 +110,23 @@ class NBZInterface:
             self.core_attributes['complete_csv'].close()
             logger.log('NOTE', 'Complete_net csv file exported to: {net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
         self.core_attributes['browser'].close()
+
         self.core_attributes['proxy'].close()
         self.core_attributes['server'].stop()
+
+        # Find BrowserMob-Proxy processes that may still be alive and kill them
+        for process in psutil.process_iter():
+            try:
+                process_info = process.as_dict(attrs=['name', 'cmdline'])
+                if process_info.get('name') in ('java', 'java.exe'):
+                    print process_info.get('name')
+                    for cmd_info in process_info.get('cmdline'):
+                        if cmd_info == '-Dapp.name=browsermob-proxy':
+                            print cmd_info
+                            process.kill()
+            except psutil.NoSuchProcess:
+                pass
+
         logger.log('NOTE', 'Connections closed')
 
 

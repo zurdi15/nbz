@@ -64,6 +64,7 @@ sudo apt-get install xvfb
 sudo -H pip install ply
 sudo -H pip install selenium
 sudo -H pip install browsermob-proxy
+sudo -H pip install psutil
 
 # Creating menu entry
 menu_entry="[Desktop Entry]\nVersion=1.0\nType=Application\nName=NBZ\nName[en_US]=NBZ\nGenericName=NBZ\nIcon=${NBZ_INST_PATH}/nbz_icon.png\nExec=${NBZ_INST_PATH}/nbz_launcher.sh -s scripts/test.nbz\nPath=${NBZ_INST_PATH}\nNoDisplay=False\nCategories=Development;\nStartupNotify=false\nTerminal=true"
