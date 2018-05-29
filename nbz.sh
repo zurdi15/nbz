@@ -11,7 +11,6 @@
 
 # Structure:
 #  - Parameters
-#  - Remove trash files and kill processes functions
 #  - Initialize virtual display (optional)
 #  - Launch NBZ
 ######
@@ -37,8 +36,8 @@ function show_version {
 #  - Parameters
 
 script=""
-debug="false"
-screen="false"
+debug="False"
+screen="False"
 
 if [ ${#} = 0 ]
 then
@@ -67,10 +66,10 @@ else
 				fi
 				;;
 			d)
-				debug="true" >&2
+				debug="True" >&2
 				;;
 			x)	
-				screen="true" >&2
+				screen="True" >&2
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
@@ -102,33 +101,9 @@ YELLOW='\e[33m'
 RED='\e[31m'
 NC='\e[0m'
 
-#  - Remove trash files and kill processes functions
-function remove_trash {	
-	if [ -f $(pwd)/server.log ]
-	then
-		rm $(pwd)/server.log
-	fi
-	if [ -f $(pwd)/bmp.log ]
-	then
-		rm $(pwd)/bmp.log
-	fi
-	if [ -f $(pwd)/geckodriver.log ]
-	then
-		rm $(pwd)/geckodriver.log
-	fi
-}
-
-function kill_processes {
-	pids_process=$(pstree $$ -p|egrep -o '[0-9]+')
-	for pid in ${pids_process}
-	do
-		kill -15 -${pid}
-	done
-}
-
 #  - Initialize virtual display
 # If you do not have desktop environment, you should use this:
-if [ ${screen} == "true" ]
+if [ ${screen} == "True" ]
 then
 	Xvfb :99 -ac 1>/dev/null 2>&1 &
 	export DISPLAY=:99
@@ -147,15 +122,11 @@ if [[ $? != 0 ]]; then
 	echo
 	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
 	echo
-	remove_trash
-	kill_processes
         exit 1
 fi
 
 echo
 echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
 echo
-remove_trash
-kill_processes
 
 exit 0

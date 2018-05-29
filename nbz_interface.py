@@ -32,7 +32,7 @@ logger = Logging()
 class NBZInterface:
 
 
-    def __init__(self, script, debug=False):
+    def __init__(self, script, debug):
 
         # Attributes
         self.core_attributes = {
@@ -110,23 +110,24 @@ class NBZInterface:
             self.core_attributes['complete_csv'].close()
             logger.log('NOTE', 'Complete_net csv file exported to: {net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
         self.core_attributes['browser'].close()
-
         self.core_attributes['proxy'].close()
         self.core_attributes['server'].stop()
 
-        # Find BrowserMob-Proxy processes that may still be alive and kill them
+        # Find BrowserMob-Proxy and Xvfb processes that may still be alive and kill them
         for process in psutil.process_iter():
             try:
                 process_info = process.as_dict(attrs=['name', 'cmdline'])
-                if process_info.get('name') in ('java', 'java.exe'):
-                    print process_info.get('name')
+                if process_info.get('name') in ('java', 'java.exe', 'Xvfb'):
                     for cmd_info in process_info.get('cmdline'):
-                        if cmd_info == '-Dapp.name=browsermob-proxy':
-                            print cmd_info
+                        if cmd_info == '-Dapp.name=browsermob-proxy' or cmd_info == ':99':
                             process.kill()
             except psutil.NoSuchProcess:
                 pass
-
+        # Find and remove all trash logs
+        logs = ['bmp.log', 'geckodriver.log', 'server.log']
+        for log in logs:
+            if os.path.isfile(os.path.join(os.getcwd(), log)):
+                os.remove(os.path.join(os.getcwd(), log))
         logger.log('NOTE', 'Connections closed')
 
 
@@ -137,6 +138,8 @@ def main():
     args = parser.parse_args()
     script = args.script
     debug = args.debug
+    if debug == 'False':
+        debug = False
     NBZInterface(script, debug)
 
 
