@@ -9,7 +9,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(BASE_DIR, 'lib'))
 
-from Logging import Logging
+from lib_log_nbz import Logging
 logger = Logging()
 
 

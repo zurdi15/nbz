@@ -127,9 +127,8 @@ if [[ $? != 0 ]]; then
 fi
 
 echo
+python ${NBZ_PATH}/close_all.py
 echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
 echo
-
-python ${NBZ_PATH}/close_all.py
 
 exit 0

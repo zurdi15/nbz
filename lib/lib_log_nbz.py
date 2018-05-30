@@ -15,7 +15,7 @@ class Logging:
 
     @staticmethod
     def log(level, msg):
-        
+
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
