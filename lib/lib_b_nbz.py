@@ -4,6 +4,7 @@
 # Author: <Zurdi>
 
 import sys
+import time
 import unicodedata
 from selenium.webdriver.common.keys import Keys
 from lib_log_nbz import Logging

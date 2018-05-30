@@ -5,6 +5,7 @@
 
 
 import sys
+import time
 from datetime import datetime
 from random import randint
 from lib_log_nbz import Logging
@@ -233,8 +234,8 @@ class LibA:
 
         try:
             return browser.get_cookie(cookie)['value']
-        except Exception as e:
-            logger.log('ERROR', 'Error getting cookie {cookie}: {exception}'.format(cookie=cookie, exception=e))
+        except LookupError:
+            logger.log('ERROR', 'Error getting cookie {cookie}: Cookie not found'.format(cookie=cookie))
             sys.exit(-1)
     
 

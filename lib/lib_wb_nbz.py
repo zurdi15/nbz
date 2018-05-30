@@ -6,6 +6,7 @@
 
 import os
 import sys
+import time
 import urlparse
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
