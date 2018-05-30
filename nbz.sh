@@ -2,7 +2,7 @@
 #
 # Author: <Zurdi>
 
-# NBZ Launcher 
+# NBZ Launcher
 
 # Parameters:
 #  - $script: script file
@@ -127,8 +127,8 @@ if [[ $? != 0 ]]; then
 fi
 
 echo
-python ${NBZ_PATH}/close_all.py
 echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
 echo
+python ${NBZ_PATH}/close_all.py
 
 exit 0

@@ -18,5 +18,4 @@ logs = ['bmp.log', 'geckodriver.log', 'server.log']
 for log in logs:
         if os.path.isfile(os.path.join(os.getcwd(), log)):
                 os.remove(os.path.join(os.getcwd(), log))
-logger.log('NOTE', 'Connections closed')
 os.killpg(this_process_pid, 9)
