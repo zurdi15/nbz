@@ -6,7 +6,6 @@
 
 import sys
 import os
-import psutil
 import argparse
 import pickle
 from pprint import pprint
@@ -112,23 +111,6 @@ class NBZInterface:
         self.core_attributes['browser'].close()
         self.core_attributes['proxy'].close()
         self.core_attributes['server'].stop()
-
-        # Find BrowserMob-Proxy and Xvfb processes that may still be alive and kill them
-        for process in psutil.process_iter():
-            try:
-                process_info = process.as_dict(attrs=['name', 'cmdline'])
-                if process_info.get('name') in ('java', 'java.exe', 'Xvfb'):
-                    for cmd_info in process_info.get('cmdline'):
-                        if cmd_info == '-Dapp.name=browsermob-proxy' or cmd_info == ':99':
-                            process.kill()
-            except psutil.NoSuchProcess:
-                pass
-        # Find and remove all trash logs
-        logs = ['bmp.log', 'geckodriver.log', 'server.log']
-        for log in logs:
-            if os.path.isfile(os.path.join(os.getcwd(), log)):
-                os.remove(os.path.join(os.getcwd(), log))
-        logger.log('NOTE', 'Connections closed')
 
 
 def main():
