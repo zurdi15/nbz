@@ -10,7 +10,7 @@ from pprint import pprint
 
 BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file__)))
 
-from lib_log_nbz import *
+from lib_log_nbz import Logging
 logger = Logging()
 
 

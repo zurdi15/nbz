@@ -6,7 +6,7 @@
 import sys
 import unicodedata
 from selenium.webdriver.common.keys import Keys
-from lib_log_nbz import *
+from lib_log_nbz import Logging
 logger = Logging()
 
 

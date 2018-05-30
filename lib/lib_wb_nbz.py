@@ -10,7 +10,7 @@ import urlparse
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-from lib_log_nbz import *
+from lib_log_nbz import Logging
 logger = Logging()
 try:
     from selenium import webdriver

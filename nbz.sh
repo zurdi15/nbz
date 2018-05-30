@@ -49,7 +49,7 @@ else
 		case ${opt} in
 			h)
 				show_help
-				exit 0			
+				exit 0
 				;;
 			v)
 				show_version
@@ -68,7 +68,7 @@ else
 			d)
 				debug="True" >&2
 				;;
-			x)	
+			x)
 				screen="True" >&2
 				;;
 			\?)
@@ -121,6 +121,7 @@ python ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug}
 if [[ $? != 0 ]]; then
 	echo
 	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
+	python ${NBZ_PATH}/close_all.py
 	echo
         exit 1
 fi
@@ -128,5 +129,7 @@ fi
 echo
 echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
 echo
+
+python ${NBZ_PATH}/close_all.py
 
 exit 0

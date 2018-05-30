@@ -5,7 +5,7 @@
 
 
 import sys
-from lib_log_nbz import *
+from lib_log_nbz import Logging
 logger = Logging()
 
 

@@ -7,7 +7,7 @@
 import sys
 from datetime import datetime
 from random import randint
-from lib_log_nbz import *
+from lib_log_nbz import Logging
 logger = Logging()
 
 
