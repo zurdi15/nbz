@@ -108,10 +108,9 @@ class NBZInterface:
             pprint(self.core_attributes['proxy'].har['log']['entries'], self.core_attributes['complete_csv'])
             self.core_attributes['complete_csv'].close()
             logger.log('NOTE', 'Complete_net csv file exported to: {net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
-        self.core_attributes['browser'].close()
-        self.core_attributes['proxy'].close()
-        self.core_attributes['server'].stop()
-
+        #self.core_attributes['browser'].close()
+        #self.core_attributes['proxy'].close()
+        #self.core_attributes['server'].stop()
 
 def main():
     parser = argparse.ArgumentParser()
