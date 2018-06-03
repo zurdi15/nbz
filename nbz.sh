@@ -121,6 +121,7 @@ python ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug}
 if [[ $? != 0 ]]; then
 	echo
 	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
+	echo
 	python ${NBZ_PATH}/close_all.py
 	echo
         exit 1

@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 #
 # Author: <Zurdi>
-
-# NBZ installer
-
-# To let the NBZ work, it is necessary to install three python libraries:
-#	- selenium
-#	- browsermob-proxy
-# 	- ply
 #
-# Also we need to install some web browser drivers in /opt/nbz:
-# 	- chromedriver (Google Chrome / Chromium)
-#	- geckodriver (Firefox)
+# NBZ installer
+#
+# Dependencies:
+#   - Python:
+#	    · selenium
+#	    · browsermob-proxy
+# 	    · ply
+#       · psutil
+#
+#   - Bash:
+#       · toilet
+#       · xvfb
 
 
 PYTHON=$(which python)
 JAVA=$(which java)
 PIP=$(which pip)
 
-NBZ_INST_PATH="/opt/nbz"
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 RED="\e[91"
@@ -44,19 +45,6 @@ then
 	exit 1
 fi
 
-if [ ! -d ${NBZ_INST_PATH} ]
-then
-	sudo mkdir ${NBZ_INST_PATH}
-fi
-
-
-for element in $(ls ${NBZ_PATH})
-do
-	sudo cp -r ${element} ${NBZ_INST_PATH}
-done
-
-sudo chown -R $(whoami):$(whoami) ${NBZ_INST_PATH}
-
 # Installing libraries
 echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
@@ -65,10 +53,3 @@ sudo -H pip install ply
 sudo -H pip install selenium
 sudo -H pip install browsermob-proxy
 sudo -H pip install psutil
-
-# Creating menu entry
-menu_entry="[Desktop Entry]\nVersion=1.0\nType=Application\nName=NBZ\nName[en_US]=NBZ\nGenericName=NBZ\nIcon=${NBZ_INST_PATH}/nbz_icon.png\nExec=${NBZ_INST_PATH}/nbz_launcher.sh -s scripts/test.nbz\nPath=${NBZ_INST_PATH}\nNoDisplay=False\nCategories=Development;\nStartupNotify=false\nTerminal=true"
-echo -e ${menu_entry} > ~/.local/share/applications/nbz.desktop
-echo "Menu entry created!"
-
-echo -e "\n${GREEN}NBZ installed successfully!!${NC}\n"
