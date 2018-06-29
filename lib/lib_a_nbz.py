@@ -8,6 +8,7 @@ import sys
 import time
 from datetime import datetime
 from random import randint
+import re
 from lib_log_nbz import Logging
 logger = Logging()
 
@@ -394,7 +395,7 @@ class LibA:
 
     @staticmethod
     def export_html(browser, params):
-	"""
+        """
         Get html webpage
         """
 
@@ -420,22 +421,22 @@ class LibA:
 
 
     @staticmethod
-    def get_all_html_links(browser):
-	"""
+    def get_all_html_links(browser, params):
+        """
         Get all links from the page html
         """
 
         try:
-	    html = browser.page_source
-	    links = re.findall('"((http)s?://.*?)"', html)
-	    all_links = []
-	    for link in links:
-	        if not link[0] in all_links:
-		    all_links.append(link[0])
-	    return all_links
-	except Exception as e:
-	    logger.log('ERROR', 'Getting all html links: {exception}'.format(exception=e))
-	    sys.exit(-1)
+	    	html = browser.page_source
+	    	links = re.findall('"((http)s?://.*?)"', html)
+	    	all_links = []
+	    	for link in links:
+	        	if not link[0] in all_links:
+		    		all_links.append(link[0])
+	    	return all_links
+        except Exception as e:
+            logger.log('ERROR', 'Getting all html links: {exception}'.format(exception=e))
+            sys.exit(-1)
 
 
     @staticmethod
