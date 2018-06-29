@@ -116,7 +116,6 @@ class NBZCore:
 
         # Main execution loop
         for instruction in instruction_set:
-            print instruction
             try:
                 if instruction[0] == 'assign':
                     self.attributes['variables'][instruction[1]] = get_value(instruction[2])
@@ -133,7 +132,7 @@ class NBZCore:
                             try:
                                 self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
                             except Exception as e:
-                                print str(e)
+                                logger.log('ERROR', 'Error running proxy: {exception}'.format(exception=e))
                                 sys.exit(-1)
                             self.attributes['set_browser'] = True
                         else:
