@@ -161,6 +161,7 @@ def NBZParser(script_path, interactive=False):
             z_code_vars[p[3]] = ''
             for i in xrange(0, len(p[8])):
                 z_code.pop()
+            z_code.append(p[0]
         else:
             p[0] = ['for', p[3], p[5], p[7], p[10]]
             for i in xrange(0, len(p[10])):

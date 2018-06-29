@@ -116,6 +116,7 @@ class NBZCore:
 
         # Main execution loop
         for instruction in instruction_set:
+            print instruction
             try:
                 if instruction[0] == 'assign':
                     self.attributes['variables'][instruction[1]] = get_value(instruction[2])
