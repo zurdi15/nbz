@@ -5,7 +5,6 @@
 
 
 import sys
-import pickle
 from lib_log_nbz import *
 logger = Logging()
 try:
@@ -17,7 +16,7 @@ from lexer_nbz import tokens # Get the token map from the lexer
 from natives import NATIVES
 
 
-def NBZParser(script_path, interactive=False):
+def NBZParser(script, interactive=False):
 
     # z_code structure
     z_code = []
@@ -438,21 +437,17 @@ def NBZParser(script_path, interactive=False):
     parser = yacc.yacc(debug=1)
 
     if not interactive:
-        z_code_path = script_path + 'code'
-        z_code_path_vars = script_path + 'vars'
         data = ''
-        with open(script_path, 'r') as s:
+        with open(script, 'r') as s:
             for line in s:
                 data += line
                 if not line: continue
         try:
             parser.parse(data)
         except EOFError:
-            logger.log('ERROR', 'General error parsing ' + script_path)
-        with open(z_code_path, 'wb') as zcode:
-            pickle.dump(z_code, zcode)
-        with open(z_code_path_vars, 'wb') as zcode_vars:
-            pickle.dump(z_code_vars, zcode_vars)
+            logger.log('ERROR', 'General error parsing {script}'.format(script=script_path))
+            sys.exit(-1)
+
         return z_code, z_code_vars
     else:
         while True:
