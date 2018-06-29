@@ -37,6 +37,7 @@ class NBZInterface:
             'instruction_set'   : '',
             'variables'         : {},
             'NATIVES'           : NATIVES,
+            'USER_FUNC'         : {},
 
             'script'            : script,
             'script_name'       : os.path.basename(script)[0:-4], # Avoiding file extension

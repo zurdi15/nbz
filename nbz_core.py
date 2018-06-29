@@ -20,7 +20,6 @@ class NBZCore:
 
     def __init__(self, attributes):
         self.attributes = attributes
-        self.attributes['USER_FUNC'] = {}
         self.execute_instructions(self.attributes['instruction_set'])
 
 
