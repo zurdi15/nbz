@@ -34,7 +34,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error printing {string}: {exception}'.format(string=string, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def random(browser, params):
@@ -72,7 +72,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error getting actual timestamp: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def timestamp_diff(browser, params):
@@ -94,7 +94,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error calculating date: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def open_file(browser, params):
@@ -114,7 +114,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error opening {file_name}: {exception}'.format(file_name=file_name, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def write_file(browser, params):
@@ -139,7 +139,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error writing {file_name}: {exception}'.format(file_name=file_name, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def write_table_as_csv(browser, params):
@@ -171,7 +171,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error writing "' + str(params[1]) + '": {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def close_file(browser, params):
@@ -186,12 +186,12 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error closing {file_name}: {exception}'.format(file_name=file_name, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def get_local_storage(browser, params):
         """
-        Returns selected item from local storage 
+        Returns selected item from local storage
         """
 
         item = params[0]
@@ -201,7 +201,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error getting {item} from local storage: {exception}'.format(item=item, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def set_local_storage(browser, params):
@@ -222,7 +222,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error setting {value} in {item} of local storage: {exception}'.format(item=item, value=value, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def get_cookie(browser, params):
@@ -237,7 +237,7 @@ class LibA:
         except LookupError:
             logger.log('ERROR', 'Error getting cookie {cookie}: Cookie not found'.format(cookie=cookie))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def set_cookie(browser, params):
@@ -258,7 +258,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error setting cookie {cookie} with {value}: {exception}'.format(cookie=cookie, value=value, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def get_element(browser, params):
@@ -273,7 +273,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error searching element {web_element}: {exception}'.format(web_element=web_element, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def children_num(browser, params):
@@ -289,7 +289,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error getting element children: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def page_load_time(browser, params):
@@ -302,8 +302,8 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error getting load page time: {exception}'.format(exception=e))
             sys.exit(-1)
-    
-    
+
+
     def scroll_down(self, browser, params):
         """
         Scroll down just screen height
@@ -323,15 +323,15 @@ class LibA:
         """
         Scroll to the bottom of the web page
         """
-    
+
         try:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             logger.log('NOTE', 'Scrolling down to bottom')
         except Exception as e:
             logger.log('ERROR', 'Error scrolling down: {exception}'.format(exception=e))
             sys.exit(-1)
-    
-    
+
+
     def scroll_up(self, browser, params):
         """
         Scroll up just screen height
@@ -351,14 +351,14 @@ class LibA:
         """
         Scroll to the top of the web page
         """
-    
+
         try:
             browser.execute_script("window.scrollTo(0, 0);")
             logger.log('NOTE', 'Scrolling up to top')
         except Exception as e:
             logger.log('ERROR', 'Error scrolling top: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def execute_js(browser, params):
@@ -374,7 +374,7 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Error executing js: {script}: {exception}'.format(script=script, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def set_timeout(browser, params):
@@ -389,11 +389,12 @@ class LibA:
             logger.log('NOTE', 'Timeout set to: {timeout}'.format(timeout=timeout))
         except Exception as e:
             logger.log('ERROR', 'Error setting timeout {exception}'.format(exception=e))
-    
+            sys.exit(-1)
+
 
     @staticmethod
     def export_html(browser, params):
-        """
+		"""
         Get html webpage
         """
 
@@ -416,11 +417,30 @@ class LibA:
         except Exception as e:
             logger.log('ERROR', 'Saving html source: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
-    def get_element_html(browser, params):
+    def get_all_html_links(browser):
+		"""
+        Get all links from the page html
         """
+
+        try:
+            html = browser.page_source
+			links = re.findall('"((http)s?://.*?)"', html)
+			all_links = []
+			for link in links:
+				if not link[0] in all_links:
+					all_links.append(link[0])
+			return all_links
+		except Exception as e:
+			logger.log('ERROR', 'Getting all html links: {exception}'.format(exception=e))
+			sys.exit(-1)
+
+
+    @staticmethod
+	def get_element_html(browser, params):
+		"""
         Get html code from web element
         """
 

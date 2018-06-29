@@ -71,6 +71,7 @@ NATIVES = {
 'execute_js'        : lib_a_nbz.execute_js,
 'set_timeout'       : lib_a_nbz.set_timeout,
 'export_html'       : lib_a_nbz.export_html,
+'get_all_html_links': lib_a_nbz.get_all_html_links,
 'get_element_html'  : lib_a_nbz.get_element_html,
 'screenshot'        : lib_a_nbz.take_screenshot,
 

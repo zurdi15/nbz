@@ -102,7 +102,6 @@ RED='\e[31m'
 NC='\e[0m'
 
 #  - Initialize virtual display
-# If you do not have desktop environment, you should use this:
 if [ ${screen} == "True" ]
 then
 	Xvfb :99 -ac 1>/dev/null 2>&1 &
