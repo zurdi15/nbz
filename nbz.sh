@@ -30,7 +30,7 @@ function show_help {
 }
 
 function show_version {
-	echo "NBZ-1 v1.0.1 - (C) 2017-2018 Zurdi Zurdo"
+	echo "NBZ-1 v1.0.1"
 }
 
 #  - Parameters
