@@ -12,9 +12,22 @@ logger = Logging()
 
 
 class LibB:
+    """Basic library of native functions.
+
+    This class contains all the basic functions to interact with the web browser.
+
+    Attributes:
+        TIME: internal time to wait between some kind of actions
+        SPECIALS: dict of special characters of the keyboard
+        url_retries_set: number of maximum retries to call an url
+        url_retries: counter of retries to call an url
+        url_retries_wait_time: time to wait between url retries
+    """
 
 
     def __init__(self):
+        """Inits LibB class with its attributes"""
+
         self.TIME = 0.5
         self.SPECIALS = {
             'ENTER': Keys.ENTER,
@@ -22,14 +35,19 @@ class LibB:
             'RETURN': Keys.RETURN,
             'TAB': Keys.TAB,
         }
-        self.url_retries = 1
         self.url_retries_set = 1
+        self.url_retries = 1
         self.url_retries_wait_time = 0
 
 
     def set_url_retries(self, browser, params):
-        """
-        Defines url retries options
+        """Defines url retries options
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: number of maximum url retries
+                -1: time to wait between url retries
         """
 
         try:
@@ -42,12 +60,16 @@ class LibB:
 
 
     def get_url(self, browser, params):
+        """Open an url
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: url to open
         """
-        Open given url
-        """
-   
+
         url = str(params[0])
-   
+
         if self.url_retries > 0:
             try:
                 logger.log('NOTE', 'Loading: {url}'.format(url=url))
@@ -62,20 +84,25 @@ class LibB:
         else:
             logger.log('ERROR', 'Get url retries limit exceeded')
             sys.exit(-1)
-    
-    
+
+
     def fill_field(self, browser, params):
+        """Fill a field with value and/or special-key
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: field xpath
+                -1: string to fill with
         """
-        Fill given field with value and/or special-key
-        """
-    
+
         try:
             xpath = params[0]
             keys = params[1:]
         except LookupError:
             logger.log('ERROR', 'Function fill(): at least 2 arguments needed')
             sys.exit(-1)
-    
+
         try:
             field = browser.find_element_by_xpath(xpath)
             for key in keys:
@@ -92,12 +119,16 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error with field {xpath): {exception}'.format(xpath=xpath, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def clear_field(browser, params):
-        """
-        Clear given field
+        """Clear a field
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: field xpath
         """
 
         xpath = params[0]
@@ -109,11 +140,15 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error with field {xpath}: {exception}'.format(xpath=xpath, exception=e))
             sys.exit(-1)
-    
-    
+
+
     def click_element(self, browser, params):
-        """
-        Click given element
+        """Click an element
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: element xpath
         """
 
         xpath = params[0]
@@ -131,11 +166,16 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error with button {xpath}: {exception}'.format(xpath=xpath, exception=e))
             sys.exit(-1)
-    
-    
+
+
     def select_option(self, browser, params):
-        """
-        Select an option from given selector
+        """Select an option from a selector
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: selector xpath
+                -1: option xpath
         """
 
         try:
@@ -156,12 +196,16 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error with selector {selector_xpath}: {exception}'.format(selector_xpath=selector_xpath, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def wait_time(browser, params):
-        """
-        Just wait given seconds
+        """Just wait given seconds
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: seconds to wait
         """
 
         wait_time = params[0]
@@ -172,13 +216,16 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error in explicit waiting: {exception}'.format(exception=e))
             sys.exit(-1)
-    
-    
+
+
     def back(self, browser, params):
+        """Go back in browser history
+
+         Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
-        Go back in browser history
-        """
-    
+
         try:
             browser.back()
             logger.log('NOTE', 'Going back')
@@ -186,13 +233,16 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error going back: {exception}'.format(exception=e))
             sys.exit(-1)
-    
-    
+
+
     def forward(self, browser, params):
+        """Go forward in browser history
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
-        Go forward in browser history
-        """
-    
+
         try:
             browser.forward()
             logger.log('NOTE', 'Going forward')
@@ -200,26 +250,35 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error going forward: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def refresh(browser, params):
+        """Refresh the page
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
-        Refresh the page
-        """
-    
+
         try:
             browser.refresh()
             logger.log('NOTE', 'Refreshing...')
         except Exception as e:
             logger.log('ERROR', 'Error refreshing the web page: {exception}'.format(exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def get_text(browser, params):
-        """
-        Returns text from selected element
+        """Returns text from selected element
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: web element of which we want the text
+        Returns:
+            Plain text of the web element
         """
 
         web_element = params[0]
@@ -231,14 +290,19 @@ class LibB:
         except Exception as e:
             logger.log('ERROR', 'Error with element {web_element}: {exception}'.format(web_element=web_element, exception=e))
             sys.exit(-1)
-    
+
 
     @staticmethod
     def current_url(browser, params):
+        """Returns current url
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
+        Returns:
+            Current url
         """
-        Returns current url
-        """
-    
+
         try:
             return browser.current_url
         except Exception as e:

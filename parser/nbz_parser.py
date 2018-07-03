@@ -17,6 +17,20 @@ from natives import NATIVES
 
 
 def NBZParser(script, interactive=False):
+    """Parser of the nbz-script
+
+    This module converts the nbz-script into a structure of lists,
+    ready to be executed by the core module. Each function of this module uses the docstring
+    to define the parser rules. The rules are documented themselves.
+
+    Args:
+        scriptPath: path of the nbz-script
+        interactive: flag to call this module into manual user mode or file mode (you can write sentences directly
+                     or you can pass a nbz-script)
+    Returns:
+        A lists structure with all the nbz-script converted
+        A dict mapping variables of the script and their values
+    """
 
     # z_code structure
     z_code = []

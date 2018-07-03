@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
-
+#
+# This file contains all tokens and lexical rules
+# to parse the nbz-scripts. Some functions are more complex rules
+# that use the docstring to define themselves.
 
 import ply.lex as lex
 

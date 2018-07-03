@@ -23,15 +23,28 @@ from user_agents import USER_AGENTS
 
 
 class LibWb:
+    """Browser and proxy library.
+
+    This class contains the methods to start the proxy and the native function to start the web browser.
+    """
 
 
     def __init__(self):
+        """Inits LibWb class"""
+
         pass
-    
+
 
     def instance_browser(self, proxy_path, params):
-        """
-        Start web browser
+        """Start web browser and proxy server
+
+        Args:
+            proxy_path: path to the proxy binaries
+            params: list of parameters
+                -0: browser engine
+                -1: user-agent
+        Returns:
+            Instance of the server, the proxy and the web browser
         """
 
         logger.log('NOTE', 'Launching proxy server...')
@@ -104,6 +117,14 @@ class LibWb:
 
     @staticmethod
     def get_driver_path(engine):
+        """Method to get the driver path for each engine and each operative system
+
+        Args:
+            engine: web browser to execute the nbz-script
+        Returns:
+            The driver pathj of the selected engine
+        """
+
         if engine == 'chrome':
             if os.name == 'posix':
                 driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver')
@@ -123,3 +144,4 @@ class LibWb:
         else:
             driver_path = ''
         return driver_path
+

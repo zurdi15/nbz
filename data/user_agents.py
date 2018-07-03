@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
+#
+# File where the dict of some user-agents
+# is generated, to be imported by other modules.
 
 
 USER_AGENTS = {

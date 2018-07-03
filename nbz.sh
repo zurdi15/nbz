@@ -37,7 +37,7 @@ function show_version {
 
 script=""
 debug="False"
-screen="False"
+screen="True"
 
 if [ ${#} = 0 ]
 then

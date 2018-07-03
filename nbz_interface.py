@@ -28,11 +28,20 @@ logger = Logging()
 
 
 class NBZInterface:
+    """Interface between all modules of the nbz.
+
+    This class provides all the attributes needed to the core module, using the parser module
+    to parse the nbz-script previously. After all script is done, this class ends all connections.
+
+    Attributes:
+        coreAttributes: dictionary of attributes needed for the core module
+        nbzCore: instance of the core module
+    """
 
 
     def __init__(self, script, debug):
+        """Inits NBZInterface class with some attributes"""
 
-        # Attributes
         self.core_attributes = {
             'instruction_set'   : '',
             'variables'         : {},
@@ -40,7 +49,7 @@ class NBZInterface:
             'USER_FUNC'         : {},
 
             'script'            : script,
-            'script_name'       : os.path.basename(script)[0:-4], # Avoiding file extension
+            'script_name'       : os.path.basename(script)[0:-4],
             'debug'             : debug,
 
             # Proxy binaries to execute the sniffer
@@ -58,11 +67,9 @@ class NBZInterface:
             'complete_csv'      : None,
         }
 
-        # Compile z_code
-        self.compile_z_code()
-
-        # Instance core class and execute instructions
+        self.compile_script()
         nbz_core = NBZCore(self.core_attributes)
+        nbz_core.execute_instructions()
 
         # Return all core attributes to close needed
         self.core_attributes = NBZCore.get_attributes(nbz_core)
@@ -72,9 +79,12 @@ class NBZInterface:
             self.close_all()
 
 
-    def compile_z_code(self):
-        """
-        Compile z_code to be executed
+    def compile_script(self):
+        """Compile script to be executed.
+
+        Returns:
+            A lists structure with all the nbz-script converted
+            A dict mapping variables of the script and their values
         """
 
         try:
@@ -90,15 +100,16 @@ class NBZInterface:
 
 
     def close_all(self):
-        """
-        Close all connections and export har log
-        """
+        """Close all connections and export har log"""
 
         if self.core_attributes['set_net_report']:
             self.core_attributes['complete_csv'].write('URL: {url}\n\n'.format(url=self.core_attributes['browser'].current_url))
             pprint(self.core_attributes['proxy'].har['log']['entries'], self.core_attributes['complete_csv'])
             self.core_attributes['complete_csv'].close()
             logger.log('NOTE', 'Complete_net csv file exported to: {net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
+        self.core_attributes['browser'].close()
+        self.core_attributes['proxy'].close()
+        self.core_attributes['server'].stop()
 
 
 def main():

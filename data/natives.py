@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
-
+#
+# File where the dict of natives functions
+# is generated, to be imported by other modules.
 
 import os
 import sys
@@ -20,8 +22,6 @@ lib_b_nbz = LibB()
 from lib_d_nbz import LibD
 lib_d_nbz = LibD()
 
-
-# BOT NATIVES
 
 NATIVES = {
 

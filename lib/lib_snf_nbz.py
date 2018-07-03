@@ -15,9 +15,17 @@ logger = Logging()
 
 
 class LibSnf:
+    """Library of native sniffer functions
 
+    This class contains all the sniffer functions to interact with the proxy
+
+    Attributes:
+        sniffer_attr: dict with all the values that can be get of a http call
+    """
 
     def __init__(self):
+        """Inits LibSnf class with it attributes"""
+
         self.sniffer_attr = {
             'request_ok'    : False,
             'url'           : '',
@@ -28,6 +36,15 @@ class LibSnf:
 
 
     def check_net(self, har, request):
+        """General method to select the way to check the HAR file
+
+        Args:
+            har: har proxy file
+            request: some parameters which configure the check of a request
+                -0: mode of checking (by parameters or by keyword)
+        Returns:
+            The value of the selected parameter of the request to check
+        """
 
         check_type = request[0]
 
@@ -38,12 +55,18 @@ class LibSnf:
         else:
             logger.log('ERROR', 'Not admitted request type: {type}'.format(type=check_type))
             sys.exit(-1)
-    
-    
+
+
     def check_net_parameters(self, har, request):
-        """
-        Check if any request had chosen parameters
-        Return selected value from any request
+        """Check if any request had the choosen parameters
+
+        Args:
+            har: har proxy file
+            request: some parameters which configure the check of a request
+                -1: parameter to return
+                -2, -n: parameters of the url request
+        Returns:
+            Value of the parameter of the selected request
         """
 
         try:
@@ -74,9 +97,15 @@ class LibSnf:
 
 
     def check_net_keywords(self, har, request):
-        """
-        Check if any request had chosen url
-        Return selected value from any request
+        """Check if any request had the choosen keyword
+
+        Args:
+            har: har proxy file
+            request: some parameters which configure the check of a request
+                -1: parameter to return
+                -2: keyword to search
+        Returns:
+            Value of the parameter of the selected request
         """
 
         attribute = request[1] # Attribute to return
@@ -98,8 +127,14 @@ class LibSnf:
 
     @staticmethod
     def net_report(params, script_name):
-        """
-        Create net report csv
+        """Create net report csv
+
+        Args:
+            params: list of parameters
+                -0: file name
+                -1: script name to build the path where the report will be stored
+        Returns:
+            The report file opened in write mode
         """
 
         file_name = params[0]
@@ -113,8 +148,15 @@ class LibSnf:
 
     @staticmethod
     def reset_har(set_net_report, complete_csv, current_url, proxy):
-        """
-        Reset proxy's HAR to check new requests
+        """Reset proxy's HAR to check new requests
+
+        Args:
+            set_net_report: flag to know if the net report was requested by the user in the nbz-script
+            complete_csv: file with the complete net report of the script
+            current_url: current url of the browser
+            proxy: instance of the proxy
+        Returns:
+            New instance of the har file of the proxy
         """
 
         if set_net_report:

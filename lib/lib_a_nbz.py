@@ -14,15 +14,28 @@ logger = Logging()
 
 
 class LibA:
+    """Advanced library of native functions.
+
+    This class contains all the advanced functions to interact with the web browser.
+
+    Attributes:
+        scroll: an integer where the actual scroll position of the web browser is stored
+    """
 
     def __init__(self):
+        """Inits LibA class with scroll at top of the web page"""
+
         self.scroll = 0
 
 
     @staticmethod
     def print_(browser, params):
-        """
-        Print string
+        """Print string in terminal
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: string to be printed
         """
 
         string = str(params[0])
@@ -39,8 +52,15 @@ class LibA:
 
     @staticmethod
     def random(browser, params):
-        """
-        Return random number
+        """Generate a random number between two numbers.
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: lower limit
+                -1: higher limit
+        Returns:
+            Random number
         """
 
         try:
@@ -59,8 +79,14 @@ class LibA:
 
     @staticmethod
     def get_timestamp(browser, params):
-        """
-        Return actual system timestamp
+        """Get actual system timestamp
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: string time format (optional)
+        Returns:
+            Actual system timestamp string
         """
 
         date_format = params[0]
@@ -77,8 +103,15 @@ class LibA:
 
     @staticmethod
     def timestamp_diff(browser, params):
-        """
-        Return timestamps difference
+        """Return two timestamps difference
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: first timestamp
+                -1: second timestamp
+        Returns:
+            Difference between first timestamp and second timestamp
         """
 
         try:
@@ -99,8 +132,15 @@ class LibA:
 
     @staticmethod
     def open_file(browser, params):
-        """
-        Open selected file in a variable
+        """Open selected file in a variable
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: file name
+                -1: open mode (read | write | append)
+        Returns:
+            File open in desired mode
         """
 
         try:
@@ -119,8 +159,13 @@ class LibA:
 
     @staticmethod
     def write_file(browser, params):
-        """
-        Write in selected file
+        """Write into selected file
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: file name
+                -1: text to write into file
         """
 
         try:
@@ -144,10 +189,19 @@ class LibA:
 
     @staticmethod
     def write_table_as_csv(browser, params):
-        """
-        Write table as csv format
-        """
+        """Write table as csv format
 
+        Write a table from a web page into a csv file, adding some columns into the table if needed
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: table as web element (see getElement())
+                -1: file to write in
+                -2: csv delimiter
+                -3: columns to add to the left
+                -4: columns to add to the right
+        """
 
         try:
             table = params[0]
@@ -176,8 +230,12 @@ class LibA:
 
     @staticmethod
     def close_file(browser, params):
-        """
-        Close selected file
+        """Close file
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: file name
         """
 
         file_name = params[0]
@@ -191,8 +249,14 @@ class LibA:
 
     @staticmethod
     def get_local_storage(browser, params):
-        """
-        Returns selected item from local storage
+        """Returns selected item from local storage
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: item name
+        Returns:
+            The value of the item
         """
 
         item = params[0]
@@ -206,8 +270,13 @@ class LibA:
 
     @staticmethod
     def set_local_storage(browser, params):
-        """
-        Set selected value in selected item from local storage
+        """Set selected value in selected item from local storage
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: item name
+                -1: item value
         """
 
         try:
@@ -227,8 +296,14 @@ class LibA:
 
     @staticmethod
     def get_cookie(browser, params):
-        """
-        Returns selected cookie
+        """Returns selected cookie
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: cookie name
+        Returns:
+            The value of the cookie
         """
 
         cookie = params[0]
@@ -242,8 +317,13 @@ class LibA:
 
     @staticmethod
     def set_cookie(browser, params):
-        """
-        Set value on cookie
+        """Set value of cookie
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: cookie name
+                -1: cookie value
         """
 
         try:
@@ -263,8 +343,14 @@ class LibA:
 
     @staticmethod
     def get_element(browser, params):
-        """
-        Get element from web page
+        """Get element from web page as web-element
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: web element xpath
+        Returns:
+            Web element
         """
 
         web_element = params[0]
@@ -278,8 +364,14 @@ class LibA:
 
     @staticmethod
     def children_num(browser, params):
-        """
-        Returns the number of child elements of one element
+        """Returns the number of child elements of one element
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: web element
+        Returns:
+            Children of web element as integer number
         """
 
         web_element = params[0]
@@ -294,8 +386,11 @@ class LibA:
 
     @staticmethod
     def page_load_time(browser, params):
-        """
-        Returns load page time
+        """Returns the load time of a web page
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
 
         try:
@@ -306,8 +401,11 @@ class LibA:
 
 
     def scroll_down(self, browser, params):
-        """
-        Scroll down just screen height
+        """Scroll down just screen height
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
 
         try:
@@ -321,8 +419,11 @@ class LibA:
 
     @staticmethod
     def scroll_to_bottom(browser, params):
-        """
-        Scroll to the bottom of the web page
+        """Scroll to the bottom of the web page
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
 
         try:
@@ -334,8 +435,11 @@ class LibA:
 
 
     def scroll_up(self, browser, params):
-        """
-        Scroll up just screen height
+        """Scroll up just screen height
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
         """
 
         try:
@@ -349,8 +453,11 @@ class LibA:
 
     @staticmethod
     def scroll_to_top(browser, params):
-        """
-        Scroll to the top of the web page
+        """Scroll to the top of the web page
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
         """
 
         try:
@@ -363,8 +470,12 @@ class LibA:
 
     @staticmethod
     def execute_js(browser, params):
-        """
-        Execute any instruction in javascript on the browser
+        """Execute any javascript instruction on the browser
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: javascript sentence
         """
 
         script = params[0]
@@ -379,8 +490,12 @@ class LibA:
 
     @staticmethod
     def set_timeout(browser, params):
-        """
-        Set timeout at loading webpages
+        """Set timeout at loading webpages
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: time to wait until timeout (ms)
         """
 
         timeout = params[0]
@@ -395,26 +510,25 @@ class LibA:
 
     @staticmethod
     def export_html(browser, params):
-        """
-        Get html webpage
+        """Export html webpage into a file
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: file path where will be stored
         """
 
-	try:
-            html_path = params[0]
-            html_name = params[1]
-        except LookupError:
-            logger.log('ERROR', 'Function export_html(): 2 arguments needed')
-            sys.exit(-1)
+        html_path = params[0]
 
         try:
-            html = open('{html_path}/{html_name}.html'.format(html_path=html_path, html_name=html_name), 'w')
+            html = open('{html_path}'.format(html_path=html_path), 'w')
             html_text = browser.page_source
             if isinstance(html_text, unicode):
                 html.write(html_text.encode('utf-8'))
             else:
                 html.write(html_text)
             html.close()
-            logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}/{html_name}.html'.format(current_url=browser.current_url, html_path=html_path, html_name=html_name))
+            logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url, html_path=html_path))
         except Exception as e:
             logger.log('ERROR', 'Saving html source: {exception}'.format(exception=e))
             sys.exit(-1)
@@ -422,8 +536,13 @@ class LibA:
 
     @staticmethod
     def get_all_html_links(browser, params):
-        """
-        Get all links from the page html
+        """Get all links from the page html
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
+        Returns:
+            A list of strings (links)
         """
 
         try:
@@ -441,8 +560,14 @@ class LibA:
 
     @staticmethod
     def get_element_html(browser, params):
-        """
-        Get html code from web element
+        """Get html code from web element
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: web element xpath
+        Returns:
+            Html from web element
         """
 
         web_element = params[0]
@@ -461,20 +586,20 @@ class LibA:
 
     @staticmethod
     def take_screenshot(browser, params):
-        """
-        Takes a screenshot of the browser
+        """Takes a screenshot of the browser as .png
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: file path
         """
 
-        try:
-            ss_path = params[0]
-            ss_name = params[1]
-        except LookupError:
-            logger.log('ERROR', 'Function screenshot(): 2 arguments needed')
-            sys.exit(-1)
+        ss_path = params[0]
 
         try:
-            browser.save_screenshot('{ss_path}/{ss_name}.png'.format(ss_path=ss_path, ss_name=ss_name))
-            logger.log('NOTE', 'Screenshot from {current_url} saved on: {ss_path}/{ss_name}.png'.format(current_url=browser.current_url, ss_path=ss_path, ss_name=ss_name))
+            browser.save_screenshot('{ss_path}'.format(ss_path=ss_path))
+            logger.log('NOTE', 'Screenshot from {current_url} saved on: {ss_path}'.format(current_url=browser.current_url, ss_path=ss_path))
         except Exception as e:
             logger.log('ERROR', 'Error taking screenshot: {exception}'.format(exception=e))
             sys.exit(-1)
+
