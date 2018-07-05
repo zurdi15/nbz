@@ -8,6 +8,7 @@ import sys
 import os
 import argparse
 from pprint import pprint
+from pyvirtualdisplay import Display
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -21,7 +22,7 @@ sys.path.append(os.path.join(BASE_DIR, 'data'))
 sys.path.append(os.path.join(BASE_DIR, 'parser'))
 
 from nbz_core import NBZCore
-from parser_nbz import NBZParser
+from nbz_parser import NBZParser
 from natives import NATIVES
 from lib_log_nbz import Logging
 logger = Logging()
@@ -116,11 +117,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-script", help="script file", required=True)
     parser.add_argument("-debug", help="debug mode", required=False)
+    parser.add_argument("-display", help="enable display emulation", required=False)
     args = parser.parse_args()
     script = args.script
     debug = args.debug
-    if debug == 'False':
-        debug = False
+    display = args.display
+    if debug == 'True':
+        debug = True
+    if display == 'True':
+        display = Display(visible=0, size=(1024, 768))
+        display.start()
     NBZInterface(script, debug)
 
 

@@ -6,7 +6,8 @@
 
 # Parameters:
 #  - $script: script file
-#  - $debug: disable/enable debug
+#  - $debug: disable/enable debug mode
+#  - $screen: disable/enable screen emulation
 ######
 
 # Structure:
@@ -37,7 +38,7 @@ function show_version {
 
 script=""
 debug="False"
-screen="True"
+display="False"
 
 if [ ${#} = 0 ]
 then
@@ -69,7 +70,7 @@ else
 				debug="True" >&2
 				;;
 			x)
-				screen="True" >&2
+				display="True" >&2
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
@@ -101,13 +102,6 @@ YELLOW='\e[33m'
 RED='\e[31m'
 NC='\e[0m'
 
-#  - Initialize virtual display
-if [ ${screen} == "True" ]
-then
-	Xvfb :99 -ac 1>/dev/null 2>&1 &
-	export DISPLAY=:99
-fi
-
 #  - Launch NBZ
 clear
 header=$(toilet -t -f mono12 -F gay "  NBZ  ")
@@ -115,7 +109,7 @@ echo -e "${YELLOW}${header}${NC}"
 echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
 
-python ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug}
+python ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
 
 if [[ $? != 0 ]]; then
 	echo

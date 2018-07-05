@@ -12,7 +12,7 @@ try:
 except LookupError:
     logger.log('ERROR', "Dependencies not installed. Please run install.sh.")
     sys.exit(-1)
-from lexer_nbz import tokens # Get the token map from the lexer
+from nbz_lexer import tokens # Get the token map from the lexer
 from natives import NATIVES
 
 
