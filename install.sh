@@ -6,9 +6,9 @@
 #
 # Dependencies:
 #   - Python:
-#	    · selenium
-#	    · browsermob-proxy
-# 	    · ply
+#       · selenium
+#       · browsermob-proxy
+#       · ply
 #       · psutil
 #
 #   - Bash:
@@ -35,14 +35,14 @@ fi
 
 if [ -z "$JAVA" ]
 then
-	echo -e "${RED}NBZ - Error: Java is not installed. Please install it in your system.${NC}"
-	exit 1
+    echo -e "${RED}NBZ - Error: Java is not installed. Please install it in your system.${NC}"
+    exit 1
 fi
 
 if [ -z "${PIP}" ]
 then
-	echo -e "${RED}NBZ - Error: Python-pip is not installed. Please install it in your system.${NC}"
-	exit 1
+    echo -e "${RED}NBZ - Error: Python-pip is not installed. Please install it in your system.${NC}"
+    exit 1
 fi
 
 # Installing libraries
