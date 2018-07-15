@@ -53,3 +53,4 @@ sudo -H pip install ply
 sudo -H pip install selenium
 sudo -H pip install browsermob-proxy
 sudo -H pip install psutil
+sudo -H pip install pyvirtualdisplay
