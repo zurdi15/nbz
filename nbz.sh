@@ -26,7 +26,7 @@ function show_help {
     echo "documentation in the github wiki: https://github.com/zurdi15/NBZ-1/wiki"
     echo ""
     echo "-h    Show this help"
-    echo "-v    Shoe the version"
+    echo "-v    Show the version"
     echo "-s    Set the .nbz script"
     echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
     echo "-d    Enable debug mode"
