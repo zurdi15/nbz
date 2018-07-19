@@ -78,7 +78,8 @@ class LibB:
             except Exception as e:
                 logger.log('ERROR', 'Error loading url: {exception}'.format(exception=e))
                 self.url_retries -= 1
-                logger.log('ERROR', 'Error loading url, retries left: {url_retries}, waiting {time} seconds'.format(url_retries=self.url_retries, time=self.url_retries_wait_time))
+                logger.log('ERROR', 'Error loading url, retries left: {url_retries}, waiting {time} seconds'.format(url_retries=self.url_retries, 
+                                                                                                                    time=self.url_retries_wait_time))
                 time.sleep(self.url_retries_wait_time)
                 self.get_url(browser, params)
         else:
@@ -138,7 +139,8 @@ class LibB:
             field.clear()
             logger.log('NOTE', 'Field cleared')
         except Exception as e:
-            logger.log('ERROR', 'Error with field {xpath}: {exception}'.format(xpath=xpath, exception=e))
+            logger.log('ERROR', 'Error with field {xpath}: {exception}'.format(xpath=xpath, 
+                                                                               exception=e))
             sys.exit(-1)
 
 
@@ -164,7 +166,8 @@ class LibB:
             element.click()
             time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with button {xpath}: {exception}'.format(xpath=xpath, exception=e))
+            logger.log('ERROR', 'Error with button {xpath}: {exception}'.format(xpath=xpath, 
+                                                                                exception=e))
             sys.exit(-1)
 
 
@@ -194,7 +197,8 @@ class LibB:
             option.click()
             time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with selector {selector_xpath}: {exception}'.format(selector_xpath=selector_xpath, exception=e))
+            logger.log('ERROR', 'Error with selector {selector_xpath}: {exception}'.format(selector_xpath=selector_xpath, 
+                                                                                           exception=e))
             sys.exit(-1)
 
 
@@ -288,7 +292,8 @@ class LibB:
             logger.log('NOTE', 'Getting element: {web_element}'.format(web_element=web_element))
             return unicodedata.normalize('NFKD', element.text).encode('ascii','ignore')
         except Exception as e:
-            logger.log('ERROR', 'Error with element {web_element}: {exception}'.format(web_element=web_element, exception=e))
+            logger.log('ERROR', 'Error with element {web_element}: {exception}'.format(web_element=web_element, 
+                                                                                       exception=e))
             sys.exit(-1)
 
 

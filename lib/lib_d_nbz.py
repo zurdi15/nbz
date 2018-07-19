@@ -39,7 +39,8 @@ class LibD:
         try:
             return int(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting {value} to integer: {exception}'.format(value=value, exception=e))
+            logger.log('ERROR', 'Error casting {value} to integer: {exception}'.format(value=value, 
+                                                                                       exception=e))
             sys.exit(-1)
 
 
@@ -60,7 +61,8 @@ class LibD:
         try:
             return float(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting {value} to float: {exception}'.format(value=value, exception=e))
+            logger.log('ERROR', 'Error casting {value} to float: {exception}'.format(value=value, 
+                                                                                     exception=e))
             sys.exit(-1)
 
 
@@ -81,7 +83,8 @@ class LibD:
         try:
             return str(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting {value} to str: {exception}'.format(value=value, exception=e))
+            logger.log('ERROR', 'Error casting {value} to str: {exception}'.format(value=value, 
+                                                                                   exception=e))
             sys.exit(-1)
 
 
@@ -113,7 +116,8 @@ class LibD:
                 substring_index_end = params[2]
                 return string[substring_index_start:substring_index_end]
         except Exception as e:
-            logger.log('ERROR', 'Error getting substring from {string}: {exception}'.format(string=string, exception=e))
+            logger.log('ERROR', 'Error getting substring from {string}: {exception}'.format(string=string, 
+                                                                                            exception=e))
             sys.exit(-1)
 
 
@@ -134,7 +138,8 @@ class LibD:
         try:
             return len(data)
         except Exception as e:
-            logger.log('ERROR', 'Error getting length from {data}: {exception}'.format(data=data, exception=e))
+            logger.log('ERROR', 'Error getting length from {data}: {exception}'.format(data=data, 
+                                                                                       exception=e))
             sys.exit(-1)
 
 
@@ -162,7 +167,8 @@ class LibD:
         try:
             return string.find(substring)
         except Exception as e:
-            logger.log('ERROR', 'Error searching substring into {string}: {exception}'.format(string=string, exception=e))
+            logger.log('ERROR', 'Error searching substring into {string}: {exception}'.format(string=string, 
+                                                                                              exception=e))
             sys.exit(-1)
 
 
@@ -191,7 +197,10 @@ class LibD:
         try:
             return string.replace(substring_old, substring_new)
         except Exception as e:
-            logger.log('ERROR', 'Error replacing: {string}({old}, {new}): {exception}'.format(string=string, old=substring_old, new=substring_new, exception=e))
+            logger.log('ERROR', 'Error replacing: {string}({old}, {new}): {exception}'.format(string=string, 
+                                                                                              old=substring_old, 
+                                                                                              new=substring_new, 
+                                                                                              exception=e))
             sys.exit(-1)
 
 
@@ -218,7 +227,9 @@ class LibD:
         try:
             return string.split(delimiter)
         except Exception as e:
-            logger.log('ERROR', 'Error splitting: {string} with {delimiter}: {exception}'.format(string=string, delimiter=delimiter, exception=e))
+            logger.log('ERROR', 'Error splitting: {string} with {delimiter}: {exception}'.format(string=string, 
+                                                                                                 delimiter=delimiter, 
+                                                                                                 exception=e))
             sys.exit(-1)
 
 
@@ -245,7 +256,9 @@ class LibD:
         try:
             return list_.append(element)
         except Exception as e:
-            logger.log('ERROR', 'Error appending {element} into {list}: {exception}'.format(element=element, list=list_, exception=e))
+            logger.log('ERROR', 'Error appending {element} into {list}: {exception}'.format(element=element, 
+                                                                                            list=list_, 
+                                                                                            exception=e))
             sys.exit(-1)
 
 
@@ -275,7 +288,10 @@ class LibD:
             list_[index] = element
             return list_
         except Exception as e:
-            logger.log('ERROR', 'Error updating {index} into {list} with {element}: {exception}'.format(index=index, list=list_, element=element, exception=e))
+            logger.log('ERROR', 'Error updating {index} into {list} with {element}: {exception}'.format(index=index, 
+                                                                                                        list=list_, 
+                                                                                                        element=element, 
+                                                                                                        exception=e))
             sys.exit(-1)
 
 
@@ -302,7 +318,9 @@ class LibD:
         try:
             return list_.remove(element)
         except Exception as e:
-            logger.log('ERROR', 'Error removing {element} from {list}: {exception}'.format(element=element, list=list_, exception=e))
+            logger.log('ERROR', 'Error removing {element} from {list}: {exception}'.format(element=element, 
+                                                                                           list=list_, 
+                                                                                           exception=e))
             sys.exit(-1)
 
 
@@ -329,5 +347,7 @@ class LibD:
         try:
             return list_[index]
         except Exception as e:
-            logger.log('ERROR', 'Error getting element {index} from list {list}: {exception}'.format(index=index, list=list_, exception=e))
+            logger.log('ERROR', 'Error getting element {index} from list {list}: {exception}'.format(index=index, 
+                                                                                                     list=list_, 
+                                                                                                     exception=e))
             sys.exit(-1)

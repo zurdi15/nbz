@@ -150,7 +150,9 @@ def t_newline(t):
 
 # Error handling rule
 def t_error(t):
-    raise Exception("Illegal character '" + t.value[0] + "' line: " + str(t.lineno) + " column: " + str(t.lexpos))
+    raise Exception("Illegal character '{value}' line: {line} column: {column}".format(value=t.value[0],
+                                                                                       line=t.lineno,
+                                                                                       column=t.lexpos))
 
 
 # Build the lexer
