@@ -87,21 +87,25 @@ class LibWb:
                 if user_agent != 'default':
                     ch_opt.add_argument("--user-agent=" + user_agent)
                 try:
-                    browser = webdriver.Chrome(executable_path=driver_path, chrome_options=ch_opt)
+                    browser = webdriver.Chrome(executable_path=driver_path, 
+                                               chrome_options=ch_opt)
                 except LookupError:
                     time.sleep(5)
-                    browser = webdriver.Chrome(executable_path=driver_path, chrome_options=ch_opt)
+                    browser = webdriver.Chrome(executable_path=driver_path, 
+                                               chrome_options=ch_opt)
 
             elif engine == 'firefox':
                 ff_prf = webdriver.FirefoxProfile()
                 if user_agent != 'default':
                     ff_prf.set_preference("general.useragent.override", user_agent)
                 try:
-                    browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf,
+                    browser = webdriver.Firefox(executable_path=driver_path, 
+                                                firefox_profile=ff_prf,
                                                 proxy=proxy.selenium_proxy())
                 except LookupError:
                     time.sleep(5)
-                    browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf,
+                    browser = webdriver.Firefox(executable_path=driver_path, 
+                                                firefox_profile=ff_prf,
                                                 proxy=proxy.selenium_proxy())
             else:
                 logger.log('ERROR', 'Not supported browser: {engine}'.format(engine=engine))

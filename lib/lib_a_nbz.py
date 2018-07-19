@@ -46,7 +46,8 @@ class LibA:
             else:
                 logger.log('NOTE', string)
         except Exception as e:
-            logger.log('ERROR', 'Error printing {string}: {exception}'.format(string=string, exception=e))
+            logger.log('ERROR', 'Error printing {string}: {exception}'.format(string=string, 
+                                                                              exception=e))
             sys.exit(-1)
 
 
@@ -153,7 +154,8 @@ class LibA:
         try:
             return open(file_name, mode)
         except Exception as e:
-            logger.log('ERROR', 'Error opening {file_name}: {exception}'.format(file_name=file_name, exception=e))
+            logger.log('ERROR', 'Error opening {file_name}: {exception}'.format(file_name=file_name, 
+                                                                                exception=e))
             sys.exit(-1)
 
 
@@ -183,7 +185,8 @@ class LibA:
                 else:
                     file_name.write(sent + '\n')
         except Exception as e:
-            logger.log('ERROR', 'Error writing {file_name}: {exception}'.format(file_name=file_name, exception=e))
+            logger.log('ERROR', 'Error writing {file_name}: {exception}'.format(file_name=file_name, 
+                                                                                exception=e))
             sys.exit(-1)
 
 
@@ -243,7 +246,8 @@ class LibA:
         try:
             file_name.close()
         except Exception as e:
-            logger.log('ERROR', 'Error closing {file_name}: {exception}'.format(file_name=file_name, exception=e))
+            logger.log('ERROR', 'Error closing {file_name}: {exception}'.format(file_name=file_name, 
+                                                                                exception=e))
             sys.exit(-1)
 
 
@@ -264,7 +268,8 @@ class LibA:
         try:
             return browser.execute_script("return localStorage.getItem('{item}');".format(item=item))
         except Exception as e:
-            logger.log('ERROR', 'Error getting {item} from local storage: {exception}'.format(item=item, exception=e))
+            logger.log('ERROR', 'Error getting {item} from local storage: {exception}'.format(item=item, 
+                                                                                              exception=e))
             sys.exit(-1)
 
 
@@ -287,10 +292,14 @@ class LibA:
             sys.exit(-1)
 
         try:
-            browser.execute_script("localStorage.setItem('{item}', '{value}');".format(item=item, value=value))
-            logger.log('NOTE', 'Setting local storage: {item}={value}'.format(item=item, value=value))
+            browser.execute_script("localStorage.setItem('{item}', '{value}');".format(item=item, 
+                                                                                       value=value))
+            logger.log('NOTE', 'Setting local storage: {item}={value}'.format(item=item, 
+                                                                              value=value))
         except Exception as e:
-            logger.log('ERROR', 'Error setting {value} in {item} of local storage: {exception}'.format(item=item, value=value, exception=e))
+            logger.log('ERROR', 'Error setting {value} in {item} of local storage: {exception}'.format(item=item, 
+                                                                                                       value=value, 
+                                                                                                       exception=e))
             sys.exit(-1)
 
 
@@ -335,9 +344,12 @@ class LibA:
 
         try:
             browser.add_cookie({'name' : cookie, 'value' : value})
-            logger.log('NOTE', 'Setting cookie: {cookie}={value}'.format(cookie=cookie, value=value))
+            logger.log('NOTE', 'Setting cookie: {cookie}={value}'.format(cookie=cookie, 
+                                                                         value=value))
         except Exception as e:
-            logger.log('ERROR', 'Error setting cookie {cookie} with {value}: {exception}'.format(cookie=cookie, value=value, exception=e))
+            logger.log('ERROR', 'Error setting cookie {cookie} with {value}: {exception}'.format(cookie=cookie, 
+                                                                                                 value=value, 
+                                                                                                 exception=e))
             sys.exit(-1)
 
 
@@ -358,7 +370,8 @@ class LibA:
         try:
             return browser.find_element_by_xpath(web_element)
         except Exception as e:
-            logger.log('ERROR', 'Error searching element {web_element}: {exception}'.format(web_element=web_element, exception=e))
+            logger.log('ERROR', 'Error searching element {web_element}: {exception}'.format(web_element=web_element, 
+                                                                                            exception=e))
             sys.exit(-1)
 
 
@@ -484,7 +497,8 @@ class LibA:
             logger.log('NOTE', 'Executing js: {script}'.format(script=script))
             return browser.execute_script(script)
         except Exception as e:
-            logger.log('ERROR', 'Error executing js: {script}: {exception}'.format(script=script, exception=e))
+            logger.log('ERROR', 'Error executing js: {script}: {exception}'.format(script=script, 
+                                                                                   exception=e))
             sys.exit(-1)
 
 
@@ -528,7 +542,8 @@ class LibA:
             else:
                 html.write(html_text)
             html.close()
-            logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url, html_path=html_path))
+            logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url, 
+                                                                                      html_path=html_path))
         except Exception as e:
             logger.log('ERROR', 'Saving html source: {exception}'.format(exception=e))
             sys.exit(-1)
@@ -580,7 +595,8 @@ class LibA:
             else:
                 return html
         except Exception as e:
-            logger.log('ERROR', 'Error getting html from {web_element}: {exception}'.format(web_element=web_element, exception=e))
+            logger.log('ERROR', 'Error getting html from {web_element}: {exception}'.format(web_element=web_element, 
+                                                                                            exception=e))
             sys.exit(-1)
 
 
@@ -598,7 +614,8 @@ class LibA:
 
         try:
             browser.save_screenshot('{ss_path}'.format(ss_path=ss_path))
-            logger.log('NOTE', 'Screenshot from {current_url} saved on: {ss_path}'.format(current_url=browser.current_url, ss_path=ss_path))
+            logger.log('NOTE', 'Screenshot from {current_url} saved on: {ss_path}'.format(current_url=browser.current_url, 
+                                                                                          ss_path=ss_path))
         except Exception as e:
             logger.log('ERROR', 'Error taking screenshot: {exception}'.format(exception=e))
             sys.exit(-1)

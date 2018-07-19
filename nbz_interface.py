@@ -96,7 +96,8 @@ class NBZInterface:
                 logger.log('NOTE', 'Instructions: {instructions}'.format(instructions=self.core_attributes['instruction_set']))
                 logger.log('NOTE', 'Variables: {variables}'.format(variables=self.core_attributes['variables']))
         except Exception as e:
-            logger.log('ERROR', 'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'], exception=e))
+            logger.log('ERROR', 'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'], 
+                                                                                     exception=e))
             sys.exit(-1)
 
 
