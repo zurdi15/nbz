@@ -92,7 +92,7 @@ class LibSnf:
         try:
             return self.sniffer_attr[attribute]
         except LookupError:
-            logger.log('ERROR', 'Can\'t find {attribute} - invalid search'.format(attribute=attribute))
+            logger.log('ERROR', 'Check_net() error: Can\'t find {attribute} - invalid parameter to return'.format(attribute=attribute))
             sys.exit(-1)
 
 
@@ -121,7 +121,7 @@ class LibSnf:
         try:
             return self.sniffer_attr[attribute]
         except LookupError:
-            logger.log('ERROR', 'Can\'t find {attribute} - invalid search'.format(attribute=attribute))
+            logger.log('ERROR', 'Check_net() error: Can\'t find {attribute} - invalid parameter to return'.format(attribute=attribute))
             sys.exit(-1)
 
 
