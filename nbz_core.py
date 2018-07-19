@@ -128,9 +128,9 @@ class NBZCore:
                         for sub_param in sub_instruction[2]:
                             sub_params.append(get_value(sub_param))
                         if sub_instruction[1] == 'check_net':
-                            return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har, params)
+                            return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har, sub_params)
                         else:
-                            return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'], params)
+                            return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'], sub_params)
                     else:
                         return sub_instruction
                 else:
