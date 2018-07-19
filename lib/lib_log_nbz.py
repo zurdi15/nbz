@@ -47,9 +47,17 @@ class Logging:
             NC = ''
 
         if level == 'NOTE':
-            print("{GREEN}  -  NBZ Log{YELLOW}[{st}]: {NC}{msg}".format(GREEN=GREEN, YELLOW=YELLOW, NC=NC, st=st, msg=msg))
+            print("{GREEN}  -  NBZ Log{YELLOW}[{st}]: {NC}{msg}".format(GREEN=GREEN, 
+                                                                        YELLOW=YELLOW, 
+                                                                        NC=NC, 
+                                                                        st=st, 
+                                                                        msg=msg))
         elif level == 'ERROR':
-            print("{RED}  -  NBZ Log{YELLOW}[{st}]: {NC}{msg}".format(RED=RED, YELLOW=YELLOW, NC=NC, st=st, msg=msg))
+            print("{RED}  -  NBZ Log{YELLOW}[{st}]: {NC}{msg}".format(RED=RED, 
+                                                                      YELLOW=YELLOW, 
+                                                                      NC=NC, 
+                                                                      st=st, 
+                                                                      msg=msg))
         else:
             print('Not defined logger level: {level}'.format(level=level))
 

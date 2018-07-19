@@ -30,6 +30,14 @@ class NBZCore:
         """Inits NBZCore class with his attributes"""
 
         self.attributes = attributes
+        self.statements = {
+            'assign': self._assign,
+            'def': self._def,
+            'func': self._func,
+            'if': self._if,
+            'for': self._for,
+            'while': self._while
+        }
 
 
     def get_attributes(self):
@@ -75,68 +83,6 @@ class NBZCore:
             instructionSet: list of instructions to be executed
         """
 
-        def get_value(sub_instruction):
-            """Local function inside executeInstructions() method, that is just used for it.
-
-            Get the value from some distinct structures:
-                - direct value or variable value of a parameter
-                - resolve arithmetic expressions
-                - resolve boolean expressions
-                - resolve function return value
-
-            Args:
-                subInstruction: expression that can be one of the previous described structures.
-            Returns:
-                The value of the expression
-            """
-
-            if isinstance(sub_instruction, list):
-                if len(sub_instruction) > 0:
-                    if sub_instruction[0] == 'var':
-                        return self.attributes['variables'][sub_instruction[1]]
-                    elif sub_instruction[0] == 'value':
-                        return sub_instruction[1]
-                    elif sub_instruction[0] == 'arithm':
-                        if sub_instruction[3] == '+':
-                            try:
-                                    op_1 = get_value(sub_instruction[1]).encode('utf-8')
-                            except TypeError:
-                                    op_1 = get_value(sub_instruction[1])
-                            try:
-                                    op_2 = get_value(sub_instruction[2]).encode('utf-8')
-                            except TypeError:
-                                    op_2 = get_value(sub_instruction[2])
-                            if isinstance(op_1, str) or isinstance(op_2, str):
-                                    return str(op_1) + str(op_2)
-                            else:
-                                    return op_1 + op_2
-                        else:
-                            return eval(str(get_value(sub_instruction[1])) + sub_instruction[3] + str(get_value(sub_instruction[2])))
-                    elif sub_instruction[0] == 'boolean':
-                        if sub_instruction[3] != 'not':
-                            op_1 = get_value(sub_instruction[1])
-                            op_2 = get_value(sub_instruction[2])
-                            if isinstance(op_1, str):
-                                op_1 = "'{op_1}'".format(op_1=op_1)
-                            if isinstance(op_2, str):
-                                op_2 = "'{op_2}'".format(op_2=op_2)
-                            return eval(str(op_1) + ' ' + sub_instruction[3] + ' ' + str(get_value(op_2)))
-                        else:
-                            return not get_value(sub_instruction[1])
-                    elif sub_instruction[0] == 'func':
-                        sub_params = []
-                        for sub_param in sub_instruction[2]:
-                            sub_params.append(get_value(sub_param))
-                        if sub_instruction[1] == 'check_net':
-                            return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har, sub_params)
-                        else:
-                            return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'], sub_params)
-                    else:
-                        return sub_instruction
-                else:
-                    return sub_instruction
-            else:
-                return sub_instruction
 
         # We need to check if this method is called from main script
         # or if it is called from a loop inside the script (like a for loop or a while loop)
@@ -147,89 +93,168 @@ class NBZCore:
 
         for instruction in instructions:
             try:
-                if instruction[0] == 'assign':
-                    self.attributes['variables'][instruction[1]] = get_value(instruction[2])
-                elif instruction[0] == 'def':
-                    self.attributes['USER_FUNC'][instruction[1]] = instruction[2]
-                elif instruction[0] == 'func':
-                    params = []
-                    for param in instruction[2]:
-                        params.append(get_value(param))
-                    if instruction[1] == 'exit':
-                        sys.exit(0)
-                    elif instruction[1] == 'browser':
-                        if not self.attributes['set_browser']:
-                            try:
-                                self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
-                            except Exception as e:
-                                logger.log('ERROR', 'Error running proxy: {exception}'.format(exception=e))
-                                sys.exit(-1)
-                            self.attributes['set_browser'] = True
-                        else:
-                            logger.log('ERROR', 'Browser already instanced')
-                    elif instruction[1] == 'export_net_report':
-                        self.attributes['complete_csv'] = self.attributes['NATIVES']['net_report'](params, self.attributes['script_name'])
-                        self.attributes['set_net_report'] = True
-                    elif instruction[1] == 'reset_har':
-                        self.attributes['NATIVES']['reset_hat'](self.attributes['set_ner_report'], self.attributes['complete_csv'], self.attributes['browser'].current_url, self.attributes['proxy'])
-                    elif instruction[1] == 'check_net':
-                        pass
-                    else:
-                        try:
-                            self.attributes['NATIVES'][instruction[1]](self.attributes['browser'], params)
-                        except LookupError:
-                            try:
-                                self.execute_instructions(self.attributes['USER_FUNC'][instruction[1]])
-                            except LookupError:
-                                logger.log('ERROR', 'Not defined function')
-                                sys.exit(-1)
-                elif instruction[0] == 'if':
-                    if get_value(instruction[1]):
-                        self.execute_instructions(instruction[2])
-                    else:
-                        if len(instruction) == 4: # If statement have elif OR else
-                            if instruction[3][0][0] == 'elif':
-                                for elif_ in instruction[3]:
-                                    if get_value(elif_[1]):
-                                        self.execute_instructions(elif_[2])
-                                        break
-                            elif instruction[3][0][0] == 'else':
-                                self.execute_instructions(instruction[3][0][1])
-                        elif len(instruction) == 5: # If statement have elif AND else
-                            elif_done = False
-                            for elif_ in instruction[3]:
-                                if get_value(elif_[1]):
-                                    elif_done = True
-                                    self.execute_instructions(elif_[2])
-                                    break
-                            if not elif_done:
-                                self.execute_instructions(instruction[4][0][1])
-                elif instruction[0] == 'for':
-                    if len(instruction) == 4: # Foreach
-                        element = get_value(instruction[1])
-                        structure = self.attributes['variables'][get_value(instruction[2])]
-                        for aux_element in structure:
-                            if isinstance(structure, file):
-                                self.attributes['variables'][element] = aux_element[0:-1] # Avoiding newline character if we loop for a file lines
-                            else:
-                                self.attributes['variables'][element] = aux_element # All other structure types
-                            self.execute_instructions(instruction[3])
-                    else: # Standard For
-                        if instruction[3] == '+':
-                            for i in xrange(get_value(instruction[1]), get_value(instruction[2]), 1):
-                                self.execute_instructions(instruction[4])
-                        elif instruction[3] == '++':
-                            for i in xrange(get_value(instruction[1]), get_value(instruction[2]), 2):
-                                self.execute_instructions(instruction[4])
-                        elif instruction[3] == '-':
-                            for i in xrange(get_value(instruction[1]), get_value(instruction[2]), -1):
-                                self.execute_instructions(instruction[4])
-                        elif instruction[3] == '--':
-                            for i in xrange(get_value(instruction[1]), get_value(instruction[2]), -2):
-                                self.execute_instructions(instruction[4])
-                elif instruction[0] == 'while':
-                    while get_value(instruction[1]):
-                        self.execute_instructions(instruction[2])
+                self.statements[instruction[0]](instruction)
             except Exception as e:
                 logger.log('ERROR', 'Error executing instruction {type}: {exception}'.format(type=instruction[0], exception=e))
                 sys.exit(-1)
+
+
+    def _assign(self, instruction):
+        self.attributes['variables'][instruction[1]] = self.get_value(instruction[2])
+
+
+    def _def(self, instruction):        
+        self.attributes['USER_FUNC'][instruction[1]] = instruction[2]
+
+
+    def _func(self, instruction):
+        params = []
+        for param in instruction[2]:
+            params.append(self.get_value(param))
+        if instruction[1] == 'exit':
+            sys.exit(0)
+        elif instruction[1] == 'browser':
+            if not self.attributes['set_browser']:
+                try:
+                    self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
+                except Exception as e:
+                    logger.log('ERROR', 'Error running proxy: {exception}'.format(exception=e))
+                    sys.exit(-1)
+                self.attributes['set_browser'] = True
+            else:
+                logger.log('ERROR', 'Browser already instanced')
+        elif instruction[1] == 'export_net_report':
+            self.attributes['complete_csv'] = self.attributes['NATIVES']['net_report'](params, self.attributes['script_name'])
+            self.attributes['set_net_report'] = True
+        elif instruction[1] == 'reset_har':
+            self.attributes['NATIVES']['reset_hat'](self.attributes['set_ner_report'], 
+                                                    self.attributes['complete_csv'], 
+                                                    self.attributes['browser'].current_url, 
+                                                    self.attributes['proxy'])
+        elif instruction[1] == 'check_net':
+            pass
+        else:
+            try:
+                self.attributes['NATIVES'][instruction[1]](self.attributes['browser'], params)
+            except LookupError:
+                try:
+                    self.execute_instructions(self.attributes['USER_FUNC'][instruction[1]])
+                except LookupError:
+                    logger.log('ERROR', 'Not defined function')
+                    sys.exit(-1)
+
+
+    def _if(self, instruction):
+        if self.get_value(instruction[1]):
+            self.execute_instructions(instruction[2])
+        else:
+            if len(instruction) == 4: # If statement have elif OR else
+                if instruction[3][0][0] == 'elif':
+                    for elif_ in instruction[3]:
+                        if self.get_value(elif_[1]):
+                            self.execute_instructions(elif_[2])
+                            break
+                elif instruction[3][0][0] == 'else':
+                    self.execute_instructions(instruction[3][0][1])
+            else: # If statement have elif AND else
+                elif_done = False
+                for elif_ in instruction[3]:
+                    if self.get_value(elif_[1]):
+                        elif_done = True
+                        self.execute_instructions(elif_[2])
+                        break
+                if not elif_done:
+                    self.execute_instructions(instruction[4][0][1])
+
+
+    def _for(self, instruction):
+        if len(instruction) == 4: # Foreach
+            element = self.get_value(instruction[1])
+            structure = self.attributes['variables'][self.get_value(instruction[2])]
+            for aux_element in structure:
+                if isinstance(structure, file):
+                    self.attributes['variables'][element] = aux_element[0:-1] # Avoiding newline character if we loop for a file lines
+                else:
+                    self.attributes['variables'][element] = aux_element # All other structure types
+                self.execute_instructions(instruction[3])
+        else: # Standard For
+            if instruction[3] == '+':
+                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), 1):
+                    self.execute_instructions(instruction[4])
+            elif instruction[3] == '++':
+                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), 2):
+                    self.execute_instructions(instruction[4])
+            elif instruction[3] == '-':
+                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), -1):
+                    self.execute_instructions(instruction[4])
+            elif instruction[3] == '--':
+                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), -2):
+                    self.execute_instructions(instruction[4])
+
+
+    def _while(self, instruction):
+        while self.get_value(instruction[1]):
+            self.execute_instructions(instruction[2])
+
+
+    def get_value(self, sub_instruction):
+        """Local function inside executeInstructions() method, that is just used for it.
+
+        Get the value from some distinct structures:
+            - direct value or variable value of a parameter
+            - resolve arithmetic expressions
+            - resolve boolean expressions
+            - resolve function return value
+
+        Args:
+            subInstruction: expression that can be one of the previous described structures.
+        Returns:
+            The value of the expression
+        """
+
+        if isinstance(sub_instruction, list):
+            if len(sub_instruction) > 0:
+                if sub_instruction[0] == 'var':
+                    return self.attributes['variables'][sub_instruction[1]]
+                elif sub_instruction[0] == 'value':
+                    return sub_instruction[1]
+                elif sub_instruction[0] == 'arithm':
+                    if sub_instruction[3] == '+':
+                        op_1 = self.get_value(sub_instruction[1])
+                        op_2 = self.get_value(sub_instruction[2])
+                        if isinstance(op_1, str) or isinstance(op_2, str):
+                            return '{op_1}{op_2}'.format(op_1=str(op_1).encode('utf-8'), 
+                                                         op_2=str(op_2).encode('utf-8'))
+                        else:
+                            return op_1 + op_2
+                    else:
+                        return eval('{op_1}{operand}{op_2}'.format(op_1=self.get_value(sub_instruction[1]), 
+                                                                   operand=sub_instruction[3], 
+                                                                   op_2=self.get_value(sub_instruction[2])))
+                elif sub_instruction[0] == 'boolean':
+                    if sub_instruction[3] != 'not':
+                        op_1 = self.get_value(sub_instruction[1])
+                        op_2 = self.get_value(sub_instruction[2])
+                        if isinstance(op_1, str):
+                            op_1 = "'{op_1}'".format(op_1=op_1)
+                        if isinstance(op_2, str):
+                            op_2 = "'{op_2}'".format(op_2=op_2)
+                        return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(op_1), 
+                                                                     operand=sub_instruction[3], 
+                                                                     op_2=self.get_value(op_2)))
+                    else:
+                        return not self.get_value(sub_instruction[1])
+                elif sub_instruction[0] == 'func':
+                    sub_params = []
+                    for sub_param in sub_instruction[2]:
+                        sub_params.append(self.get_value(sub_param))
+                    if sub_instruction[1] == 'check_net':
+                        return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har, sub_params)
+                    else:
+                        return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'], sub_params)
+                else:
+                    return sub_instruction
+            else:
+                return sub_instruction
+        else:
+            return sub_instruction
