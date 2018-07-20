@@ -107,7 +107,7 @@ class LibWb:
                     browser = webdriver.Firefox(executable_path=driver_path, 
                                                 firefox_profile=ff_prf,
                                                 proxy=proxy.selenium_proxy())
-            elif engine == 'phantom':
+            elif engine == 'phantomjs':
                 browser = webdriver.PhantomJS(driver_path)
             else:
                 logger.log('ERROR', 'Not supported browser: {engine}'.format(engine=engine))
@@ -147,7 +147,7 @@ class LibWb:
             else:
                 logger.log('ERROR', 'Operative System not supported')
                 sys.exit(-1)
-        elif engine == 'phantom':
+        elif engine == 'phantomjs':
             if os.name == 'posix':
                 driver_path = os.path.join(BASE_DIR, 'drivers', 'phantomjs')
             elif os.name == 'nt':
