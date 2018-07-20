@@ -80,7 +80,7 @@ class NBZCore:
                                 instruction[2] -> block of sentences
 
         Args:
-            instructionSet: list of instructions to be executed
+            instruction_set: list of instructions to be executed
         """
 
 
@@ -207,7 +207,7 @@ class NBZCore:
             - resolve function return value
 
         Args:
-            subInstruction: expression that can be one of the previous described structures.
+            sub_instruction: expression that can be one of the previous described structures.
         Returns:
             The value of the expression
         """

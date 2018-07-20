@@ -133,6 +133,7 @@ class LibSnf:
             params: list of parameters
                 -0: file name
                 -1: script name to build the path where the report will be stored
+            script_name: name of the nbz script
         Returns:
             The report file opened in write mode
         """

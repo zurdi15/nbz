@@ -4,7 +4,6 @@
 # Author: <Zurdi>
 
 
-import sys
 from lib_log_nbz import *
 logger = Logging()
 try:
@@ -24,7 +23,7 @@ def NBZParser(script, interactive=False):
     to define the parser rules. The rules are documented themselves.
 
     Args:
-        scriptPath: path of the nbz-script
+        script: path of the nbz-script
         interactive: flag to call this module into manual user mode or file mode (you can write sentences directly
                      or you can pass a nbz-script)
     Returns:
@@ -95,7 +94,8 @@ def NBZParser(script, interactive=False):
             p[0] = ['func', p[1], p[3]]
             z_code.append(p[0])
         except LookupError:
-            logger.log('ERROR', 'Undefined function "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
+            logger.log('ERROR', 'Undefined function "{function}" line {line}'.format(function=p[1],
+                                                                                     line=p.lineno(1)))
             sys.exit(-1)
 
     # List expressions
@@ -110,7 +110,8 @@ def NBZParser(script, interactive=False):
                     check = z_code_vars[p[1]]
                     p[0] = [['var', p[1]]]
                 except LookupError:
-                    logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '" line ' + str(p.lineno(1)))
+                    logger.log('ERROR', 'Undefined variable "{variable}" line {line}'.format(variable=p[1],
+                                                                                             line=p.lineno(1)))
                     sys.exit(-1)
             elif isinstance(p[1], list):
                 try:
@@ -118,7 +119,8 @@ def NBZParser(script, interactive=False):
                     p[0] = [p[1]]
                     z_code.pop()
                 except LookupError:
-                    logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '" line ' + str(p.lineno(1)))
+                    logger.log('ERROR', 'Undefined function "{function}" line {line}'.format(function=p[1][1],
+                                                                                             line=p.lineno(1)))
                     sys.exit(-1)
         else:
             p[0] = p[1]
@@ -127,7 +129,8 @@ def NBZParser(script, interactive=False):
                     check = z_code_vars[p[3]]
                     p[0].append(['var', p[3]])
                 except LookupError:
-                    logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '" line ' + str(p.lineno(1)))
+                    logger.log('ERROR', 'Undefined variable "{variable}" line {line}'.format(variable=p[3],
+                                                                                             line=p.lineno(1)))
                     sys.exit(-1)
             elif isinstance(p[3], list):
                 try:
@@ -135,7 +138,8 @@ def NBZParser(script, interactive=False):
                     p[0].append([p[3]])
                     z_code.pop()
                 except LookupError:
-                    logger.log('ERROR', 'Undefined function "' + str(p[3][1]) + '" line ' + str(p.lineno(1)))
+                    logger.log('ERROR', 'Undefined function "{function}" line {line}'.format(function=p[3][1],
+                                                                                             line=p.lineno(1)))
                     sys.exit(-1)
 
     def p_list_value(p):
@@ -295,7 +299,8 @@ def NBZParser(script, interactive=False):
             z_code.pop()
             p[0] = p[1]
         except LookupError:
-            logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)))
+            logger.log('ERROR', 'Undefined function "{function}" line {line}'.format(function=p[1][1],
+                                                                                     line=p.lineno(1)))
             sys.exit(-1)
 
     def p_logic_valid_type(p):
@@ -333,7 +338,8 @@ def NBZParser(script, interactive=False):
                 check = z_code_vars[p[1]]
                 p[0] = ['var', p[1]]
             except LookupError:
-                logger.log('ERROR', 'Undefined variable "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
+                logger.log('ERROR', 'Undefined variable "{variable}" line {line}'.format(variable=p[1],
+                                                                                         line=p.lineno(1)))
                 sys.exit(-1)
         elif isinstance(p[1], list):
             try:
@@ -341,7 +347,8 @@ def NBZParser(script, interactive=False):
                 z_code.pop()
                 p[0] = p[1]
             except LookupError:
-                logger.log('ERROR', 'Undefined function "' + str(p[1][1]) + '"  line ' + str(p.lineno(1)))
+                logger.log('ERROR', 'Undefined function "{function}" line {line}'.format(function=p[1][1],
+                                                                                         line=p.lineno(1)))
                 sys.exit(-1)
 
     def p_arithm_valid_num(p):
@@ -360,12 +367,14 @@ def NBZParser(script, interactive=False):
             try:
                 check = z_code_vars[p[1]]
             except LookupError:
-                logger.log('ERROR', 'Undefined list "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
+                logger.log('ERROR', 'Undefined list "{list}" line {line}'.format(list=p[1],
+                                                                                 line=p.lineno(1)))
                 sys.exit(-1)
             try:
                 check = z_code_vars[p[3]]
             except LookupError:
-                logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '"  line ' + str(p.lineno(1)))
+                logger.log('ERROR', 'Undefined variable "{variable}" line {line}'.format(variable=p[3],
+                                                                                         line=p.lineno(1)))
                 sys.exit(-1)
             p[0] = ['func', 'get_element_list', [['var', p[1]], ['var', p[3]]]]
             z_code.append(p[0])
@@ -373,7 +382,8 @@ def NBZParser(script, interactive=False):
             try:
                 check = z_code_vars[p[3]]
             except LookupError:
-                logger.log('ERROR', 'Undefined variable "' + str(p[3]) + '"  line ' + str(p.lineno(1)))
+                logger.log('ERROR', 'Undefined variable "{variable}" line {line}'.format(variable=p[3],
+                                                                                         line=p.lineno(1)))
                 sys.exit(-1)
             p[0] = ['func', 'get_element_list', [p[1], ['var', p[3]]]]
 
@@ -386,7 +396,8 @@ def NBZParser(script, interactive=False):
                 p[0] = ['func', 'get_element_list', [['var', p[1]], p[3]]]
                 z_code.append(p[0])
             except LookupError:
-                logger.log('ERROR', 'Undefined list "' + str(p[1]) + '"  line ' + str(p.lineno(1)))
+                logger.log('ERROR', 'Undefined list "{list}" line {line}'.format(list=p[1],
+                                                                                 line=p.lineno(1)))
                 sys.exit(-1)
         else:
             p[0] = ['func', 'get_element_list', [p[1], p[3]]]
@@ -440,7 +451,8 @@ def NBZParser(script, interactive=False):
     # Error rule for syntax errors
     def p_error(p):
         if p is not None:
-            logger.log('ERROR', 'Illegal token: "' + str(p.value) + '" at line: ' + str(p.lineno))
+            logger.log('ERROR', 'Illegal token: "{token}" at line: {line}'.format(token=p.value,
+                                                                                  line=p.lineno))
             sys.exit(-1)
         else:
             logger.log('ERROR', 'General error: error at the end of the script.')
@@ -459,7 +471,7 @@ def NBZParser(script, interactive=False):
         try:
             parser.parse(data)
         except EOFError:
-            logger.log('ERROR', 'General error parsing {script}'.format(script=script_path))
+            logger.log('ERROR', 'General error parsing {script}'.format(script=script))
             sys.exit(-1)
 
         return z_code, z_code_vars
