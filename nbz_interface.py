@@ -35,8 +35,7 @@ class NBZInterface:
     to parse the nbz-script previously. After all script is done, this class ends all connections.
 
     Attributes:
-        coreAttributes: dictionary of attributes needed for the core module
-        nbzCore: instance of the core module
+        core_attributes: dictionary of attributes needed for the core module
     """
 
 
