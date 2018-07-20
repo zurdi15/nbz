@@ -124,6 +124,8 @@ def main():
     display = args.display
     if debug == 'True':
         debug = True
+    else:
+        debug = False
     if display == 'True':
         display = Display(visible=0, size=(1024, 768))
         display.start()
