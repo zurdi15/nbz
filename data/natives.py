@@ -9,7 +9,7 @@
 import os
 import sys
 
-BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file__)))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(BASE_DIR, 'lib'))
 
 

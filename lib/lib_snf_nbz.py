@@ -8,7 +8,7 @@ import sys
 import os
 from pprint import pprint
 
-BASE_DIR = '{base_dir}'.format(base_dir=os.path.dirname(os.path.realpath(__file__)))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 from lib_log_nbz import Logging
 logger = Logging()
@@ -137,12 +137,11 @@ class LibSnf:
         Returns:
             The report file opened in write mode
         """
-
         file_name = params[0]
 
-        net_reports_path = '{base_dir}/out/net_reports/{script_name}'.format(base_dir=BASE_DIR, 
+        net_reports_path = '{base_dir}/../net_reports/{script_name}'.format(base_dir=BASE_DIR,
                                                                              script_name=script_name)
-        complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(net_reports_path=net_reports_path, 
+        complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(net_reports_path=net_reports_path,
                                                                                            report_name=file_name)
         if not os.path.exists(net_reports_path):
             os.makedirs(net_reports_path)

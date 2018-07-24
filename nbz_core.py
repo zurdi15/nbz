@@ -92,18 +92,14 @@ class NBZCore:
             instructions = instruction_set
 
         for instruction in instructions:
-            try:
                 self.statements[instruction[0]](instruction)
-            except Exception as e:
-                logger.log('ERROR', 'Error executing instruction {type}: {exception}'.format(type=instruction[0], exception=e))
-                sys.exit(-1)
 
 
     def _assign(self, instruction):
         self.attributes['variables'][instruction[1]] = self.get_value(instruction[2])
 
 
-    def _def(self, instruction):        
+    def _def(self, instruction):
         self.attributes['USER_FUNC'][instruction[1]] = instruction[2]
 
 
@@ -124,12 +120,12 @@ class NBZCore:
             else:
                 logger.log('ERROR', 'Browser already instanced')
         elif instruction[1] == 'export_net_report':
-            self.attributes['complete_csv'] = self.attributes['NATIVES']['net_report'](params, self.attributes['script_name'])
+            self.attributes['complete_csv'] = self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
             self.attributes['set_net_report'] = True
         elif instruction[1] == 'reset_har':
-            self.attributes['NATIVES']['reset_hat'](self.attributes['set_ner_report'], 
-                                                    self.attributes['complete_csv'], 
-                                                    self.attributes['browser'].current_url, 
+            self.attributes['NATIVES']['reset_hat'](self.attributes['set_net_report'],
+                                                    self.attributes['complete_csv'],
+                                                    self.attributes['browser'].current_url,
                                                     self.attributes['proxy'])
         elif instruction[1] == 'check_net':
             pass

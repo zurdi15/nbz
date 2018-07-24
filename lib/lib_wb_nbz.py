@@ -87,11 +87,11 @@ class LibWb:
                 if user_agent != 'default':
                     ch_opt.add_argument("--user-agent=" + user_agent)
                 try:
-                    browser = webdriver.Chrome(executable_path=driver_path, 
+                    browser = webdriver.Chrome(executable_path=driver_path,
                                                chrome_options=ch_opt)
                 except LookupError:
                     time.sleep(5)
-                    browser = webdriver.Chrome(executable_path=driver_path, 
+                    browser = webdriver.Chrome(executable_path=driver_path,
                                                chrome_options=ch_opt)
 
             elif engine == 'firefox':
@@ -99,16 +99,20 @@ class LibWb:
                 if user_agent != 'default':
                     ff_prf.set_preference("general.useragent.override", user_agent)
                 try:
-                    browser = webdriver.Firefox(executable_path=driver_path, 
+                    browser = webdriver.Firefox(executable_path=driver_path,
                                                 firefox_profile=ff_prf,
                                                 proxy=proxy.selenium_proxy())
                 except LookupError:
                     time.sleep(5)
-                    browser = webdriver.Firefox(executable_path=driver_path, 
+                    browser = webdriver.Firefox(executable_path=driver_path,
                                                 firefox_profile=ff_prf,
                                                 proxy=proxy.selenium_proxy())
             elif engine == 'phantomjs':
-                browser = webdriver.PhantomJS(driver_path)
+                webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.settings.userAgent'] = user_agent
+                proxy_url = urlparse.urlparse(proxy.proxy).path
+                service_args = ['--proxy={proxy}'.format(proxy=proxy_url),
+                                '--proxy-type=https']
+                browser = webdriver.PhantomJS(driver_path, service_args=service_args)
             else:
                 logger.log('ERROR', 'Not supported browser: {engine}'.format(engine=engine))
                 sys.exit(-1)
