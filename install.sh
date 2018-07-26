@@ -9,7 +9,6 @@
 #       · selenium
 #       · browsermob-proxy
 #       · ply
-#       · psutil
 #       · pyvirtualdisplay
 #
 #   - Bash:
