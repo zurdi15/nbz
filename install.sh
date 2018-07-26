@@ -4,12 +4,13 @@
 #
 # NBZ installer
 #
-# Dependencies:
+# Requirements:
 #   - Python:
 #       · selenium
 #       · browsermob-proxy
 #       · ply
 #       · psutil
+#       · pyvirtualdisplay
 #
 #   - Bash:
 #       · toilet
@@ -49,8 +50,4 @@ fi
 echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
 sudo apt-get install xvfb
-sudo -H pip install ply
-sudo -H pip install selenium
-sudo -H pip install browsermob-proxy
-sudo -H pip install psutil
-sudo -H pip install pyvirtualdisplay
+pip install -r requirements.txt

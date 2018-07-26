@@ -5,4 +5,4 @@ This version is managed from command line.
 
 __Download:__ https://github.com/zurdi15/NBZ-1/releases
 
-__Wiki:__ https://github.com/zurdi15/NBZ-1/wiki
+__Documentation:__ https://github.com/zurdi15/NBZ-1/wiki
