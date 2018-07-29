@@ -13,7 +13,6 @@
 #
 #   - Bash:
 #       · toilet
-#       · xvfb
 
 
 PYTHON=$(which python)
@@ -48,5 +47,4 @@ fi
 # Installing libraries
 echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
-sudo apt-get install xvfb
 pip install -r requirements.txt
