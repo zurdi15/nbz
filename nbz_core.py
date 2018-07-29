@@ -5,6 +5,7 @@
 
 
 import sys
+from io import IOBase
 from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
 
@@ -105,7 +106,7 @@ class NBZCore:
                     self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
                         = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
                 except Exception as e:
-                    logger.log('ERROR', 'Error : {exception}'.format(exception=e))
+                    logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
                     sys.exit(-1)
                 self.attributes['set_browser'] = True
             else:
@@ -163,10 +164,16 @@ class NBZCore:
             element = self.get_value(instruction[1])
             structure = self.attributes['variables'][self.get_value(instruction[2])]
             for aux_element in structure:
-                if isinstance(structure, file):
-                    self.attributes['variables'][element] = aux_element[0:-1]  # Avoiding newline character
-                else:
-                    self.attributes['variables'][element] = aux_element  # All other structure types
+                try:
+                    if isinstance(structure, file):
+                        self.attributes['variables'][element] = aux_element[0:-1]  # Avoiding newline character
+                    else:
+                        self.attributes['variables'][element] = aux_element  # All other structure types
+                except NameError:
+                    if isinstance(structure, IOBase):
+                        self.attributes['variables'][element] = aux_element[0:-1]  # Avoiding newline character
+                    else:
+                        self.attributes['variables'][element] = aux_element  # All other structure types
                 self.execute_instructions(instruction[3])
         else:  # Standard For
             if instruction[3] == '+':

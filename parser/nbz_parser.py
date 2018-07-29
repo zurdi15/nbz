@@ -7,7 +7,7 @@
 from lib.lib_log_nbz import Logging
 from data.natives import NATIVES
 try:
-    from nbz_lexer import tokens  # Get the token map from the lexer
+    from parser.nbz_lexer import tokens  # Get the token map from the lexer
     import ply.yacc as yacc
 except LookupError:
     logger = Logging()

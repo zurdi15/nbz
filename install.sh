@@ -28,7 +28,7 @@ NC="\e[0m"
 
 if [ -z "${PYTHON}" ]
 then
-    echo -e "${RED}NBZ - Error: Python is not installed. Please install python 2.7 in your system.${NC}"
+    echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
     exit 1
 fi
 
