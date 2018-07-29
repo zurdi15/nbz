@@ -4,8 +4,8 @@
 # Author: <Zurdi>
 
 
-import sys
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
+
 logger = Logging()
 
 
@@ -15,12 +15,10 @@ class LibD:
     This class contains all the data types functions to handle types into nbz-scripts.
     """
 
-
     def __init__(self):
-        """Inits LibD class"""
+        """Init LibD class"""
 
         pass
-
 
     @staticmethod
     def cast_int(browser, params):
@@ -35,14 +33,11 @@ class LibD:
         """
 
         value = params[0]
-
         try:
             return int(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting {value} to integer: {exception}'.format(value=value, 
-                                                                                       exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error casting {value} to integer: {exception}'.format(value=value,
+                                                                                   exception=e))
 
     @staticmethod
     def cast_float(browser, params):
@@ -57,14 +52,11 @@ class LibD:
         """
 
         value = params[0]
-
         try:
             return float(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting {value} to float: {exception}'.format(value=value, 
-                                                                                     exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error casting {value} to float: {exception}'.format(value=value,
+                                                                                 exception=e))
 
     @staticmethod
     def cast_str(browser, params):
@@ -79,14 +71,11 @@ class LibD:
         """
 
         value = params[0]
-
         try:
             return str(value)
         except Exception as e:
-            logger.log('ERROR', 'Error casting {value} to str: {exception}'.format(value=value, 
-                                                                                   exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error casting {value} to str: {exception}'.format(value=value,
+                                                                               exception=e))
 
     @staticmethod
     def sub_str(browser, params):
@@ -106,8 +95,7 @@ class LibD:
             string = params[0]
             substring_index_start = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function sub_str(): at least 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function sub_str(): at least 2 arguments needed')
 
         try:
             if len(params) == 2:
@@ -116,10 +104,8 @@ class LibD:
                 substring_index_end = params[2]
                 return string[substring_index_start:substring_index_end]
         except Exception as e:
-            logger.log('ERROR', 'Error getting substring from {string}: {exception}'.format(string=string, 
-                                                                                            exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting substring from {string}: {exception}'.format(string=string,
+                                                                                        exception=e))
 
     @staticmethod
     def length(browser, params):
@@ -130,18 +116,15 @@ class LibD:
             params: list of parameters
                 -0: data which can be measured (string, list, dict)
         Returns:
-            Integer number of the lenght of the data
+            Integer number of the length of the data
         """
 
         data = params[0]
-
         try:
             return len(data)
         except Exception as e:
-            logger.log('ERROR', 'Error getting length from {data}: {exception}'.format(data=data, 
-                                                                                       exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting length from {data}: {exception}'.format(data=data,
+                                                                                   exception=e))
 
     @staticmethod
     def find(browser, params):
@@ -161,16 +144,13 @@ class LibD:
             string = params[0]
             substring = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function find(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function find(): 2 arguments needed')
 
         try:
             return string.find(substring)
         except Exception as e:
-            logger.log('ERROR', 'Error searching substring into {string}: {exception}'.format(string=string, 
-                                                                                              exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error searching substring into {string}: {exception}'.format(string=string,
+                                                                                          exception=e))
 
     @staticmethod
     def replace(browser, params):
@@ -191,18 +171,15 @@ class LibD:
             substring_old = params[1]
             substring_new = params[2]
         except LookupError:
-            logger.log('ERROR', 'Function replace(): 3 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function replace(): 3 arguments needed')
 
         try:
             return string.replace(substring_old, substring_new)
         except Exception as e:
-            logger.log('ERROR', 'Error replacing: {string}({old}, {new}): {exception}'.format(string=string, 
-                                                                                              old=substring_old, 
-                                                                                              new=substring_new, 
-                                                                                              exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error replacing: {string}({old}, {new}): {exception}'.format(string=string,
+                                                                                          old=substring_old,
+                                                                                          new=substring_new,
+                                                                                          exception=e))
 
     @staticmethod
     def split(browser, params):
@@ -214,24 +191,21 @@ class LibD:
                 -0: string to split
                 -1: delimiter to split with
         Returns:
-            A list of substring splited from main string between delimiters
+            A list of substrings from main string between delimiters
         """
 
         try:
             string = params[0]
             delimiter = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function split(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function split(): 2 arguments needed')
 
         try:
             return string.split(delimiter)
         except Exception as e:
-            logger.log('ERROR', 'Error splitting: {string} with {delimiter}: {exception}'.format(string=string, 
-                                                                                                 delimiter=delimiter, 
-                                                                                                 exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error splitting: {string} with {delimiter}: {exception}'.format(string=string,
+                                                                                             delimiter=delimiter,
+                                                                                             exception=e))
 
     @staticmethod
     def append_list(browser, params):
@@ -250,17 +224,14 @@ class LibD:
             list_ = params[0]
             element = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function append(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function append(): 2 arguments needed')
 
         try:
             return list_.append(element)
         except Exception as e:
-            logger.log('ERROR', 'Error appending {element} into {list}: {exception}'.format(element=element, 
-                                                                                            list=list_, 
-                                                                                            exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error appending {element} into {list}: {exception}'.format(element=element,
+                                                                                        list=list_,
+                                                                                        exception=e))
 
     @staticmethod
     def update_list(browser, params):
@@ -281,19 +252,16 @@ class LibD:
             index = params[1]
             element = params[2]
         except LookupError:
-            logger.log('ERROR', 'Function update(): 3 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function update(): 3 arguments needed')
 
         try:
             list_[index] = element
             return list_
         except Exception as e:
-            logger.log('ERROR', 'Error updating {index} into {list} with {element}: {exception}'.format(index=index, 
-                                                                                                        list=list_, 
-                                                                                                        element=element, 
-                                                                                                        exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error updating {index} into {list} with {element}: {exception}'.format(index=index,
+                                                                                                    list=list_,
+                                                                                                    element=element,
+                                                                                                    exception=e))
 
     @staticmethod
     def remove_list(browser, params):
@@ -312,17 +280,14 @@ class LibD:
             list_ = params[0]
             element = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function remove(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function remove(): 2 arguments needed')
 
         try:
             return list_.remove(element)
         except Exception as e:
-            logger.log('ERROR', 'Error removing {element} from {list}: {exception}'.format(element=element, 
-                                                                                           list=list_, 
-                                                                                           exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error removing {element} from {list}: {exception}'.format(element=element,
+                                                                                       list=list_,
+                                                                                       exception=e))
 
     @staticmethod
     def get_element_list(browser, params):
@@ -341,13 +306,11 @@ class LibD:
             list_ = params[0]
             index = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function get_element_list(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function get_element_list(): 2 arguments needed')
 
         try:
             return list_[index]
         except Exception as e:
-            logger.log('ERROR', 'Error getting element {index} from list {list}: {exception}'.format(index=index, 
-                                                                                                     list=list_, 
-                                                                                                     exception=e))
-            sys.exit(-1)
+            raise Exception('Error getting element {index} from list {list}: {exception}'.format(index=index,
+                                                                                                 list=list_,
+                                                                                                 exception=e))

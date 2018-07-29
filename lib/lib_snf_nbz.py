@@ -4,14 +4,12 @@
 # Author: <Zurdi>
 
 
-import sys
 import os
 from pprint import pprint
+from lib.lib_log_nbz import Logging
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-
-from lib_log_nbz import Logging
 logger = Logging()
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class LibSnf:
@@ -24,16 +22,15 @@ class LibSnf:
     """
 
     def __init__(self):
-        """Inits LibSnf class with it attributes"""
+        """Init LibSnf class with it attributes"""
 
         self.sniffer_attr = {
-            'request_ok'    : False,
-            'url'           : '',
-            'status_code'   : '404',
-            'timestamp'     : '',
-            'times'         : 0
+            'request_ok': False,
+            'url': '',
+            'status_code': '404',
+            'timestamp': '',
+            'times': 0
         }
-
 
     def check_net(self, har, request):
         """General method to select the way to check the HAR file
@@ -53,12 +50,10 @@ class LibSnf:
         elif check_type == 'keyword':
             return self.check_net_keywords(har, request)
         else:
-            logger.log('ERROR', 'Not admitted request type: {type}'.format(type=check_type))
-            sys.exit(-1)
-
+            raise Exception('Not admitted request type: {type}'.format(type=check_type))
 
     def check_net_parameters(self, har, request):
-        """Check if any request had the choosen parameters
+        """Check if any request had the chosen parameters
 
         Args:
             har: har proxy file
@@ -70,11 +65,10 @@ class LibSnf:
         """
 
         try:
-            attribute = request[1] # Attribute to return
-            params = request[2:] # Parsing just parameters to search
+            attribute = request[1]  # Attribute to return
+            params = request[2:]  # Parsing just parameters to search
         except LookupError:
-            logger.log('ERROR', 'Function check_net(): at least 3 argument needed')
-            sys.exit(-1)
+            raise Exception('Function check_net(): at least 3 argument needed')
 
         for entry in har['log']['entries']:
             param_list_aux = entry['request']['url'].split('?')
@@ -92,12 +86,11 @@ class LibSnf:
         try:
             return self.sniffer_attr[attribute]
         except LookupError:
-            logger.log('ERROR', 'Check_net() error: can\'t find {attribute} - invalid parameter to return'.format(attribute=attribute))
-            sys.exit(-1)
-
+            raise Exception('Check_net() error: can\'t find {attribute} - '
+                            'invalid parameter to return'.format(attribute=attribute))
 
     def check_net_keywords(self, har, request):
-        """Check if any request had the choosen keyword
+        """Check if any request had the chosen keyword
 
         Args:
             har: har proxy file
@@ -108,8 +101,8 @@ class LibSnf:
             Value of the parameter of the selected request
         """
 
-        attribute = request[1] # Attribute to return
-        keyword = request[2] # Keywords to search
+        attribute = request[1]  # Attribute to return
+        keyword = request[2]  # Keywords to search
 
         for entry in har['log']['entries']:
             if entry['request']['url'].find(keyword) != -1:
@@ -121,9 +114,8 @@ class LibSnf:
         try:
             return self.sniffer_attr[attribute]
         except LookupError:
-            logger.log('ERROR', 'Check_net() error: can\'t find {attribute} - invalid parameter to return'.format(attribute=attribute))
-            sys.exit(-1)
-
+            raise Exception('Check_net() error: can\'t find {attribute} - '
+                            'invalid parameter to return'.format(attribute=attribute))
 
     @staticmethod
     def net_report(params, script_name):
@@ -140,13 +132,13 @@ class LibSnf:
         file_name = params[0]
 
         net_reports_path = '{base_dir}/../net_reports/{script_name}'.format(base_dir=BASE_DIR,
-                                                                             script_name=script_name)
-        complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(net_reports_path=net_reports_path,
-                                                                                           report_name=file_name)
+                                                                            script_name=script_name)
+        complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(
+            net_reports_path=net_reports_path,
+            report_name=file_name)
         if not os.path.exists(net_reports_path):
             os.makedirs(net_reports_path)
         return open(complete_csv_path, 'w')
-
 
     @staticmethod
     def reset_har(set_net_report, complete_csv, current_url, proxy):

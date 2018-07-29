@@ -9,23 +9,17 @@ import os
 import argparse
 from pprint import pprint
 from pyvirtualdisplay import Display
+from nbz_core import NBZCore
+from parser.nbz_parser import NBZParser
+from data.natives import NATIVES
+from lib.lib_log_nbz import Logging
 
+logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-
 if os.name == 'posix':
     proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
 elif os.name == 'nt':
     proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
-
-sys.path.append(os.path.join(BASE_DIR, 'lib'))
-sys.path.append(os.path.join(BASE_DIR, 'data'))
-sys.path.append(os.path.join(BASE_DIR, 'parser'))
-
-from nbz_core import NBZCore
-from nbz_parser import NBZParser
-from natives import NATIVES
-from lib_log_nbz import Logging
-logger = Logging()
 
 
 class NBZInterface:
@@ -38,33 +32,32 @@ class NBZInterface:
         core_attributes: dictionary of attributes needed for the core module
     """
 
-
     def __init__(self, script, debug):
-        """Inits NBZInterface class with some attributes"""
+        """Init NBZInterface class with some attributes"""
 
         self.core_attributes = {
-            'instruction_set'   : '',
-            'variables'         : {},
-            'NATIVES'           : NATIVES,
-            'USER_FUNC'         : {},
+            'instruction_set': '',
+            'variables': {},
+            'NATIVES': NATIVES,
+            'USER_FUNC': {},
 
-            'script'            : script,
-            'script_name'       : os.path.basename(script)[0:-4],
-            'debug'             : debug,
+            'script': script,
+            'script_name': os.path.basename(script)[0:-4],
+            'debug': debug,
 
             # Proxy binaries to execute the sniffer
-            'proxy_path'        : proxy_path,
+            'proxy_path': proxy_path,
 
             # Flag to instance browser once (even if z_code has more than one instance)
-            'set_browser'       : False,
-            'server'            : None,
-            'proxy'             : None,
-            'browser'           : None,
+            'set_browser': False,
+            'server': None,
+            'proxy': None,
+            'browser': None,
 
-            'set_net_report'    : False,
-            'net_reports_path'  : '',
-            'complete_csv_path' : '',
-            'complete_csv'      : None,
+            'set_net_report': False,
+            'net_reports_path': '',
+            'complete_csv_path': '',
+            'complete_csv': None,
         }
 
         self.compile_script()
@@ -77,7 +70,6 @@ class NBZInterface:
         # Close browser/proxy/server
         if self.core_attributes['set_browser']:
             self.close_all()
-
 
     def compile_script(self):
         """Compile script to be executed.
@@ -92,22 +84,25 @@ class NBZInterface:
             self.core_attributes['instruction_set'] = z_code
             self.core_attributes['variables'] = z_code_vars
             if self.core_attributes['debug']:
-                logger.log('NOTE', 'Instructions: {instructions}'.format(instructions=self.core_attributes['instruction_set']))
+                logger.log('NOTE',
+                           'Instructions: {instructions}'.format(instructions=self.core_attributes['instruction_set']))
                 logger.log('NOTE', 'Variables: {variables}'.format(variables=self.core_attributes['variables']))
         except Exception as e:
-            logger.log('ERROR', 'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'], 
-                                                                                     exception=e))
+            logger.log('ERROR',
+                       'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'],
+                                                                            exception=e))
             sys.exit(-1)
-
 
     def close_all(self):
         """Close all connections and export har log"""
 
         if self.core_attributes['set_net_report']:
-            self.core_attributes['complete_csv'].write('URL: {url}\n\n'.format(url=self.core_attributes['browser'].current_url))
+            self.core_attributes['complete_csv'].write(
+                'URL: {url}\n\n'.format(url=self.core_attributes['browser'].current_url))
             pprint(self.core_attributes['proxy'].har['log']['entries'], self.core_attributes['complete_csv'])
             self.core_attributes['complete_csv'].close()
-            logger.log('NOTE', 'Complete_net csv file exported to: {net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
+            logger.log('NOTE', 'Complete_net csv file exported to: '
+                               '{net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
         self.core_attributes['browser'].close()
         self.core_attributes['proxy'].close()
         self.core_attributes['server'].stop()
