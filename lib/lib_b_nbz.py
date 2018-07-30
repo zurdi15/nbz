@@ -23,6 +23,20 @@ class LibB:
         url_retries_set: number of maximum retries to call an url
         url_retries: counter of retries to call an url
         url_retries_wait_time: time to wait between url retries
+
+    Methods:
+        set_url_retries
+        get_url
+        fill_field
+        clear_field
+        click_element
+        select_option
+        wait_time
+        back
+        forward
+        refresh
+        get_text
+        current_url
     """
 
     def __init__(self):

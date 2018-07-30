@@ -19,6 +19,13 @@ class LibSnf:
 
     Attributes:
         sniffer_attr: dict with all the values that can be get of a http call
+
+    Methods:
+        check_net
+        check_net_parameters
+        check_net_keywords
+        net_report
+        reset_har
     """
 
     def __init__(self):

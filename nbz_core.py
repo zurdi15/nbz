@@ -21,6 +21,18 @@ class NBZCore:
 
     Attributes:
         attributes: dictionary of multiple parameters, paths and structures needed to run the nbz-script
+        statements: dictionary of multiple nbz-script statements to execute each when needed
+
+    Methods:
+        get_attributes
+        execute_instructions
+        _assign
+        _def
+        _func
+        _if
+        _for
+        _while
+        get_values
     """
 
     def __init__(self, attributes):

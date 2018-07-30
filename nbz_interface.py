@@ -30,6 +30,10 @@ class NBZInterface:
 
     Attributes:
         core_attributes: dictionary of attributes needed for the core module
+
+    Methods:
+        compile_script
+        close_all
     """
 
     def __init__(self, script, debug):

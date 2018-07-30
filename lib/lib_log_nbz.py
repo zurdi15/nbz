@@ -14,6 +14,9 @@ class Logging:
 
     This library provides a way to log each step of an nbz-script, showing if it is going right,
     or if an error occurs.
+
+    Methods:
+        log
     """
 
     def __init__(self):

@@ -20,6 +20,33 @@ class LibA:
 
     Attributes:
         scroll: an integer where the actual scroll position of the web browser is stored
+
+    Methods:
+        print_
+        random
+        get_timestamp
+        timestamp_diff
+        open_file
+        write_file
+        write_table_as_csv
+        close_file
+        get_local_storage
+        set_local_storage
+        get_cookie
+        set_cookie
+        get_element
+        children_num
+        page_load_time
+        scroll_down
+        scroll_to_bottom
+        scroll_up
+        scroll_to_top
+        execute_js
+        set_timeout
+        export_html
+        get_all_html_links
+        get_element_html
+        take_screenshot
     """
 
     def __init__(self):

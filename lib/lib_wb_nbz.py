@@ -28,6 +28,10 @@ class LibWb:
     """Browser and proxy library.
 
     This class contains the methods to start the proxy and the native function to start the web browser.
+
+    Methods:
+        instance_browser
+        get_driver_path
     """
 
     def __init__(self):

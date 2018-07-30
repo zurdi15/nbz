@@ -13,6 +13,20 @@ class LibD:
     """Data types library of native functions.
 
     This class contains all the data types functions to handle types into nbz-scripts.
+
+    Methods:
+        cast_int
+        cast_float
+        cast_str
+        sub_str
+        lenght
+        find
+        replace
+        split
+        append_list
+        update_list
+        remove_list
+        get_element_list
     """
 
     def __init__(self):
