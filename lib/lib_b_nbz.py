@@ -98,7 +98,7 @@ class LibB:
                 self.get_url(browser, params)
         else:
             if self.url_retries_continue:
-                pass
+                self.url_retries = self.url_retries_set
             else:
                 raise Exception('Get url retries limit exceeded')
 
