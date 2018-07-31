@@ -4,16 +4,15 @@
 #
 # NBZ installer
 #
-# Dependencies:
+# Requirements:
 #   - Python:
 #       · selenium
 #       · browsermob-proxy
 #       · ply
-#       · psutil
+#       · pyvirtualdisplay
 #
 #   - Bash:
 #       · toilet
-#       · xvfb
 
 
 PYTHON=$(which python)
@@ -29,7 +28,7 @@ NC="\e[0m"
 
 if [ -z "${PYTHON}" ]
 then
-    echo -e "${RED}NBZ - Error: Python is not installed. Please install python 2.7 in your system.${NC}"
+    echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
     exit 1
 fi
 
@@ -48,9 +47,4 @@ fi
 # Installing libraries
 echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
-sudo apt-get install xvfb
-sudo -H pip install ply
-sudo -H pip install selenium
-sudo -H pip install browsermob-proxy
-sudo -H pip install psutil
-sudo -H pip install pyvirtualdisplay
+pip install -r requirements.txt

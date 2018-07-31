@@ -4,12 +4,12 @@
 # Author: <Zurdi>
 
 
-import sys
 import time
 from datetime import datetime
 from random import randint
 import re
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
+
 logger = Logging()
 
 
@@ -20,13 +20,40 @@ class LibA:
 
     Attributes:
         scroll: an integer where the actual scroll position of the web browser is stored
+
+    Methods:
+        print_
+        random
+        get_timestamp
+        timestamp_diff
+        open_file
+        write_file
+        write_table_as_csv
+        close_file
+        get_local_storage
+        set_local_storage
+        get_cookie
+        set_cookie
+        get_element
+        children_num
+        page_load_time
+        scroll_down
+        scroll_to_bottom
+        scroll_up
+        scroll_to_top
+        execute_js
+        set_timeout
+        get_source_html
+        export_source_html
+        get_all_html_links
+        get_element_html
+        take_screenshot
     """
 
     def __init__(self):
-        """Inits LibA class with scroll at top of the web page"""
+        """Init LibA class with scroll at top of the web page"""
 
         self.scroll = 0
-
 
     @staticmethod
     def print_(browser, params):
@@ -39,17 +66,13 @@ class LibA:
         """
 
         string = str(params[0])
-
         try:
             if string is None:
                 logger.log('NOTE', '')
             else:
                 logger.log('NOTE', string)
         except Exception as e:
-            logger.log('ERROR', 'Error printing {string}: {exception}'.format(string=string, 
-                                                                              exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error printing {string}: {exception}'.format(string=string, exception=e))
 
     @staticmethod
     def random(browser, params):
@@ -68,15 +91,11 @@ class LibA:
             lower = params[0]
             higher = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function random(): 2 arguments needed')
-            sys.exit(-1)
-
+            raise Exception('Function random(): 2 arguments needed')
         try:
             return randint(lower, higher)
         except Exception as e:
-            logger.log('ERROR', 'Error getting random number: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting random number: {exception}'.format(exception=e))
 
     @staticmethod
     def get_timestamp(browser, params):
@@ -91,16 +110,13 @@ class LibA:
         """
 
         date_format = params[0]
-
         try:
             if not date_format:
                 return time.strftime("%Y-%m-%d %H:%M:%S")
             else:
                 return time.strftime(date_format)
         except Exception as e:
-            logger.log('ERROR', 'Error getting actual timestamp: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting actual timestamp: {exception}'.format(exception=e))
 
     @staticmethod
     def timestamp_diff(browser, params):
@@ -119,17 +135,14 @@ class LibA:
             datetime_1 = params[0]
             datetime_2 = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function timestamp_diff(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function timestamp_diff(): 2 arguments needed')
 
         try:
             d1 = datetime.strptime(datetime_1, "%Y-%m-%d %H:%M:%S")
             d2 = datetime.strptime(datetime_2, "%Y-%m-%d %H:%M:%S")
             return d1 - d2
         except Exception as e:
-            logger.log('ERROR', 'Error calculating date: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error calculating date: {exception}'.format(exception=e))
 
     @staticmethod
     def open_file(browser, params):
@@ -148,16 +161,13 @@ class LibA:
             file_name = params[0]
             mode = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function open(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function open(): 2 arguments needed')
 
         try:
             return open(file_name, mode)
         except Exception as e:
-            logger.log('ERROR', 'Error opening {file_name}: {exception}'.format(file_name=file_name, 
-                                                                                exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error opening {file_name}: {exception}'.format(file_name=file_name,
+                                                                            exception=e))
 
     @staticmethod
     def write_file(browser, params):
@@ -174,8 +184,7 @@ class LibA:
             file_name = params[0]
             text = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function write(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function write(): 2 arguments needed')
 
         try:
             sentences = text.split('\\n')
@@ -185,10 +194,8 @@ class LibA:
                 else:
                     file_name.write(sent + '\n')
         except Exception as e:
-            logger.log('ERROR', 'Error writing {file_name}: {exception}'.format(file_name=file_name, 
-                                                                                exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error writing {file_name}: {exception}'.format(file_name=file_name,
+                                                                            exception=e))
 
     @staticmethod
     def write_table_as_csv(browser, params):
@@ -214,8 +221,7 @@ class LibA:
             add_left = params[3]
             add_right = params[4]
         except LookupError:
-            logger.log('ERROR', 'Function write_table_as_csv(): at least 3 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function write_table_as_csv(): at least 3 arguments needed')
 
         try:
             for row in table.find_elements_by_tag_name('tr'):
@@ -224,12 +230,10 @@ class LibA:
                         row_ += cell.text.encode('utf-8') + delimiter
                     else:
                         row_ += cell.text + delimiter
-                file_.write(add_left + row_+ add_right + '\n')
+                file_.write(add_left + row_ + add_right + '\n')
                 row_ = ''
         except Exception as e:
-            logger.log('ERROR', 'Error writing "' + str(params[1]) + '": {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error writing "' + str(params[1]) + '": {exception}'.format(exception=e))
 
     @staticmethod
     def close_file(browser, params):
@@ -242,14 +246,11 @@ class LibA:
         """
 
         file_name = params[0]
-
         try:
             file_name.close()
         except Exception as e:
-            logger.log('ERROR', 'Error closing {file_name}: {exception}'.format(file_name=file_name, 
-                                                                                exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error closing {file_name}: {exception}'.format(file_name=file_name,
+                                                                            exception=e))
 
     @staticmethod
     def get_local_storage(browser, params):
@@ -264,14 +265,11 @@ class LibA:
         """
 
         item = params[0]
-
         try:
             return browser.execute_script("return localStorage.getItem('{item}');".format(item=item))
         except Exception as e:
-            logger.log('ERROR', 'Error getting {item} from local storage: {exception}'.format(item=item, 
-                                                                                              exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting {item} from local storage: {exception}'.format(item=item,
+                                                                                          exception=e))
 
     @staticmethod
     def set_local_storage(browser, params):
@@ -288,20 +286,17 @@ class LibA:
             item = params[0]
             value = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function set_local_storage(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function set_local_storage(): 2 arguments needed')
 
         try:
-            browser.execute_script("localStorage.setItem('{item}', '{value}');".format(item=item, 
+            browser.execute_script("localStorage.setItem('{item}', '{value}');".format(item=item,
                                                                                        value=value))
-            logger.log('NOTE', 'Setting local storage: {item}={value}'.format(item=item, 
+            logger.log('NOTE', 'Setting local storage: {item}={value}'.format(item=item,
                                                                               value=value))
         except Exception as e:
-            logger.log('ERROR', 'Error setting {value} in {item} of local storage: {exception}'.format(item=item, 
-                                                                                                       value=value, 
-                                                                                                       exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error setting {value} in {item} of local storage: {exception}'.format(item=item,
+                                                                                                   value=value,
+                                                                                                   exception=e))
 
     @staticmethod
     def get_cookie(browser, params):
@@ -316,13 +311,10 @@ class LibA:
         """
 
         cookie = params[0]
-
         try:
             return browser.get_cookie(cookie)['value']
         except LookupError:
-            logger.log('ERROR', 'Error getting cookie {cookie}: Cookie not found'.format(cookie=cookie))
-            sys.exit(-1)
-
+            raise Exception('Error getting cookie {cookie}: Cookie not found'.format(cookie=cookie))
 
     @staticmethod
     def set_cookie(browser, params):
@@ -339,19 +331,16 @@ class LibA:
             cookie = params[0]
             value = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function set_cookie(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function set_cookie(): 2 arguments needed')
 
         try:
-            browser.add_cookie({'name' : cookie, 'value' : value})
-            logger.log('NOTE', 'Setting cookie: {cookie}={value}'.format(cookie=cookie, 
+            browser.add_cookie({'name': cookie, 'value': value})
+            logger.log('NOTE', 'Setting cookie: {cookie}={value}'.format(cookie=cookie,
                                                                          value=value))
         except Exception as e:
-            logger.log('ERROR', 'Error setting cookie {cookie} with {value}: {exception}'.format(cookie=cookie, 
-                                                                                                 value=value, 
-                                                                                                 exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error setting cookie {cookie} with {value}: {exception}'.format(cookie=cookie,
+                                                                                             value=value,
+                                                                                             exception=e))
 
     @staticmethod
     def get_element(browser, params):
@@ -366,14 +355,11 @@ class LibA:
         """
 
         web_element = params[0]
-
         try:
             return browser.find_element_by_xpath(web_element)
         except Exception as e:
-            logger.log('ERROR', 'Error searching element {web_element}: {exception}'.format(web_element=web_element, 
-                                                                                            exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error searching element {web_element}: {exception}'.format(web_element=web_element,
+                                                                                        exception=e))
 
     @staticmethod
     def children_num(browser, params):
@@ -388,14 +374,11 @@ class LibA:
         """
 
         web_element = params[0]
-
         try:
             children = web_element.find_elements_by_xpath(".//*")
             return len(children)
         except Exception as e:
-            logger.log('ERROR', 'Error getting element children: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting element children: {exception}'.format(exception=e))
 
     @staticmethod
     def page_load_time(browser, params):
@@ -407,11 +390,10 @@ class LibA:
         """
 
         try:
-            return browser.execute_script('return performance.timing.loadEventEnd - performance.timing.navigationStart;') / 1000.0
+            return browser.execute_script('return performance.timing.loadEventEnd - '
+                                          'performance.timing.navigationStart;') / 1000.0
         except Exception as e:
-            logger.log('ERROR', 'Error getting load page time: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting load page time: {exception}'.format(exception=e))
 
     def scroll_down(self, browser, params):
         """Scroll down just screen height
@@ -423,12 +405,10 @@ class LibA:
 
         try:
             self.scroll += 1
-            browser.execute_script("window.scrollTo(0, "+str(700*self.scroll)+");")
+            browser.execute_script("window.scrollTo(0, " + str(700 * self.scroll) + ");")
             logger.log('NOTE', 'Scrolling down')
         except Exception as e:
-            logger.log('ERROR', 'Error scrolling down: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error scrolling down: {exception}'.format(exception=e))
 
     @staticmethod
     def scroll_to_bottom(browser, params):
@@ -443,9 +423,7 @@ class LibA:
             browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             logger.log('NOTE', 'Scrolling down to bottom')
         except Exception as e:
-            logger.log('ERROR', 'Error scrolling down: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error scrolling down: {exception}'.format(exception=e))
 
     def scroll_up(self, browser, params):
         """Scroll up just screen height
@@ -457,12 +435,10 @@ class LibA:
 
         try:
             self.scroll -= 1
-            browser.execute_script("window.scrollTo(0, "+str(700*self.scroll)+");")
+            browser.execute_script("window.scrollTo(0, " + str(700 * self.scroll) + ");")
             logger.log('NOTE', 'Scrolling up')
         except Exception as e:
-            logger.log('ERROR', 'Error scrolling up: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error scrolling up: {exception}'.format(exception=e))
 
     @staticmethod
     def scroll_to_top(browser, params):
@@ -477,9 +453,7 @@ class LibA:
             browser.execute_script("window.scrollTo(0, 0);")
             logger.log('NOTE', 'Scrolling up to top')
         except Exception as e:
-            logger.log('ERROR', 'Error scrolling top: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error scrolling top: {exception}'.format(exception=e))
 
     @staticmethod
     def execute_js(browser, params):
@@ -492,19 +466,16 @@ class LibA:
         """
 
         script = params[0]
-
         try:
             logger.log('NOTE', 'Executing js: {script}'.format(script=script))
             return browser.execute_script(script)
         except Exception as e:
-            logger.log('ERROR', 'Error executing js: {script}: {exception}'.format(script=script, 
-                                                                                   exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error executing js: {script}: {exception}'.format(script=script,
+                                                                               exception=e))
 
     @staticmethod
     def set_timeout(browser, params):
-        """Set timeout at loading webpages
+        """Set timeout at loading websites
 
         Args:
             browser: web browser instance
@@ -513,17 +484,35 @@ class LibA:
         """
 
         timeout = params[0]
-
         try:
             browser.set_page_load_timeout(timeout)
             logger.log('NOTE', 'Timeout set to: {timeout}'.format(timeout=timeout))
         except Exception as e:
-            logger.log('ERROR', 'Error setting timeout {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error setting timeout {exception}'.format(exception=e))
 
     @staticmethod
-    def export_html(browser, params):
+    def get_source_html(browser, params):
+        """Get source code from web page
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
+
+        Returns:
+            String of web page source code
+        """
+
+        try:
+            source = browser.page_source
+            if isinstance(source, unicode):
+                return source.encode('utf-8')
+            else:
+                return source
+        except Exception as e:
+            raise Exception('Getting html source code: {exception}'.format(exception=e))
+
+    @staticmethod
+    def export_source_html(browser, params):
         """Export html webpage into a file
 
         Args:
@@ -533,7 +522,6 @@ class LibA:
         """
 
         html_path = params[0]
-
         try:
             html = open('{html_path}'.format(html_path=html_path), 'w')
             html_text = browser.page_source
@@ -542,12 +530,10 @@ class LibA:
             else:
                 html.write(html_text)
             html.close()
-            logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url, 
+            logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url,
                                                                                       html_path=html_path))
         except Exception as e:
-            logger.log('ERROR', 'Saving html source: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Saving html source code: {exception}'.format(exception=e))
 
     @staticmethod
     def get_all_html_links(browser, params):
@@ -569,9 +555,7 @@ class LibA:
                     all_links.append(link[0])
             return all_links
         except Exception as e:
-            logger.log('ERROR', 'Getting all html links: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Getting all html links: {exception}'.format(exception=e))
 
     @staticmethod
     def get_element_html(browser, params):
@@ -586,7 +570,6 @@ class LibA:
         """
 
         web_element = params[0]
-
         try:
             element = browser.find_element_by_xpath(web_element)
             html = element.get_attribute('outerHTML')
@@ -595,10 +578,8 @@ class LibA:
             else:
                 return html
         except Exception as e:
-            logger.log('ERROR', 'Error getting html from {web_element}: {exception}'.format(web_element=web_element, 
-                                                                                            exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error getting html from {web_element}: {exception}'.format(web_element=web_element,
+                                                                                        exception=e))
 
     @staticmethod
     def take_screenshot(browser, params):
@@ -611,12 +592,9 @@ class LibA:
         """
 
         ss_path = params[0]
-
         try:
             browser.save_screenshot('{ss_path}'.format(ss_path=ss_path))
-            logger.log('NOTE', 'Screenshot from {current_url} saved on: {ss_path}'.format(current_url=browser.current_url, 
-                                                                                          ss_path=ss_path))
+            logger.log('NOTE', 'Screenshot from {url} saved on: {ss_path}'.format(url=browser.current_url,
+                                                                                  ss_path=ss_path))
         except Exception as e:
-            logger.log('ERROR', 'Error taking screenshot: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error taking screenshot: {exception}'.format(exception=e))

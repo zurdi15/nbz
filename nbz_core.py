@@ -5,13 +5,11 @@
 
 
 import sys
-import os
+from io import IOBase
+from lib.lib_wb_nbz import LibWb
+from lib.lib_log_nbz import Logging
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-
-from lib_wb_nbz import LibWb
 lib_wb_nbz = LibWb()
-from lib_log_nbz import Logging
 logger = Logging()
 
 
@@ -23,11 +21,22 @@ class NBZCore:
 
     Attributes:
         attributes: dictionary of multiple parameters, paths and structures needed to run the nbz-script
+        statements: dictionary of multiple nbz-script statements to execute each when needed
+
+    Methods:
+        get_attributes
+        execute_instructions
+        _assign
+        _def
+        _func
+        _if
+        _for
+        _while
+        get_values
     """
 
-
     def __init__(self, attributes):
-        """Inits NBZCore class with his attributes"""
+        """Init NBZCore class with his attributes"""
 
         self.attributes = attributes
         self.statements = {
@@ -39,7 +48,6 @@ class NBZCore:
             'while': self._while
         }
 
-
     def get_attributes(self):
         """Returns class attributes attribute
 
@@ -47,7 +55,6 @@ class NBZCore:
             The class attributes dict"""
 
         return self.attributes
-
 
     def execute_instructions(self, instruction_set=None):
         """Execute each instruction from instruction_set (recursively on flow control sentences)
@@ -83,7 +90,6 @@ class NBZCore:
             instruction_set: list of instructions to be executed
         """
 
-
         # We need to check if this method is called from main script
         # or if it is called from a loop inside the script (like a for loop or a while loop)
         if instruction_set is None:
@@ -92,20 +98,13 @@ class NBZCore:
             instructions = instruction_set
 
         for instruction in instructions:
-            try:
                 self.statements[instruction[0]](instruction)
-            except Exception as e:
-                logger.log('ERROR', 'Error executing instruction {type}: {exception}'.format(type=instruction[0], exception=e))
-                sys.exit(-1)
-
 
     def _assign(self, instruction):
         self.attributes['variables'][instruction[1]] = self.get_value(instruction[2])
 
-
-    def _def(self, instruction):        
+    def _def(self, instruction):
         self.attributes['USER_FUNC'][instruction[1]] = instruction[2]
-
 
     def _func(self, instruction):
         params = []
@@ -116,26 +115,33 @@ class NBZCore:
         elif instruction[1] == 'browser':
             if not self.attributes['set_browser']:
                 try:
-                    self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
+                    self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
+                        = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
                 except Exception as e:
-                    logger.log('ERROR', 'Error running proxy: {exception}'.format(exception=e))
+                    logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
                     sys.exit(-1)
                 self.attributes['set_browser'] = True
             else:
                 logger.log('ERROR', 'Browser already instanced')
         elif instruction[1] == 'export_net_report':
-            self.attributes['complete_csv'] = self.attributes['NATIVES']['net_report'](params, self.attributes['script_name'])
+            self.attributes['complete_csv']\
+                = self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
             self.attributes['set_net_report'] = True
         elif instruction[1] == 'reset_har':
-            self.attributes['NATIVES']['reset_hat'](self.attributes['set_ner_report'], 
-                                                    self.attributes['complete_csv'], 
-                                                    self.attributes['browser'].current_url, 
+            self.attributes['NATIVES']['reset_hat'](self.attributes['set_net_report'],
+                                                    self.attributes['complete_csv'],
+                                                    self.attributes['browser'].current_url,
                                                     self.attributes['proxy'])
         elif instruction[1] == 'check_net':
             pass
         else:
             try:
-                self.attributes['NATIVES'][instruction[1]](self.attributes['browser'], params)
+                try:
+                    self.attributes['NATIVES'][instruction[1]](self.attributes['browser'], params)
+                except Exception as e:
+                    logger.log('ERROR', 'Error with function {function}: {exception}'.format(function=instruction[1],
+                                                                                             exception=e))
+                    sys.exit(1)
             except LookupError:
                 try:
                     self.execute_instructions(self.attributes['USER_FUNC'][instruction[1]])
@@ -143,12 +149,11 @@ class NBZCore:
                     logger.log('ERROR', 'Not defined function')
                     sys.exit(-1)
 
-
     def _if(self, instruction):
         if self.get_value(instruction[1]):
             self.execute_instructions(instruction[2])
         else:
-            if len(instruction) == 4: # If statement have elif OR else
+            if len(instruction) == 4:  # If statement have elif OR else
                 if instruction[3][0][0] == 'elif':
                     for elif_ in instruction[3]:
                         if self.get_value(elif_[1]):
@@ -156,7 +161,7 @@ class NBZCore:
                             break
                 elif instruction[3][0][0] == 'else':
                     self.execute_instructions(instruction[3][0][1])
-            else: # If statement have elif AND else
+            else:  # If statement have elif AND else
                 elif_done = False
                 for elif_ in instruction[3]:
                     if self.get_value(elif_[1]):
@@ -166,36 +171,39 @@ class NBZCore:
                 if not elif_done:
                     self.execute_instructions(instruction[4][0][1])
 
-
     def _for(self, instruction):
-        if len(instruction) == 4: # Foreach
+        if len(instruction) == 4:  # Foreach
             element = self.get_value(instruction[1])
             structure = self.attributes['variables'][self.get_value(instruction[2])]
             for aux_element in structure:
-                if isinstance(structure, file):
-                    self.attributes['variables'][element] = aux_element[0:-1] # Avoiding newline character if we loop for a file lines
-                else:
-                    self.attributes['variables'][element] = aux_element # All other structure types
+                try:
+                    if isinstance(structure, file):
+                        self.attributes['variables'][element] = aux_element[0:-1]  # Avoiding newline character
+                    else:
+                        self.attributes['variables'][element] = aux_element  # All other structure types
+                except NameError:
+                    if isinstance(structure, IOBase):
+                        self.attributes['variables'][element] = aux_element[0:-1]  # Avoiding newline character
+                    else:
+                        self.attributes['variables'][element] = aux_element  # All other structure types
                 self.execute_instructions(instruction[3])
-        else: # Standard For
+        else:  # Standard For
             if instruction[3] == '+':
-                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), 1):
+                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), 1):
                     self.execute_instructions(instruction[4])
             elif instruction[3] == '++':
-                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), 2):
+                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), 2):
                     self.execute_instructions(instruction[4])
             elif instruction[3] == '-':
-                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), -1):
+                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), -1):
                     self.execute_instructions(instruction[4])
             elif instruction[3] == '--':
-                for i in xrange(self.get_value(instruction[1]), self.get_value(instruction[2]), -2):
+                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), -2):
                     self.execute_instructions(instruction[4])
-
 
     def _while(self, instruction):
         while self.get_value(instruction[1]):
             self.execute_instructions(instruction[2])
-
 
     def get_value(self, sub_instruction):
         """Local function inside executeInstructions() method, that is just used for it.
@@ -223,13 +231,13 @@ class NBZCore:
                         op_1 = self.get_value(sub_instruction[1])
                         op_2 = self.get_value(sub_instruction[2])
                         if isinstance(op_1, str) or isinstance(op_2, str):
-                            return '{op_1}{op_2}'.format(op_1=str(op_1).encode('utf-8'), 
-                                                         op_2=str(op_2).encode('utf-8'))
+                            return '{op_1}{op_2}'.format(op_1=str(op_1),
+                                                         op_2=str(op_2))
                         else:
                             return op_1 + op_2
                     else:
-                        return eval('{op_1}{operand}{op_2}'.format(op_1=self.get_value(sub_instruction[1]), 
-                                                                   operand=sub_instruction[3], 
+                        return eval('{op_1}{operand}{op_2}'.format(op_1=self.get_value(sub_instruction[1]),
+                                                                   operand=sub_instruction[3],
                                                                    op_2=self.get_value(sub_instruction[2])))
                 elif sub_instruction[0] == 'boolean':
                     if sub_instruction[3] != 'not':
@@ -239,8 +247,8 @@ class NBZCore:
                             op_1 = "'{op_1}'".format(op_1=op_1)
                         if isinstance(op_2, str):
                             op_2 = "'{op_2}'".format(op_2=op_2)
-                        return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(op_1), 
-                                                                     operand=sub_instruction[3], 
+                        return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(op_1),
+                                                                     operand=sub_instruction[3],
                                                                      op_2=self.get_value(op_2)))
                     else:
                         return not self.get_value(sub_instruction[1])
@@ -248,10 +256,18 @@ class NBZCore:
                     sub_params = []
                     for sub_param in sub_instruction[2]:
                         sub_params.append(self.get_value(sub_param))
-                    if sub_instruction[1] == 'check_net':
-                        return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har, sub_params)
-                    else:
-                        return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'], sub_params)
+                    try:
+                        if sub_instruction[1] == 'check_net':
+                            return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har,
+                                                                           sub_params)
+                        else:
+                            return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'],
+                                                                                  sub_params)
+                    except Exception as e:
+                        logger.log('ERROR',
+                                   'Error with function {function}: {exception}'.format(function=sub_instruction[1],
+                                                                                        exception=e))
+                        sys.exit(-1)
                 else:
                     return sub_instruction
             else:

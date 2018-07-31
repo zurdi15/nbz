@@ -42,8 +42,7 @@ script=""
 debug="False"
 display="False"
 
-if [ ${#} = 0 ]
-then
+if [ ${#} = 0 ]; then
     show_help
     exit 0
 else
@@ -86,23 +85,26 @@ else
     done
 fi
 
-if [ -z ${script} ]
-then
+if [ -z ${script} ]; then
     echo "Error: Script required."
     exit 1
 else
-    if [ ! -f ${script} ]
-    then
+    if [ ! -f ${script} ]; then
         echo -e "Error: script \"${script}\" does not exist."
         exit 1
     fi
 fi
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+PYTHON3=$(which python3)
+PYTHON=$(which python)
 YELLOW='\e[33m'
 RED='\e[31m'
 NC='\e[0m'
+if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]; then
+echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
+    exit 1
+fi
 
 #  - Launch NBZ
 clear
@@ -111,13 +113,21 @@ echo -e "${YELLOW}${header}${NC}"
 echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
 
-python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
+if [ -z "${PYTHON3}" ]; then
+    python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
+else
+    python3 -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
+fi
 
 if [[ $? != 0 ]]; then
     echo
     echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
     echo
-    python ${NBZ_PATH}/close_all.py
+    if [ -z "${PYTHON3}" ]; then
+        python ${NBZ_PATH}/close_all.py
+    else
+        python3 ${NBZ_PATH}/close_all.py
+    fi
     echo
         exit 1
 fi
@@ -125,6 +135,10 @@ fi
 echo
 echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
 echo
-python ${NBZ_PATH}/close_all.py
+if [ -z "${PYTHON3}" ]; then
+    python ${NBZ_PATH}/close_all.py
+else
+    python3 ${NBZ_PATH}/close_all.py
+fi
 
 exit 0

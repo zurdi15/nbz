@@ -3,11 +3,12 @@
 #
 # Author: <Zurdi>
 
-import sys
+
 import time
 import unicodedata
 from selenium.webdriver.common.keys import Keys
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
+
 logger = Logging()
 
 
@@ -22,11 +23,25 @@ class LibB:
         url_retries_set: number of maximum retries to call an url
         url_retries: counter of retries to call an url
         url_retries_wait_time: time to wait between url retries
+        url_retries_continute: continue if url fails
+
+    Methods:
+        set_url_retries
+        get_url
+        fill_field
+        clear_field
+        click_element
+        select_option
+        wait_time
+        back
+        forward
+        refresh
+        get_text
+        current_url
     """
 
-
     def __init__(self):
-        """Inits LibB class with its attributes"""
+        """Init LibB class with its attributes"""
 
         self.TIME = 0.5
         self.SPECIALS = {
@@ -38,7 +53,7 @@ class LibB:
         self.url_retries_set = 1
         self.url_retries = 1
         self.url_retries_wait_time = 0
-
+        self.url_retries_continue = False
 
     def set_url_retries(self, browser, params):
         """Defines url retries options
@@ -54,10 +69,9 @@ class LibB:
             self.url_retries = params[0]
             self.url_retries_set = params[0]
             self.url_retries_wait_time = params[1]
-        except Exception as e:
-            logger.log('ERROR', 'Error setting get url retries: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            self.url_retries_continue = params[2]
+        except Exception:
+            raise Exception('Error setting get url retries: 3 arguments needed')
 
     def get_url(self, browser, params):
         """Open an url
@@ -69,7 +83,6 @@ class LibB:
         """
 
         url = str(params[0])
-
         if self.url_retries > 0:
             try:
                 logger.log('NOTE', 'Loading: {url}'.format(url=url))
@@ -78,14 +91,16 @@ class LibB:
             except Exception as e:
                 logger.log('ERROR', 'Error loading url: {exception}'.format(exception=e))
                 self.url_retries -= 1
-                logger.log('ERROR', 'Error loading url, retries left: {url_retries}, waiting {time} seconds'.format(url_retries=self.url_retries, 
-                                                                                                                    time=self.url_retries_wait_time))
+                logger.log('ERROR', 'Error loading url, retries left: {url_retries}, '
+                                    'waiting {time} seconds'.format(url_retries=self.url_retries,
+                                                                    time=self.url_retries_wait_time))
                 time.sleep(self.url_retries_wait_time)
                 self.get_url(browser, params)
         else:
-            logger.log('ERROR', 'Get url retries limit exceeded')
-            sys.exit(-1)
-
+            if self.url_retries_continue:
+                self.url_retries = self.url_retries_set
+            else:
+                raise Exception('Get url retries limit exceeded')
 
     def fill_field(self, browser, params):
         """Fill a field with value and/or special-key
@@ -101,8 +116,7 @@ class LibB:
             xpath = params[0]
             keys = params[1:]
         except LookupError:
-            logger.log('ERROR', 'Function fill(): at least 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function fill(): at least 2 arguments needed')
 
         try:
             field = browser.find_element_by_xpath(xpath)
@@ -118,9 +132,7 @@ class LibB:
                     logger.log('NOTE', 'Value: {key}'.format(key=key))
                 time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with field {xpath): {exception}'.format(xpath=xpath, exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error with field {xpath): {exception}'.format(xpath=xpath, exception=e))
 
     @staticmethod
     def clear_field(browser, params):
@@ -133,16 +145,13 @@ class LibB:
         """
 
         xpath = params[0]
-
         try:
             field = browser.find_element_by_xpath(xpath)
             field.clear()
             logger.log('NOTE', 'Field cleared')
         except Exception as e:
-            logger.log('ERROR', 'Error with field {xpath}: {exception}'.format(xpath=xpath, 
-                                                                               exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error with field {xpath}: {exception}'.format(xpath=xpath,
+                                                                           exception=e))
 
     def click_element(self, browser, params):
         """Click an element
@@ -154,7 +163,6 @@ class LibB:
         """
 
         xpath = params[0]
-
         try:
             element = browser.find_element_by_xpath(xpath)
             if element.text:
@@ -166,10 +174,8 @@ class LibB:
             element.click()
             time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with button {xpath}: {exception}'.format(xpath=xpath, 
-                                                                                exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error with button {xpath}: {exception}'.format(xpath=xpath,
+                                                                            exception=e))
 
     def select_option(self, browser, params):
         """Select an option from a selector
@@ -185,8 +191,7 @@ class LibB:
             selector_xpath = params[0]
             option_xpath = params[1]
         except LookupError:
-            logger.log('ERROR', 'Function select(): 2 arguments needed')
-            sys.exit(-1)
+            raise Exception('Function select(): 2 arguments needed')
 
         try:
             select = browser.find_element_by_xpath(selector_xpath)
@@ -197,10 +202,9 @@ class LibB:
             option.click()
             time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error with selector {selector_xpath}: {exception}'.format(selector_xpath=selector_xpath, 
-                                                                                           exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error with selector {selector_xpath}: '
+                            '{exception}'.format(selector_xpath=selector_xpath,
+                                                 exception=e))
 
     @staticmethod
     def wait_time(browser, params):
@@ -213,14 +217,11 @@ class LibB:
         """
 
         wait_time = params[0]
-
         try:
             logger.log('NOTE', 'Waiting {wait_time} seconds'.format(wait_time=wait_time))
             time.sleep(float(wait_time))
         except Exception as e:
-            logger.log('ERROR', 'Error in explicit waiting: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error in explicit waiting: {exception}'.format(exception=e))
 
     def back(self, browser, params):
         """Go back in browser history
@@ -235,9 +236,7 @@ class LibB:
             logger.log('NOTE', 'Going back')
             time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error going back: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error going back: {exception}'.format(exception=e))
 
     def forward(self, browser, params):
         """Go forward in browser history
@@ -252,9 +251,7 @@ class LibB:
             logger.log('NOTE', 'Going forward')
             time.sleep(self.TIME)
         except Exception as e:
-            logger.log('ERROR', 'Error going forward: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error going forward: {exception}'.format(exception=e))
 
     @staticmethod
     def refresh(browser, params):
@@ -269,9 +266,7 @@ class LibB:
             browser.refresh()
             logger.log('NOTE', 'Refreshing...')
         except Exception as e:
-            logger.log('ERROR', 'Error refreshing the web page: {exception}'.format(exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error refreshing the web page: {exception}'.format(exception=e))
 
     @staticmethod
     def get_text(browser, params):
@@ -286,16 +281,13 @@ class LibB:
         """
 
         web_element = params[0]
-
         try:
             element = browser.find_element_by_xpath(web_element)
             logger.log('NOTE', 'Getting element: {web_element}'.format(web_element=web_element))
-            return unicodedata.normalize('NFKD', element.text).encode('ascii','ignore')
+            return unicodedata.normalize('NFKD', element.text).encode('ascii', 'ignore')
         except Exception as e:
-            logger.log('ERROR', 'Error with element {web_element}: {exception}'.format(web_element=web_element, 
-                                                                                       exception=e))
-            sys.exit(-1)
-
+            raise Exception('Error with element {web_element}: {exception}'.format(web_element=web_element,
+                                                                                   exception=e))
 
     @staticmethod
     def current_url(browser, params):
@@ -311,5 +303,4 @@ class LibB:
         try:
             return browser.current_url
         except Exception as e:
-            logger.log('ERROR', 'Error getting current url: {exception}'.format(exception=e))
-            sys.exit(-1)
+            raise Exception('Error getting current url: {exception}'.format(exception=e))

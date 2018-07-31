@@ -2,10 +2,7 @@ scripts
 .idea
 *.log
 *.pyc
-*~
-out
-*.nbzvars
-*.nbzcode
+net_reports
 parser/parser.out
 parser/parsetab.py
-NBZ-1.wiki
+__pycache__
