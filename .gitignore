@@ -5,3 +5,4 @@ scripts
 net_reports
 parser/parser.out
 parser/parsetab.py
+__pycache__

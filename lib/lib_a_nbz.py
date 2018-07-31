@@ -43,7 +43,8 @@ class LibA:
         scroll_to_top
         execute_js
         set_timeout
-        export_html
+        get_source_html
+        export_source_html
         get_all_html_links
         get_element_html
         take_screenshot
@@ -490,7 +491,28 @@ class LibA:
             raise Exception('Error setting timeout {exception}'.format(exception=e))
 
     @staticmethod
-    def export_html(browser, params):
+    def get_source_html(browser, params):
+        """Get source code from web page
+
+        Args:
+            browser: web browser instance
+            params: list of parameters (empty)
+
+        Returns:
+            String of web page source code
+        """
+
+        try:
+            source = browser.page_source
+            if isinstance(source, unicode):
+                return source.encode('utf-8')
+            else:
+                return source
+        except Exception as e:
+            raise Exception('Getting html source code: {exception}'.format(exception=e))
+
+    @staticmethod
+    def export_source_html(browser, params):
         """Export html webpage into a file
 
         Args:
@@ -511,7 +533,7 @@ class LibA:
             logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url,
                                                                                       html_path=html_path))
         except Exception as e:
-            raise Exception('Saving html source: {exception}'.format(exception=e))
+            raise Exception('Saving html source code: {exception}'.format(exception=e))
 
     @staticmethod
     def get_all_html_links(browser, params):
