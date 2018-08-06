@@ -79,12 +79,12 @@ class LibWb:
         try:
             logger.log('NOTE', 'Launching Browser: {engine} (user-agent: {user_agent})'.format(engine=engine,
                                                                                                user_agent=user_agent))
+            try:
+                    proxy_url = urlparse.urlparse(proxy.proxy).path
+            except AttributeError:
+                proxy_url = urlparse(proxy.proxy).path
             if engine == 'chrome':
                 ch_opt = webdriver.ChromeOptions()
-                try:
-                    proxy_url = urlparse.urlparse(proxy.proxy).path
-                except AttributeError:
-                    proxy_url = urlparse(proxy.proxy).path
                 ch_opt.add_argument("--proxy-server=" + proxy_url)
                 if user_agent != 'default':
                     ch_opt.add_argument("--user-agent=" + user_agent)
@@ -110,10 +110,6 @@ class LibWb:
                                                 proxy=proxy.selenium_proxy())
             elif engine == 'phantomjs':
                 webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.settings.userAgent'] = user_agent
-                try:
-                    proxy_url = urlparse.urlparse(proxy.proxy).path
-                except AttributeError:
-                    proxy_url = urlparse(proxy.proxy).path
                 service_args = ['--proxy={proxy}'.format(proxy=proxy_url),
                                 '--proxy-type=https']
                 browser = webdriver.PhantomJS(driver_path, service_args=service_args)

@@ -31,6 +31,9 @@ class LibSnf:
     def __init__(self):
         """Init LibSnf class with it attributes"""
 
+        self.reset_attributes()
+
+    def reset_attributes(self):
         self.sniffer_attr = {
             'request_ok': False,
             'url': '',
@@ -72,8 +75,8 @@ class LibSnf:
         """
 
         try:
-            attribute = request[1]  # Attribute to return
-            params = request[2:]  # Parsing just parameters to search
+            attribute = request[1]
+            params = request[2:]
         except LookupError:
             raise Exception('Function check_net(): at least 3 argument needed')
 
@@ -91,7 +94,9 @@ class LibSnf:
                         self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
                         break
         try:
-            return self.sniffer_attr[attribute]
+            attribute = self.sniffer_attr[attribute]
+            self.reset_attributes()
+            return attribute
         except LookupError:
             raise Exception('Check_net() error: can\'t find {attribute} - '
                             'invalid parameter to return'.format(attribute=attribute))
@@ -108,8 +113,8 @@ class LibSnf:
             Value of the parameter of the selected request
         """
 
-        attribute = request[1]  # Attribute to return
-        keyword = request[2]  # Keywords to search
+        attribute = request[1]
+        keyword = request[2]
 
         for entry in har['log']['entries']:
             if entry['request']['url'].find(keyword) != -1:
@@ -119,7 +124,9 @@ class LibSnf:
                 self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
                 break
         try:
-            return self.sniffer_attr[attribute]
+            attribute = self.sniffer_attr[attribute]
+            self.reset_attributes()
+            return attribute
         except LookupError:
             raise Exception('Check_net() error: can\'t find {attribute} - '
                             'invalid parameter to return'.format(attribute=attribute))
@@ -138,7 +145,9 @@ class LibSnf:
         """
         file_name = params[0]
 
-        net_reports_path = '{base_dir}/../net_reports/{script_name}'.format(base_dir=BASE_DIR,
+        net_reports_path = '{base_dir}/net_reports/{script_name}'.format(base_dir=os.path.abspath(\
+                                                                            os.path.join(BASE_DIR, 
+                                                                                         os.pardir)),
                                                                             script_name=script_name)
         complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(
             net_reports_path=net_reports_path,

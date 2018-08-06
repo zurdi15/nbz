@@ -132,7 +132,7 @@ class LibB:
                     logger.log('NOTE', 'Value: {key}'.format(key=key))
                 time.sleep(self.TIME)
         except Exception as e:
-            raise Exception('Error with field {xpath): {exception}'.format(xpath=xpath, exception=e))
+            raise Exception('Error with field {xpath}: {exception}'.format(xpath=xpath, exception=e))
 
     @staticmethod
     def clear_field(browser, params):

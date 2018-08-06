@@ -286,7 +286,7 @@ def NBZParser(script, interactive=False):
         elif p[2] == '!=':
             p[0] = ['boolean', p[1], p[3], '!=']
         else:
-            p[0] = ['boolean', p[1], p[1], 'not']
+            p[0] = ['boolean', p[2], p[2], 'not']
 
     def p_logic_valid_var(p):
         """expr_bool : sent_func"""

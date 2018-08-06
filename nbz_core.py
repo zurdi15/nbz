@@ -8,6 +8,7 @@ import sys
 from io import IOBase
 from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
+
 lib_wb_nbz = LibWb()
 logger = Logging()
 
@@ -133,7 +134,7 @@ class NBZCore:
                 = self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
             self.attributes['set_net_report'] = True
         elif func_name == 'reset_har':
-            self.attributes['NATIVES']['reset_hat'](self.attributes['set_net_report'],
+            self.attributes['NATIVES']['reset_har'](self.attributes['set_net_report'],
                                                     self.attributes['complete_csv'],
                                                     self.attributes['browser'].current_url,
                                                     self.attributes['proxy'])
