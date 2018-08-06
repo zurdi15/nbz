@@ -251,8 +251,8 @@ class NBZCore:
                         else:
                             return op_1 + op_2
                     else:
-                        return eval('{op_1}{operand}{op_2}'.format(op_1=self.get_value(sub_instruction[1]), 
-                                                                   operand=sub_instruction[3], 
+                        return eval('{op_1}{operand}{op_2}'.format(op_1=self.get_value(sub_instruction[1]),
+                                                                   operand=sub_instruction[3],
                                                                    op_2=self.get_value(sub_instruction[2])))
                 elif sub_instruction[0] == 'boolean':
                     if sub_instruction[3] != 'not':
@@ -262,8 +262,8 @@ class NBZCore:
                             op_1 = "'{op_1}'".format(op_1=op_1)
                         if isinstance(op_2, str):
                             op_2 = "'{op_2}'".format(op_2=op_2)
-                        return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(op_1), 
-                                                                     operand=sub_instruction[3], 
+                        return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(op_1),
+                                                                     operand=sub_instruction[3],
                                                                      op_2=self.get_value(op_2)))
                     else:
                         return not self.get_value(sub_instruction[1])
