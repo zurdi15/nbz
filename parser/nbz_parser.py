@@ -217,7 +217,7 @@ def NBZParser(script, interactive=False):
                 z_code.pop()
             z_code.append(p[0])
         elif len(p) == 13:  # If + elif + else
-            if not p[8]:
+            if p[8]:
                 p[0] = ['if', p[3], p[6], p[8], [['else'] + [p[11]]]]
             else:
                 p[0] = ['if', p[3], p[6], [['else'] + [p[11]]]]
@@ -234,7 +234,7 @@ def NBZParser(script, interactive=False):
         if len(p) > 2:
             for i in range(0, len(p[6])):
                 z_code.pop()
-            if not p[8]:
+            if p[8]:
                 p[0] = [['elif', p[3], p[6]], p[8][0]]
             else:
                 p[0] = [['elif', p[3], p[6]]]

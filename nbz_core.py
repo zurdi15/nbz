@@ -8,7 +8,6 @@ import sys
 from io import IOBase
 from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
-
 lib_wb_nbz = LibWb()
 logger = Logging()
 
@@ -72,7 +71,8 @@ class NBZCore:
 
                 - if:           instruction[1] -> condition
                                 instruction[2] -> block of sentences (if)
-                                instruction[3] -> block of sentences (else)
+                                instruction[3] -> block of sentences (elif or else)
+                                (instruction[4]) -> block of sentences (else)
 
                 - for(normal):  instruction[1] -> start index
                                 instruction[2] -> end index
@@ -96,85 +96,103 @@ class NBZCore:
             instructions = self.attributes['instruction_set']
         else:
             instructions = instruction_set
-
         for instruction in instructions:
-                self.statements[instruction[0]](instruction)
+            self.statements[instruction[0]](instruction)
 
     def _assign(self, instruction):
-        self.attributes['variables'][instruction[1]] = self.get_value(instruction[2])
+        var_name = instruction[1]
+        var_value = instruction[2]
+        self.attributes['variables'][var_name] = self.get_value(var_value)
 
     def _def(self, instruction):
-        self.attributes['USER_FUNC'][instruction[1]] = instruction[2]
+        func_name = instruction[1]
+        func_instructions = instruction[2]
+        self.attributes['USER_FUNC'][func_name] = func_instructions
 
     def _func(self, instruction):
+        func_name = instruction[1]
+        func_parameters = instruction[2]
         params = []
-        for param in instruction[2]:
+        for param in func_parameters:
             params.append(self.get_value(param))
-        if instruction[1] == 'exit':
-            sys.exit(0)
-        elif instruction[1] == 'browser':
+        if func_name == 'exit':
+            sys.exit()
+        elif func_name == 'browser':
             if not self.attributes['set_browser']:
                 try:
                     self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
                         = lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
                 except Exception as e:
                     logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
-                    sys.exit(-1)
+                    sys.exit()
                 self.attributes['set_browser'] = True
             else:
                 logger.log('ERROR', 'Browser already instanced')
-        elif instruction[1] == 'export_net_report':
+        elif func_name == 'export_net_report':
             self.attributes['complete_csv']\
                 = self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
             self.attributes['set_net_report'] = True
-        elif instruction[1] == 'reset_har':
+        elif func_name == 'reset_har':
             self.attributes['NATIVES']['reset_hat'](self.attributes['set_net_report'],
                                                     self.attributes['complete_csv'],
                                                     self.attributes['browser'].current_url,
                                                     self.attributes['proxy'])
-        elif instruction[1] == 'check_net':
+        elif func_name == 'check_net':
             pass
         else:
             try:
                 try:
-                    self.attributes['NATIVES'][instruction[1]](self.attributes['browser'], params)
+                    self.attributes['NATIVES'][func_name](self.attributes['browser'], params)
                 except Exception as e:
-                    logger.log('ERROR', 'Error with function {function}: {exception}'.format(function=instruction[1],
+                    logger.log('ERROR', 'Error with function {function}: {exception}'.format(function=func_name,
                                                                                              exception=e))
-                    sys.exit(1)
+                    sys.exit()
             except LookupError:
                 try:
-                    self.execute_instructions(self.attributes['USER_FUNC'][instruction[1]])
+                    self.execute_instructions(self.attributes['USER_FUNC'][func_name])
                 except LookupError:
                     logger.log('ERROR', 'Not defined function')
-                    sys.exit(-1)
+                    sys.exit()
 
     def _if(self, instruction):
-        if self.get_value(instruction[1]):
-            self.execute_instructions(instruction[2])
+        if_condition = self.get_value(instruction[1])
+        if_instructions = instruction[2]
+        try:
+            elif_else_statements = instruction[3]
+            else_instructions = instruction[4][0][1]
+        except LookupError:
+            pass
+        if if_condition:
+            self.execute_instructions(if_instructions)
         else:
             if len(instruction) == 4:  # If statement have elif OR else
-                if instruction[3][0][0] == 'elif':
-                    for elif_ in instruction[3]:
-                        if self.get_value(elif_[1]):
-                            self.execute_instructions(elif_[2])
+                if elif_else_statements[0][0] == 'elif':
+                    for elif_ in elif_else_statements:
+                        elif_condition = self.get_value(elif_[1])
+                        elif_instructions = elif_[2]
+                        if elif_condition:
+                            self.execute_instructions(elif_instructions)
                             break
-                elif instruction[3][0][0] == 'else':
-                    self.execute_instructions(instruction[3][0][1])
-            else:  # If statement have elif AND else
+                elif elif_else_statements[0][0] == 'else':
+                    else_instructions = elif_else_statements[0][1]
+                    self.execute_instructions(else_instructions)
+            elif len(instruction) == 5:  # If statement have elif AND else
                 elif_done = False
-                for elif_ in instruction[3]:
-                    if self.get_value(elif_[1]):
+                for elif_ in elif_else_statements:
+                    elif_condition = self.get_value(elif_[1])
+                    elif_instructions = elif_[2]
+                    if elif_condition:
                         elif_done = True
-                        self.execute_instructions(elif_[2])
+                        self.execute_instructions(elif_instructions)
                         break
                 if not elif_done:
-                    self.execute_instructions(instruction[4][0][1])
+                    self.execute_instructions(else_instructions)
 
     def _for(self, instruction):
         if len(instruction) == 4:  # Foreach
             element = self.get_value(instruction[1])
             structure = self.attributes['variables'][self.get_value(instruction[2])]
+            foreach_instructions = instruction[3]
             for aux_element in structure:
                 try:
                     if isinstance(structure, file):
@@ -186,24 +204,21 @@ class NBZCore:
                         self.attributes['variables'][element] = aux_element[0:-1]  # Avoiding newline character
                     else:
                         self.attributes['variables'][element] = aux_element  # All other structure types
-                self.execute_instructions(instruction[3])
+                self.execute_instructions(foreach_instructions)
         else:  # Standard For
-            if instruction[3] == '+':
-                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), 1):
-                    self.execute_instructions(instruction[4])
-            elif instruction[3] == '++':
-                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), 2):
-                    self.execute_instructions(instruction[4])
-            elif instruction[3] == '-':
-                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), -1):
-                    self.execute_instructions(instruction[4])
-            elif instruction[3] == '--':
-                for i in range(self.get_value(instruction[1]), self.get_value(instruction[2]), -2):
-                    self.execute_instructions(instruction[4])
+            init_index = self.get_value(instruction[1])
+            fin_index = self.get_value(instruction[2])
+            op_counters = {'+': 1, '++': 2, '-': -1, '--': -2}
+            counter = op_counters[instruction[3]]
+            for_instructions = instruction[4]
+            for i in range(init_index, fin_index, counter):
+                self.execute_instructions(for_instructions)
 
     def _while(self, instruction):
-        while self.get_value(instruction[1]):
-            self.execute_instructions(instruction[2])
+        while_condition = instruction[1]
+        while_instructions = instruction[2]
+        while self.get_value(while_condition):
+            self.execute_instructions(while_instructions)
 
     def get_value(self, sub_instruction):
         """Local function inside executeInstructions() method, that is just used for it.
@@ -231,8 +246,8 @@ class NBZCore:
                         op_1 = self.get_value(sub_instruction[1])
                         op_2 = self.get_value(sub_instruction[2])
                         if isinstance(op_1, str) or isinstance(op_2, str):
-                            return '{op_1}{op_2}'.format(op_1=str(op_1).encode('utf-8'), 
-                                                         op_2=str(op_2).encode('utf-8'))
+                            return '{op_1}{op_2}'.format(op_1=str(op_1),
+                                                         op_2=str(op_2))
                         else:
                             return op_1 + op_2
                     else:

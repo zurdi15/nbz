@@ -23,6 +23,7 @@ class LibB:
         url_retries_set: number of maximum retries to call an url
         url_retries: counter of retries to call an url
         url_retries_wait_time: time to wait between url retries
+        url_retries_continute: continue if url fails
 
     Methods:
         set_url_retries
@@ -52,6 +53,7 @@ class LibB:
         self.url_retries_set = 1
         self.url_retries = 1
         self.url_retries_wait_time = 0
+        self.url_retries_continue = False
 
     def set_url_retries(self, browser, params):
         """Defines url retries options
@@ -67,8 +69,9 @@ class LibB:
             self.url_retries = params[0]
             self.url_retries_set = params[0]
             self.url_retries_wait_time = params[1]
-        except Exception as e:
-            raise Exception('Error setting get url retries: {exception}'.format(exception=e))
+            self.url_retries_continue = params[2]
+        except Exception:
+            raise Exception('Error setting get url retries: 3 arguments needed')
 
     def get_url(self, browser, params):
         """Open an url
@@ -94,7 +97,10 @@ class LibB:
                 time.sleep(self.url_retries_wait_time)
                 self.get_url(browser, params)
         else:
-            raise Exception('Get url retries limit exceeded')
+            if self.url_retries_continue:
+                pass
+            else:
+                raise Exception('Get url retries limit exceeded')
 
     def fill_field(self, browser, params):
         """Fill a field with value and/or special-key

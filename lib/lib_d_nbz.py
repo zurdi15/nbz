@@ -4,6 +4,7 @@
 # Author: <Zurdi>
 
 
+import re
 from lib.lib_log_nbz import Logging
 
 logger = Logging()
@@ -19,8 +20,9 @@ class LibD:
         cast_float
         cast_str
         sub_str
-        lenght
+        length
         find
+        find_regex
         replace
         split
         append_list
@@ -165,6 +167,31 @@ class LibD:
         except Exception as e:
             raise Exception('Error searching substring into {string}: {exception}'.format(string=string,
                                                                                           exception=e))
+
+    @staticmethod
+    def find_regex(browser, params):
+        """Search a regex pattern into string.
+
+        Args:
+            browser: web browser instance
+            params: list of parameters
+                -0: main string
+                -1: regex
+        Returns:
+            String found with that pattern
+        """
+
+        try:
+            string = params[0]
+            pattern = params[1]
+            result = re.search(pattern, string)
+            if result:
+                return result.group()
+            else:
+                return ""
+        except Exception as e:
+            raise Exception('Error searching pattern into {pattern}: {exception}'.format(pattern=pattern,
+                                                                                         exception=e))
 
     @staticmethod
     def replace(browser, params):

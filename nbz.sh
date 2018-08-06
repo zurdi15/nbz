@@ -116,7 +116,7 @@ echo
 if [ -z "${PYTHON3}" ]; then
     python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
 else
-    python3 -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
+    python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
 fi
 
 if [[ $? != 0 ]]; then
