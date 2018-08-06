@@ -83,19 +83,19 @@ class NBZInterface:
             A dict mapping variables of the script and their values
         """
 
-        #try:
-        z_code, z_code_vars = NBZParser(self.core_attributes['script'])
-        self.core_attributes['instruction_set'] = z_code
-        self.core_attributes['variables'] = z_code_vars
-        if self.core_attributes['debug']:
-            logger.log('NOTE',
-                        'Instructions: {instructions}'.format(instructions=self.core_attributes['instruction_set']))
-            logger.log('NOTE', 'Variables: {variables}'.format(variables=self.core_attributes['variables']))
-        '''except Exception as e:
+        try:
+            z_code, z_code_vars = NBZParser(self.core_attributes['script'])
+            self.core_attributes['instruction_set'] = z_code
+            self.core_attributes['variables'] = z_code_vars
+            if self.core_attributes['debug']:
+                logger.log('NOTE',
+                            'Instructions: {instructions}'.format(instructions=self.core_attributes['instruction_set']))
+                logger.log('NOTE', 'Variables: {variables}'.format(variables=self.core_attributes['variables']))
+        except Exception as e:
             logger.log('ERROR',
                        'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'],
                                                                             exception=e))
-            sys.exit()'''
+            sys.exit()
 
     def close_all(self):
         """Close all connections and export har log"""
