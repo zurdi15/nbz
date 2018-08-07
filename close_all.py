@@ -15,14 +15,14 @@ logger = Logging()
 
 
 if os.name == 'posix':
-    ppid = os.getppid()
-    logs = ['bmp.log', 'geckodriver.log', 'server.log', 'ghostdriver.log']
-    for log in logs:
-        if os.path.isfile(os.path.join(os.getcwd(), log)):
-                os.remove(os.path.join(os.getcwd(), log))
-    logger.log('NOTE', 'Connections closed')
-    os.killpg(ppid, 9)
+	ppid = os.getppid()
+	logs = ['bmp.log', 'geckodriver.log', 'server.log', 'ghostdriver.log']
+	for log in logs:
+		if os.path.isfile(os.path.join(os.getcwd(), log)):
+				os.remove(os.path.join(os.getcwd(), log))
+	logger.log('NOTE', 'Connections closed')
+	os.killpg(ppid, 9)
 
 elif os.name == 'nt':
-    # TODO all
-    pass
+	# TODO all
+	pass
