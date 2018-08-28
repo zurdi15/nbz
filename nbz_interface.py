@@ -66,14 +66,30 @@ class NBZInterface:
 
 		self.compile_script()
 		nbz_core = NBZCore(self.core_attributes)
-		nbz_core.execute_instructions()
 
-		# Return all core attributes to close needed
-		self.core_attributes = NBZCore.get_attributes(nbz_core)
+		try:
+			nbz_core.execute_instructions()
+		finally:
+			# Return all core attributes to close needed
+			self.core_attributes = NBZCore.get_attributes(nbz_core)
 
-		# Close browser/proxy/server
-		if self.core_attributes['set_browser']:
-			self.close_all()
+			# Close browser/proxy/server
+			if self.core_attributes['set_browser']:
+				self.close_all()
+
+			if os.name == 'posix':
+				ppid = os.getppid()
+				logs = ['bmp.log', 'geckodriver.log', 'server.log', 'ghostdriver.log']
+				for log in logs:
+					if os.path.isfile(os.path.join(os.getcwd(), log)):
+							os.remove(os.path.join(os.getcwd(), log))
+				logger.log('NOTE', 'Connections closed')
+				os.killpg(ppid, 9)
+
+			elif os.name == 'nt':
+				# TODO all
+				pass
+
 
 	def compile_script(self):
 		"""Compile script to be executed.
