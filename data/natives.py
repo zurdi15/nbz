@@ -71,6 +71,7 @@ NATIVES = {
 	'screenshot': lib_a_nbz.take_screenshot,
 
 	# Data types functions
+	'type': lib_d_nbz.var_type,
 	'int': lib_d_nbz.cast_int,
 	'float': lib_d_nbz.cast_float,
 	'str': lib_d_nbz.cast_str,

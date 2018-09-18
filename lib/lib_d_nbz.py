@@ -16,6 +16,7 @@ class LibD:
 	This class contains all the data types functions to handle types into nbz-scripts.
 
 	Methods:
+		var_type
 		cast_int
 		cast_float
 		cast_str
@@ -35,6 +36,22 @@ class LibD:
 		"""Init LibD class"""
 
 		pass
+
+	@staticmethod
+	def var_type(browser, params):
+		"""Print the variable type
+
+		Args:
+			browser: web browser instance
+			params: list of parameters
+				-0: variable to print type
+
+		Returns:
+			String with the type of the variable
+		"""
+
+		variable = params[0]
+		return type(variable)
 
 	@staticmethod
 	def cast_int(browser, params):
