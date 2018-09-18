@@ -102,13 +102,18 @@ YELLOW='\e[33m'
 RED='\e[31m'
 NC='\e[0m'
 if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]; then
-echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
+	echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
 	exit 1
 fi
 
 #  - Launch NBZ
 clear
-header=$(toilet -t -f mono12 -F gay "  NBZ  ")
+TOILET=$(which toilet)
+if [ -z "${TOILET}" ]; then
+	header=""
+else
+	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
+fi
 echo -e "${YELLOW}${header}${NC}"
 echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
@@ -129,7 +134,7 @@ if [[ $? != 0 ]]; then
 		python3 ${NBZ_PATH}/close_all.py
 	fi
 	echo
-		exit 1
+	exit 1
 fi
 
 echo

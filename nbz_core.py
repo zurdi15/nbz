@@ -259,9 +259,9 @@ class NBZCore:
 					if sub_instruction[3] != 'not':
 						op_1 = self.get_value(sub_instruction[1])
 						op_2 = self.get_value(sub_instruction[2])
-						if isinstance(op_1, str):
+						if isinstance(op_1, str) or isinstance(op_1, unicode):
 							op_1 = "'{op_1}'".format(op_1=op_1)
-						if isinstance(op_2, str):
+						if isinstance(op_2, str) or isinstance(op_2, unicode):
 							op_2 = "'{op_2}'".format(op_2=op_2)
 						return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(op_1),
 																	 operand=sub_instruction[3],
