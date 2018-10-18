@@ -15,8 +15,10 @@
 #       · toilet
 
 
+PYTHON3=$(which python3)
 PYTHON=$(which python)
 JAVA=$(which java)
+PIP3=$(which pip3)
 PIP=$(which pip)
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -26,25 +28,37 @@ BLUE="\e[36m"
 GREEN="\e[92m"
 NC="\e[0m"
 
-if [ -z "${PYTHON}" ]
+echo -e "${BLUE}Installing dependencies...${NC}"
+sudo apt-get install toilet
+toilet -t -f mono12 -F gay "  NBZ  "
+exit 0
+if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]
 then
-	echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
+	echo -e "${RED}NBZ - Error: Python is not installed. Please install python2 or python3 in your system (python3 recommended).${NC}"
 	exit 1
 fi
 
 if [ -z "$JAVA" ]
 then
-	echo -e "${RED}NBZ - Error: Java is not installed. Please install it in your system.${NC}"
+	echo -e "${RED}NBZ - Error: Java is not installed. Please install it in your system (openjdk-8-jre recommended).${NC}"
 	exit 1
 fi
 
-if [ -z "${PIP}" ]
+if [ -z "${PIP3}" ] && [ -z "${PIP}" ]
 then
-	echo -e "${RED}NBZ - Error: Python-pip is not installed. Please install it in your system.${NC}"
+	echo -e "${RED}NBZ - Error: Python-pip is not installed. Please install it in your system (python-pip for python2 or python-pip3 for python3).${NC}"
 	exit 1
 fi
 
 # Installing libraries
-echo -e "${BLUE}Installing dependencies...${NC}"
-sudo apt-get install toilet
-pip install -r requirements.txt
+if ! [ -z "${PIP3}" ]
+then
+	pip3 install -r requirements.txt
+	exit 0
+fi
+if ! [ -z "${PIP}" ]
+then
+    pip install -r requirements.txt
+    exit 0
+fi
+
