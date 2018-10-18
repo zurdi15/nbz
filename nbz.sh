@@ -114,6 +114,7 @@ if [ -z "${TOILET}" ]; then
 else
 	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
 fi
+
 echo -e "${YELLOW}${header}${NC}"
 echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
 echo
@@ -136,14 +137,3 @@ if [[ $? != 0 ]]; then
 	echo
 	exit 1
 fi
-
-echo
-echo -e "${YELLOW}  ############################# END NBZ ############################${NC}"
-echo
-if [ -z "${PYTHON3}" ]; then
-	python ${NBZ_PATH}/close_all.py
-else
-	python3 ${NBZ_PATH}/close_all.py
-fi
-
-exit 0

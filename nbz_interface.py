@@ -77,13 +77,18 @@ class NBZInterface:
 			if self.core_attributes['set_browser']:
 				self.close_all()
 
+
 			if os.name == 'posix':
+				self.YELLOW = '\033[93m'
+				self.NC = '\033[0m'
+				logger.log('NOTE', 'Connections closed')
+				print("\n{YELLOW}  ############################# END NBZ ############################{NC}".format(YELLOW=self.YELLOW,
+																												NC=self.NC))
 				ppid = os.getppid()
 				logs = ['bmp.log', 'geckodriver.log', 'server.log', 'ghostdriver.log']
 				for log in logs:
 					if os.path.isfile(os.path.join(os.getcwd(), log)):
 							os.remove(os.path.join(os.getcwd(), log))
-				logger.log('NOTE', 'Connections closed')
 				os.killpg(ppid, 9)
 
 			elif os.name == 'nt':
