@@ -28,7 +28,6 @@ BLUE="\e[36m"
 GREEN="\e[92m"
 NC="\e[0m"
 
-echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
 toilet -t -f mono12 -F gay "  NBZ  "
 
