@@ -31,7 +31,10 @@ NC="\e[0m"
 echo -e "${BLUE}Installing dependencies...${NC}"
 sudo apt-get install toilet
 toilet -t -f mono12 -F gay "  NBZ  "
-exit 0
+
+echo -e "${GREEN}  ########################## INSTALLING NBZ ##########################${NC}"
+echo
+
 if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]
 then
 	echo -e "${RED}NBZ - Error: Python is not installed. Please install python2 or python3 in your system (python3 recommended).${NC}"
@@ -54,11 +57,10 @@ fi
 if ! [ -z "${PIP3}" ]
 then
 	pip3 install -r requirements.txt
-	exit 0
-fi
-if ! [ -z "${PIP}" ]
+elif ! [ -z "${PIP}" ]
 then
     pip install -r requirements.txt
-    exit 0
 fi
 
+echo
+echo -e "${GREEN}  ########################## INSTALATION FINISHED NBZ ##########################${NC}"
