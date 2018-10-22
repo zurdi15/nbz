@@ -8,7 +8,6 @@ import sys
 from io import IOBase
 from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
-
 lib_wb_nbz = LibWb()
 logger = Logging()
 

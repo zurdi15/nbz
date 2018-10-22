@@ -129,11 +129,4 @@ if [[ $? != 0 ]]; then
 	echo
 	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
 	echo
-	if [ -z "${PYTHON3}" ]; then
-		python ${NBZ_PATH}/close_all.py
-	else
-		python3 ${NBZ_PATH}/close_all.py
-	fi
-	echo
-	exit 1
 fi
