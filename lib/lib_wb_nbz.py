@@ -51,7 +51,6 @@ class LibWb:
 			Instance of the server, the proxy and the web browser
 		"""
 
-		logger.log('NOTE', 'Launching proxy server...')
 		try:
 			server = Server(proxy_path)
 			server.start()
@@ -76,7 +75,7 @@ class LibWb:
 		except LookupError:
 			raise Exception('Function browser(): 2 arguments needed')
 		try:
-			logger.log('NOTE', 'Launching Browser: {engine} (user-agent: {user_agent})'.format(engine=engine,
+			logger.log('NOTE', 'Browser: {engine} (user-agent: {user_agent})'.format(engine=engine,
 																							   user_agent=user_agent))
 			try:
 				proxy_url = urlparse.urlparse(proxy.proxy).path

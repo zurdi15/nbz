@@ -62,15 +62,28 @@ class NBZInterface:
 			'complete_csv_path': '',
 			'complete_csv': None,
 		}
-
-		self.compile_script()
-		nbz_core = NBZCore(self.core_attributes)
+		self.COLOURS = {'YELLOW': '\033[93m',
+						'RED': '\033[91m',
+						'NC': '\033[0m',
+		}
 		try:
+			if os.name == 'posix':
+				print("\n{YELLOW}  ############################ START NBZ ###########################{NC}\n".format(YELLOW=self.COLOURS['YELLOW'],
+																											  	  NC=self.COLOURS['NC']))
+			self.compile_script()
+			nbz_core = NBZCore(self.core_attributes)
 			nbz_core.execute_instructions()
-		finally:
 			# Return all core attributes to close needed
 			self.core_attributes = NBZCore.get_attributes(nbz_core)
-			# Close browser/proxy/server and cleaning unused log files
+			if os.name == 'posix':
+				print("\n{YELLOW}  ############################# END NBZ ############################{NC}".format(YELLOW=self.COLOURS['YELLOW'],
+																											  	  NC=self.COLOURS['NC']))
+		except:
+			if os.name == 'posix':
+				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}".format(RED=self.COLOURS['RED'],
+																											  	NC=self.COLOURS['NC']))
+		finally:
+			# Close browser/proxy/server
 			self.close_all()
 
 	def compile_script(self):
@@ -109,11 +122,6 @@ class NBZInterface:
 			self.core_attributes['proxy'].close()
 			self.core_attributes['server'].stop()
 		if os.name == 'posix':
-			self.YELLOW = '\033[93m'
-			self.NC = '\033[0m'
-			logger.log('NOTE', 'Connections closed')
-			print("\n{YELLOW}  ############################# END NBZ ############################{NC}".format(YELLOW=self.YELLOW,
-																											  NC=self.NC))
 			ppid = os.getppid()
 			logs = ['bmp.log', 'geckodriver.log', 'server.log', 'ghostdriver.log']
 			for log in logs:

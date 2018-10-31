@@ -28,7 +28,7 @@ BLUE="\e[36m"
 GREEN="\e[92m"
 NC="\e[0m"
 
-sudo apt-get install toilet
+sudo apt-get install toilet -y
 toilet -t -f mono12 -F gay "  NBZ  "
 
 echo -e "${GREEN}  ########################## INSTALLING NBZ ##########################${NC}"

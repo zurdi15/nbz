@@ -115,18 +115,10 @@ else
 	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
 fi
 
-echo -e "${YELLOW}${header}${NC}"
-echo -e "${YELLOW}  ########################## STARTING NBZ ##########################${NC}"
-echo
+echo -e "${header}"
 
 if [ -z "${PYTHON3}" ]; then
 	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
 else
 	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
-fi
-
-if [[ $? != 0 ]]; then
-	echo
-	echo -e "${RED} ************************ ERROR ENDING NBZ ************************${NC}"
-	echo
 fi
