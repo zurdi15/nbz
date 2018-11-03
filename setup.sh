@@ -13,6 +13,7 @@
 #
 #   - Bash:
 #       · toilet
+#       · xvfb
 
 
 PYTHON3=$(which python3)
@@ -29,6 +30,7 @@ GREEN="\e[92m"
 NC="\e[0m"
 
 sudo apt-get install toilet -y
+sudo apt-get install xvfb -y
 toilet -t -f mono12 -F gay "  NBZ  "
 
 echo -e "${GREEN}  ########################## INSTALLING NBZ ##########################${NC}"
