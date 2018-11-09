@@ -5,6 +5,7 @@
 
 
 import os
+import platform
 import time
 
 try:
@@ -130,10 +131,12 @@ class LibWb:
 		"""
 
 		if engine == 'chrome':
-			if os.name == 'posix':
+			if platform.system() == 'Linux':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver')
-			elif os.name == 'nt':
+			elif platform.system() == 'Windwos':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver.exe')
+			elif platform.system() == 'Darwin':
+				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver_mac')
 			else:
 				raise Exception('Operative System not supported')
 		elif engine == 'firefox':
