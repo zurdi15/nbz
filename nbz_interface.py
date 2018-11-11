@@ -10,9 +10,9 @@ import argparse
 from pprint import pprint
 from pyvirtualdisplay import Display
 from nbz_core import NBZCore
-from parser.nbz_parser import NBZParser
-from data.natives import NATIVES
-from lib.lib_log_nbz import Logging
+from nbz_parser import NBZParser
+from natives import NATIVES
+from lib_log_nbz import Logging
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'posix':
@@ -121,16 +121,19 @@ class NBZInterface:
 			self.core_attributes['browser'].close()
 			self.core_attributes['proxy'].close()
 			self.core_attributes['server'].stop()
+		logs_dir = os.path.join(BASE_DIR, "logs")
+		logs = ['server.log', 'bmp.log', 'geckodriver.log', 'ghostdriver.log']
+		if not os.path.exists(logs_dir):
+			os.makedirs(logs_dir)
 		if os.name == 'posix':
 			ppid = os.getppid()
-			logs = ['bmp.log', 'geckodriver.log', 'server.log', 'ghostdriver.log']
-			for log in logs:
-				if os.path.isfile(os.path.join(os.getcwd(), log)):
-					os.rename(os.path.join(os.getcwd(), log), os.path.join(BASE_DIR, "logs", log))
 			os.killpg(ppid, 9)
 		elif os.name == 'nt':
 			# TODO all
 			pass
+		for log in logs:
+			if os.path.isfile(os.path.join(os.getcwd(), log)):
+				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
 
 def main():
 	parser = argparse.ArgumentParser()
@@ -141,11 +144,11 @@ def main():
 	script = args.script
 	debug = args.debug
 	display = args.display
-	if debug == 'True':
+	if debug == 'true':
 		debug = True
 	else:
 		debug = False
-	if display == 'True':
+	if display == 'true':
 		display = Display(visible=0, size=(1024, 768))
 		display.start()
 	NBZInterface(script, debug)

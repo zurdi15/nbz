@@ -4,10 +4,10 @@
 # Author: <Zurdi>
 
 
-from lib.lib_log_nbz import Logging
-from data.natives import NATIVES
+from lib_log_nbz import Logging
+from natives import NATIVES
 try:
-	from parser.nbz_lexer import tokens  # Get the token map from the lexer
+	from nbz_lexer import tokens  # Get the token map from the lexer
 	import ply.yacc as yacc
 except LookupError:
 	logger = Logging()

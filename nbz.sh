@@ -39,8 +39,8 @@ function show_version {
 #  - Parameters
 
 script=""
-debug="False"
-display="False"
+debug="false"
+display="false"
 
 if [ ${#} = 0 ]; then
 	show_help
@@ -68,10 +68,10 @@ else
 				fi
 				;;
 			d)
-				debug="True" >&2
+				debug="true" >&2
 				;;
 			x)
-				display="True" >&2
+				display="true" >&2
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2

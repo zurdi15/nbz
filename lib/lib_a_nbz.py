@@ -8,7 +8,7 @@ import time
 from datetime import datetime
 from random import randint
 import re
-from lib.lib_log_nbz import Logging
+from lib_log_nbz import Logging
 
 logger = Logging()
 

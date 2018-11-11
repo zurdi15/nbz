@@ -12,8 +12,8 @@ try:
 	import urlparse
 except ImportError:
 	from urllib.parse import urlparse
-from data.user_agents import USER_AGENTS
-from lib.lib_log_nbz import Logging
+from user_agents import USER_AGENTS
+from lib_log_nbz import Logging
 
 try:
 	from selenium import webdriver
@@ -133,7 +133,7 @@ class LibWb:
 		if engine == 'chrome':
 			if platform.system() == 'Linux':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver')
-			elif platform.system() == 'Windwos':
+			elif platform.system() == 'Windows':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver.exe')
 			elif platform.system() == 'Darwin':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver_mac')
