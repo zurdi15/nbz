@@ -10,9 +10,9 @@ import argparse
 from pprint import pprint
 from pyvirtualdisplay import Display
 from nbz_core import NBZCore
-from nbz_parser import NBZParser
-from natives import NATIVES
-from lib_log_nbz import Logging
+from parser.nbz_parser import NBZParser
+from data.natives import NATIVES
+from lib.lib_log_nbz import Logging
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'posix':

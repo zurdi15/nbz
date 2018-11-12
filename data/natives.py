@@ -7,10 +7,10 @@
 # is generated, to be imported by other modules.
 
 
-from lib_snf_nbz import LibSnf
-from lib_a_nbz import LibA
-from lib_b_nbz import LibB
-from lib_d_nbz import LibD
+from lib.lib_snf_nbz import LibSnf
+from lib.lib_a_nbz import LibA
+from lib.lib_b_nbz import LibB
+from lib.lib_d_nbz import LibD
 
 lib_snf_nbz = LibSnf()
 lib_a_nbz = LibA()

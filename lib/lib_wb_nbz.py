@@ -12,7 +12,7 @@ try:
 	import urlparse
 except ImportError:
 	from urllib.parse import urlparse
-from user_agents import USER_AGENTS
+from data.user_agents import USER_AGENTS
 from lib_log_nbz import Logging
 
 try:
