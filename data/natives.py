@@ -55,6 +55,7 @@ NATIVES = {
 	'set_local_storage': lib_a_nbz.set_local_storage,
 	'get_cookie': lib_a_nbz.get_cookie,
 	'set_cookie': lib_a_nbz.set_cookie,
+	'clear_cookies': lib_a_nbz.clear_cookies,
 	'get_element': lib_a_nbz.get_element,
 	'children_num': lib_a_nbz.children_num,
 	'page_load_time': lib_a_nbz.page_load_time,
