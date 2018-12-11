@@ -7,10 +7,10 @@
 # is generated, to be imported by other modules.
 
 
-from lib_snf_nbz import LibSnf
-from lib_a_nbz import LibA
-from lib_b_nbz import LibB
-from lib_d_nbz import LibD
+from lib.lib_snf_nbz import LibSnf
+from lib.lib_a_nbz import LibA
+from lib.lib_b_nbz import LibB
+from lib.lib_d_nbz import LibD
 
 lib_snf_nbz = LibSnf()
 lib_a_nbz = LibA()
@@ -55,6 +55,7 @@ NATIVES = {
 	'set_local_storage': lib_a_nbz.set_local_storage,
 	'get_cookie': lib_a_nbz.get_cookie,
 	'set_cookie': lib_a_nbz.set_cookie,
+	'clear_cookies': lib_a_nbz.clear_cookies,
 	'get_element': lib_a_nbz.get_element,
 	'children_num': lib_a_nbz.children_num,
 	'page_load_time': lib_a_nbz.page_load_time,

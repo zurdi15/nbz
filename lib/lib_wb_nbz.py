@@ -12,14 +12,14 @@ try:
 	import urlparse
 except ImportError:
 	from urllib.parse import urlparse
-from user_agents import USER_AGENTS
+from data.user_agents import USER_AGENTS
 from lib_log_nbz import Logging
 
 try:
 	from selenium import webdriver
 	from browsermobproxy import Server
 except ImportError:
-	raise Exception("Dependencies not installed. Please run install.sh")
+	raise Exception("Dependencies not installed. Please run setup.sh")
 
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))

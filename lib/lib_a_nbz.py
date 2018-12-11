@@ -34,6 +34,7 @@ class LibA:
 		set_local_storage
 		get_cookie
 		set_cookie
+		clear_cookies
 		get_element
 		children_num
 		page_load_time
@@ -341,6 +342,23 @@ class LibA:
 			raise Exception('Error setting cookie {cookie} with {value}: {exception}'.format(cookie=cookie,
 																							 value=value,
 																							 exception=e))
+
+	@staticmethod
+	def clear_cookies(browser, params):
+		"""Clear all cookies
+
+		Args:
+			browser: web browser instance
+			params: list of parameters
+				-0: cookie name
+				-1: cookie value
+		"""
+
+		try:
+			browser.delete_all_cookies()
+			logger.log('NOTE', 'Deleting all cookies...')
+		except Exception as e:
+			raise Exception('Error deleting cookies: {exception}'.format(exception=e))
 
 	@staticmethod
 	def get_element(browser, params):

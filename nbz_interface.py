@@ -8,11 +8,14 @@ import sys
 import os
 import argparse
 from pprint import pprint
-from pyvirtualdisplay import Display
+try:
+    from pyvirtualdisplay import Display
+except ImportError:
+	raise Exception("Dependencies not installed. Please run setup.sh")
 from nbz_core import NBZCore
-from nbz_parser import NBZParser
-from natives import NATIVES
-from lib_log_nbz import Logging
+from parser.nbz_parser import NBZParser
+from data.natives import NATIVES
+from lib.lib_log_nbz import Logging
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'posix':
@@ -122,18 +125,18 @@ class NBZInterface:
 			self.core_attributes['proxy'].close()
 			self.core_attributes['server'].stop()
 		logs_dir = os.path.join(BASE_DIR, "logs")
-		logs = ['server.log', 'bmp.log', 'geckodriver.log', 'ghostdriver.log']
 		if not os.path.exists(logs_dir):
 			os.makedirs(logs_dir)
+		logs = ['server.log', 'bmp.log', 'geckodriver.log', 'ghostdriver.log']
+		for log in logs:
+			if os.path.isfile(os.path.join(os.getcwd(), log)):
+				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
 		if os.name == 'posix':
 			ppid = os.getppid()
 			os.killpg(ppid, 9)
 		elif os.name == 'nt':
-			# TODO all
+			# TODO kill zombies java processes
 			pass
-		for log in logs:
-			if os.path.isfile(os.path.join(os.getcwd(), log)):
-				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
 
 def main():
 	parser = argparse.ArgumentParser()
