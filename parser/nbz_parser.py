@@ -11,7 +11,7 @@ try:
 	import ply.yacc as yacc
 except LookupError:
 	logger = Logging()
-	raise Exception("Dependencies not installed. Please run install.sh.")
+	raise Exception("Dependencies not installed. Please run setup.sh.")
 
 
 def NBZParser(script, interactive=False):

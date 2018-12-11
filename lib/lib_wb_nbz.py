@@ -19,7 +19,7 @@ try:
 	from selenium import webdriver
 	from browsermobproxy import Server
 except ImportError:
-	raise Exception("Dependencies not installed. Please run install.sh")
+	raise Exception("Dependencies not installed. Please run setup.sh")
 
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))

@@ -8,7 +8,10 @@ import sys
 import os
 import argparse
 from pprint import pprint
-from pyvirtualdisplay import Display
+try:
+    from pyvirtualdisplay import Display
+except ImportError:
+	raise Exception("Dependencies not installed. Please run setup.sh")
 from nbz_core import NBZCore
 from parser.nbz_parser import NBZParser
 from data.natives import NATIVES
