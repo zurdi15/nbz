@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
-
+f
 
 import time
 import datetime
@@ -144,9 +144,9 @@ class LibA:
 			raise Exception('Function timestamp_diff(): 2 arguments needed')
 
 		try:
-			d1 = datetime.strptime(datetime_1, "%Y-%m-%d %H:%M:%S")
-			d2 = datetime.strptime(datetime_2, "%Y-%m-%d %H:%M:%S")
-			return d1 - d2
+			d1 = datetime.strptime(datetime_1, "%Y-%m-%d %H:%M:%S.%f")
+			d2 = datetime.strptime(datetime_2, "%Y-%m-%d %H:%M:%S.%f")
+			return (d1 - d2).total_seconds()
 		except Exception as e:
 			raise Exception('Error calculating date: {exception}'.format(exception=e))
 
