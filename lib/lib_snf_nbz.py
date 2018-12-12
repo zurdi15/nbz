@@ -91,7 +91,7 @@ class LibSnf:
 						self.sniffer_attr['request_ok'] = True
 						self.sniffer_attr['status_code'] = int(entry['response']['status'])
 						self.sniffer_attr['url'] = entry['request']['url']
-						self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
+						self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-6]
 						break
 		try:
 			attribute = self.sniffer_attr[attribute]
@@ -121,7 +121,7 @@ class LibSnf:
 				self.sniffer_attr['request_ok'] = True
 				self.sniffer_attr['status_code'] = int(entry['response']['status'])
 				self.sniffer_attr['url'] = entry['request']['url']
-				self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-10]
+				self.sniffer_attr['timestamp'] = entry['startedDateTime'].replace('T', ' ')[:-6]
 				break
 		try:
 			attribute = self.sniffer_attr[attribute]
@@ -138,7 +138,6 @@ class LibSnf:
 		Args:
 			params: list of parameters
 				-0: file name
-				-1: script name to build the path where the report will be stored
 			script_name: name of the nbz script
 		Returns:
 			The report file opened in write mode

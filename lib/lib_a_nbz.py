@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
-
+f
 
 import time
+import datetime
 from datetime import datetime
 from random import randint
 import re
@@ -110,13 +111,17 @@ class LibA:
 			Actual system timestamp string
 		"""
 
-		date_format = params[0]
 		try:
-			if not date_format:
-				return time.strftime("%Y-%m-%d %H:%M:%S")
-			else:
-				return time.strftime(date_format)
-		except Exception as e:
+			date_format = params[0]
+		except:
+			date_format = False
+			logger.log('NOTE', 'Using default timestamp format')
+		try:
+                        if not date_format:
+				return str(datetime.now())[:-3]
+                        else:
+                                return time.strftime(date_format)
+                except Exception as e:
 			raise Exception('Error getting actual timestamp: {exception}'.format(exception=e))
 
 	@staticmethod
@@ -139,9 +144,9 @@ class LibA:
 			raise Exception('Function timestamp_diff(): 2 arguments needed')
 
 		try:
-			d1 = datetime.strptime(datetime_1, "%Y-%m-%d %H:%M:%S")
-			d2 = datetime.strptime(datetime_2, "%Y-%m-%d %H:%M:%S")
-			return d1 - d2
+			d1 = datetime.strptime(datetime_1, "%Y-%m-%d %H:%M:%S.%f")
+			d2 = datetime.strptime(datetime_2, "%Y-%m-%d %H:%M:%S.%f")
+			return (d1 - d2).total_seconds()
 		except Exception as e:
 			raise Exception('Error calculating date: {exception}'.format(exception=e))
 
