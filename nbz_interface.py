@@ -132,7 +132,12 @@ class NBZInterface:
 			if os.path.isfile(os.path.join(os.getcwd(), log)):
 				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
 		if os.name == 'posix':
-			ppid = os.getppid()
+			try:
+				os.environ['NBZ_RUN_BY_CRON']
+				if os.environ['NBZ_RUN_BY_CRON'] == 'TRUE':
+					ppid = int(os.popen("ps -p %d -oppid=" % os.getppid()).read().strip())
+			except KeyError:
+				ppid = os.getppid()
 			os.killpg(ppid, 9)
 		elif os.name == 'nt':
 			# TODO kill zombies java processes
