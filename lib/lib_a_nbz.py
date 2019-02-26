@@ -621,3 +621,23 @@ class LibA:
 																				  ss_path=ss_path))
 		except Exception as e:
 			raise Exception('Error taking screenshot: {exception}'.format(exception=e))
+	
+
+	@staticmethod
+	def wait_for_download(browser, params):
+		"""Wait to all downloads to complete
+
+		Args:
+			Args:
+			browser: web browser instance
+			params: list of parameters (empty)
+		"""
+
+		browser.get('chrome://downloads')
+		while True:
+			for item in driver.find_elements_by_css_selector('body/deep/downloads-item'):
+				if 'pause' in item.text.lower():
+					time.sleep(2)
+					break
+				else:
+					break
