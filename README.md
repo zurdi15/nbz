@@ -27,7 +27,7 @@ Compatible OS:
   
 <h2>Installing</h2>
 
- <h3>Prequisites</h3>
+ <h3>Prerequisites</h3>
 
   - java (openjdk-8-jre recommended)
   - python 2.7
