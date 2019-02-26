@@ -624,7 +624,7 @@ class LibA:
 	
 
 	@staticmethod
-	def wait_for_download(browser, params):
+	def wait_for_downloads(browser, params):
 		"""Wait to all downloads to complete
 
 		Args:
@@ -633,11 +633,32 @@ class LibA:
 			params: list of parameters (empty)
 		"""
 
-		browser.get('chrome://downloads')
-		while True:
-			for item in driver.find_elements_by_css_selector('body/deep/downloads-item'):
-				if 'pause' in item.text.lower():
-					time.sleep(2)
-					break
-				else:
-					break
+		downloaded = False
+		browser_name = browser.capabilities['browserName']
+
+		def chrome_downloader(downloaded):
+			browser.get('chrome://downloads')
+			logger.log('NOTE', 'Waiting for downloads...')
+			while not downloaded:
+				for item in browser.find_elements_by_css_selector('body/deep/downloads-item'):
+					if 'pause' in item.text.lower():
+						time.sleep(2)
+					else:
+						downloaded = True
+		
+		def firefox_downloader(downloaded):
+			logger.log('ERROR', 'Waiting for download not implemented with firefox')
+
+		def phantomjs_downloader(downloaded):
+			logger.log('ERROR', 'Waiting for download not implemented with phantomjs')
+
+		downloader = {
+			'chrome': chrome_downloader,
+			'firefox': firefox_downloader,
+			'phantomjs': phantomjs_downloader
+		}
+
+		downloader[browser_name](downloaded)
+			
+
+		
