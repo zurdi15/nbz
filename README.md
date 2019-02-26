@@ -18,4 +18,4 @@ Compatible OS:
     - PhantomJS
     
   - macOS:
-    - hrome
+    - Chrome
