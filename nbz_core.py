@@ -142,7 +142,11 @@ class NBZCore:
 		else:
 			try:
 				try:
-					self.attributes['NATIVES'][func_name](self.attributes['browser'], params)
+					if self.attributes['set_browser']:
+						self.attributes['NATIVES'][func_name](self.attributes['browser'], params)
+					else:
+						logger.log('ERROR', 'Browser not initiated')
+						sys.exit()
 				except Exception as e:
 					logger.log('ERROR', 'Error with function {function}: {exception}'.format(function=func_name,
 																							 exception=e))
