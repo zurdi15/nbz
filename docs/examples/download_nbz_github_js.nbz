@@ -1,0 +1,9 @@
+browser('chrome', 'default');
+
+get_url('https://github.com/zurdi15/NBZ');
+
+execute_js('document.getElementsByClassName("get-repo-btn")[0].click()');
+
+wait_for_downloads();
+
+print('done!');

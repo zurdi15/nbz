@@ -1,0 +1,11 @@
+browser('chrome', 'default');
+
+get_url('https://github.com/zurdi15/NBZ');
+
+click('//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[5]/details[2]/summary');
+
+click('//*[@id="js-repo-pjax-container"]/div[2]/div[1]/div[5]/details[2]/div/div/div[1]/div[2]/a');
+
+wait_for_downloads();
+
+print('done!');
