@@ -11,13 +11,11 @@ from lib.lib_snf_nbz import LibSnf
 from lib.lib_a_nbz import LibA
 from lib.lib_b_nbz import LibB
 from lib.lib_d_nbz import LibD
-from lib.lib_io_nbz import LibIO
 
 lib_snf_nbz = LibSnf()
 lib_a_nbz = LibA()
 lib_b_nbz = LibB()
 lib_d_nbz = LibD()
-lib_io_nbz = LibIO()
 
 NATIVES = {
 
