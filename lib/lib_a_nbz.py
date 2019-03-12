@@ -72,7 +72,10 @@ class LibA:
 			if string is None:
 				logger.log('NOTE', '')
 			else:
-				logger.log('NOTE', string)
+				if isinstance(string, unicode):
+					logger.log('NOTE', string.encode('utf-8'))
+				else:
+					logger.log('NOTE', string)
 		except Exception as e:
 			raise Exception('Error printing {string}: {exception}'.format(string=string, exception=e))
 
