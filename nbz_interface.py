@@ -6,6 +6,7 @@
 
 import sys
 import os
+import psutil
 import argparse
 from pprint import pprint
 try:
@@ -121,9 +122,6 @@ class NBZInterface:
 				self.core_attributes['complete_csv'].close()
 				logger.log('NOTE', 'Complete_net csv file exported to: '
 								   '{net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
-			self.core_attributes['browser'].close()
-			self.core_attributes['proxy'].close()
-			self.core_attributes['server'].stop()
 		logs_dir = os.path.join(BASE_DIR, "logs")
 		if not os.path.exists(logs_dir):
 			os.makedirs(logs_dir)
@@ -132,13 +130,10 @@ class NBZInterface:
 			if os.path.isfile(os.path.join(os.getcwd(), log)):
 				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
 		if os.name == 'posix':
-			try:
-				os.environ['NBZ_RUN_BY_CRON']
-				if os.environ['NBZ_RUN_BY_CRON'] == 'TRUE':
-					ppid = int(os.popen("ps -p %d -oppid=" % os.getppid()).read().strip())
-			except KeyError:
-				pgid = os.getpgid(os.getppid())
-			os.killpg(pgid, 9)
+			root_process = psutil.Process(os.getppid())
+			root_children = root_process.children(recursive=True)
+			for child in reversed(root_children):
+				os.kill(child.pid, 9)
 		elif os.name == 'nt':
 			# TODO kill zombies java processes
 			pass
