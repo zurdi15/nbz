@@ -131,7 +131,7 @@ class NBZInterface:
 				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
 		if os.name == 'posix':
 			root_process = psutil.Process(os.getppid())
-			root_children = root_process.children(recursive=True)
+			root_children = root_process.children(recursive=True)[1:]
 			for child in reversed(root_children):
 				os.kill(child.pid, 9)
 		elif os.name == 'nt':
