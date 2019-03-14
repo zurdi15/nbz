@@ -105,7 +105,7 @@ else
 fi
 
 if [ -z ${script_parameters[@]} ]; then
-	script_parameters=
+	script_parameters=""
 fi
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
