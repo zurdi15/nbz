@@ -28,6 +28,7 @@ function show_help {
 	echo "-h    Show this help"
 	echo "-v    Show the version"
 	echo "-s    Set the .nbz script"
+	echo "-sp   Set the .nbz script parameters"
 	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
 	echo "-d    Enable debug mode"
 }
