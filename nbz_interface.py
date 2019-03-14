@@ -81,11 +81,11 @@ class NBZInterface:
 			# Return all core attributes to close needed
 			self.core_attributes = NBZCore.get_attributes(nbz_core)
 			if os.name == 'posix':
-				print("\n{YELLOW}  ############################# END NBZ ############################{NC}".format(YELLOW=self.COLOURS['YELLOW'],
+				print("\n{YELLOW}  ############################# END NBZ ############################{NC}\n".format(YELLOW=self.COLOURS['YELLOW'],
 																											  	  NC=self.COLOURS['NC']))
 		except:
 			if os.name == 'posix':
-				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}".format(RED=self.COLOURS['RED'],
+				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=self.COLOURS['RED'],
 																											  	NC=self.COLOURS['NC']))
 		finally:
 			# Close browser/proxy/server
