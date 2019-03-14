@@ -2,3 +2,4 @@ selenium==3.13.0
 browsermob-proxy==0.8.0
 ply==3.11
 PyVirtualDisplay==0.2.1
+psutil==5.6.1

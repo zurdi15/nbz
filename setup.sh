@@ -10,6 +10,7 @@
 #       · browsermob-proxy
 #       · ply
 #       · pyvirtualdisplay
+#       · psutil
 #
 #   - Bash:
 #       · toilet

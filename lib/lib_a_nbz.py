@@ -4,6 +4,7 @@
 # Author: <Zurdi>
 
 
+import os
 import time
 import datetime
 from datetime import datetime
@@ -631,7 +632,6 @@ class LibA:
 		"""Wait to all downloads to complete
 
 		Args:
-			Args:
 			browser: web browser instance
 			params: list of parameters (empty)
 		"""
@@ -664,4 +664,19 @@ class LibA:
 		downloader[browser_name](downloaded)
 			
 
+	@staticmethod
+	def get_enviroment_variable(browser, params):
+		"""Get an enviroment variable
+
+		Args:
+			browser: web browser instance
+			params: list of parameters
+				-0: enviroment variable name
+		Returns:
+			Value of the enviroment variable
+		"""
+
+		enviroment_variable = params[0]
+
+		return os.environ.get(enviroment_variable)
 		
