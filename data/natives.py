@@ -65,13 +65,12 @@ NATIVES = {
 	'scroll_to_top': lib_a_nbz.scroll_to_top,
 	'execute_js': lib_a_nbz.execute_js,
 	'set_timeout': lib_a_nbz.set_timeout,
-	'get_source_html': lib_a_nbz.get_source_html,
 	'export_source_html': lib_a_nbz.export_source_html,
 	'get_all_html_links': lib_a_nbz.get_all_html_links,
 	'get_element_html': lib_a_nbz.get_element_html,
 	'screenshot': lib_a_nbz.take_screenshot,
 	'wait_for_downloads': lib_a_nbz.wait_for_downloads,
-	'get_enviroment_variable': lib_a_nbz.get_enviroment_variable,
+	'get_environment_variable': lib_a_nbz.get_environment_variable,
 
 	# Data types functions
 	'type': lib_d_nbz.var_type,

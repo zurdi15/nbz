@@ -518,27 +518,6 @@ class LibA:
 			raise Exception('Error setting timeout {exception}'.format(exception=e))
 
 	@staticmethod
-	def get_source_html(browser, params):
-		"""Get source code from web page
-
-		Args:
-			browser: web browser instance
-			params: list of parameters (empty)
-
-		Returns:
-			String of web page source code
-		"""
-
-		try:
-			source = browser.page_source
-			if isinstance(source, unicode):
-				return source.encode('utf-8')
-			else:
-				return source
-		except Exception as e:
-			raise Exception('Getting html source code: {exception}'.format(exception=e))
-
-	@staticmethod
 	def export_source_html(browser, params):
 		"""Export html webpage into a file
 
@@ -665,18 +644,18 @@ class LibA:
 			
 
 	@staticmethod
-	def get_enviroment_variable(browser, params):
-		"""Get an enviroment variable
+	def get_environment_variable(browser, params):
+		"""Get an environment variable
 
 		Args:
 			browser: web browser instance
 			params: list of parameters
-				-0: enviroment variable name
+				-0: environment variable name
 		Returns:
-			Value of the enviroment variable
+			Value of the environment variable
 		"""
 
-		enviroment_variable = params[0]
+		environment_variable = params[0]
 
-		return os.environ.get(enviroment_variable)
+		return os.environ.get(environment_variable)
 		
