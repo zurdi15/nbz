@@ -139,6 +139,8 @@ class NBZCore:
 													self.attributes['proxy'])
 		elif func_name == 'check_net':
 			pass
+		elif func_name == 'get_parameter':
+			pass
 		else:
 			try:
 				try:
@@ -284,6 +286,8 @@ class NBZCore:
 							if sub_instruction[1] == 'check_net':
 								return self.attributes['NATIVES']['check_net'](self.attributes['proxy'].har,
 																			sub_params)
+							elif sub_instruction[1] == 'get_parameter':
+								return self.attributes['NATIVES']['get_parameter'](self.attributes['script_parameters'], sub_params)
 							else:
 								return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'],
 																					sub_params)

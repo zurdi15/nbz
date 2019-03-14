@@ -5,6 +5,7 @@
 
 
 import os
+import sys
 import time
 import datetime
 from datetime import datetime
@@ -658,4 +659,24 @@ class LibA:
 		environment_variable = params[0]
 
 		return os.environ.get(environment_variable)
+
+	@staticmethod
+	def get_parameter(script_parameters, params):
+		"""Get an environment variable
+
+		Args:
+			params: list of parameters
+				-0: script parameter index
+			script_parameters: list of script parameters
+		Returns:
+			Value of the script parameter
+		"""
+
+		script_parameter_index = params[0]
+		
+		try:
+			return script_parameters[script_parameter_index]
+		except IndexError:
+			logger.log('ERROR', 'Invalid script parameter')
+			sys.exit(1)
 		

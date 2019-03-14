@@ -28,7 +28,7 @@ function show_help {
 	echo "-h    Show this help"
 	echo "-v    Show the version"
 	echo "-s    Set the .nbz script"
-	echo "-sp   Set the .nbz script parameters"
+	echo "-p    Set the script parameters"
 	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
 	echo "-d    Enable debug mode"
 }
@@ -40,6 +40,7 @@ function show_version {
 #  - Parameters
 
 script=""
+script_parameters=""
 debug="false"
 display="false"
 
@@ -47,7 +48,7 @@ if [ ${#} = 0 ]; then
 	show_help
 	exit 0
 else
-	while getopts ":s:hvxd" opt
+	while getopts "p:s:hvxd" opt
 	do
 		case ${opt} in
 			h)
@@ -59,7 +60,7 @@ else
 				exit 0
 				;;
 			s)
-				ext="${OPTARG##*.}"
+				ext=${OPTARG##*.}
 				if [ ${ext} = "nbz" ]
 				then
 					script=${OPTARG} >&2
@@ -67,6 +68,9 @@ else
 					echo "Error: Not compatible script (.${ext}). Extension must be .nbz"
 					exit 1
 				fi
+				;;
+			p)
+				script_parameters+=("${OPTARG}")
 				;;
 			d)
 				debug="true" >&2
@@ -84,6 +88,7 @@ else
 				;;
 		esac
 	done
+	shift $((OPTIND -1))
 fi
 
 if [ -z ${script} ]; then
@@ -94,6 +99,10 @@ else
 		echo -e "Error: script \"${script}\" does not exist."
 		exit 1
 	fi
+fi
+
+if [ -z ${script_parameters[@]} ]; then
+	script_parameters+="None"
 fi
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -119,7 +128,7 @@ fi
 echo -e "${header}"
 
 if [ -z "${PYTHON3}" ]; then
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters ${script_parameters[@]} -debug ${debug} -display ${display}
 else
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -debug ${debug} -display ${display}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters ${script_parameters[@]} -debug ${debug} -display ${display}
 fi

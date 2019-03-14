@@ -71,6 +71,7 @@ NATIVES = {
 	'screenshot': lib_a_nbz.take_screenshot,
 	'wait_for_downloads': lib_a_nbz.wait_for_downloads,
 	'get_environment_variable': lib_a_nbz.get_environment_variable,
+	'get_parameter': lib_a_nbz.get_parameter,
 
 	# Data types functions
 	'type': lib_d_nbz.var_type,

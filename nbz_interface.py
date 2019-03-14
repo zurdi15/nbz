@@ -39,7 +39,7 @@ class NBZInterface:
 		close_all
 	"""
 
-	def __init__(self, script, debug):
+	def __init__(self, script, script_parameters, debug):
 		"""Init NBZInterface class with some attributes"""
 
 		self.core_attributes = {
@@ -50,6 +50,7 @@ class NBZInterface:
 
 			'script': script,
 			'script_name': os.path.basename(script)[0:-4],
+			'script_parameters': script_parameters,
 			'debug': debug,
 
 			# Proxy binaries to execute the sniffer
@@ -135,16 +136,18 @@ class NBZInterface:
 			for child in reversed(root_children):
 				os.kill(child.pid, 9)
 		elif os.name == 'nt':
-			# TODO kill zombies java processes
+			# TODO kill zombies processes
 			pass
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-script", help="script file", required=True)
+	parser.add_argument("-script", help="script file", required=False)
+	parser.add_argument("-script_parameters", help="script parameters", required=False, nargs='+')
 	parser.add_argument("-debug", help="debug mode", required=False)
 	parser.add_argument("-display", help="enable display emulation", required=False)
 	args = parser.parse_args()
 	script = args.script
+	script_parameters = args.script_parameters
 	debug = args.debug
 	display = args.display
 	if debug == 'true':
@@ -154,7 +157,7 @@ def main():
 	if display == 'true':
 		display = Display(visible=0, size=(1024, 768))
 		display.start()
-	NBZInterface(script, debug)
+	NBZInterface(script, script_parameters, debug)
 
 if __name__ == "__main__":
 	sys.exit(main())
