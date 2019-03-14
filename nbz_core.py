@@ -46,6 +46,7 @@ class NBZCore:
 			'for': self._for,
 			'while': self._while
 		}
+		self.exit = False
 
 	def get_attributes(self):
 		"""Returns class attributes attribute
@@ -97,7 +98,8 @@ class NBZCore:
 		else:
 			instructions = instruction_set
 		for instruction in instructions:
-			self.statements[instruction[0]](instruction)
+			if not self.exit:
+				self.statements[instruction[0]](instruction)
 
 	def _assign(self, instruction):
 		var_name = instruction[1]
@@ -116,7 +118,7 @@ class NBZCore:
 		for param in func_parameters:
 			params.append(self.get_value(param))
 		if func_name == 'exit':
-			sys.exit()
+			self.exit = True
 		elif func_name == 'browser':
 			if not self.attributes['set_browser']:
 				try:
