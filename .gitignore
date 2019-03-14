@@ -1,4 +1,5 @@
 scripts
+.vscode
 .idea
 *.log
 *.pyc
