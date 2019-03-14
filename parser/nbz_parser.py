@@ -10,8 +10,8 @@ try:
 	from nbz_lexer import tokens  # Get the token map from the lexer
 	import ply.yacc as yacc
 except LookupError:
-	logger = Logging()
 	raise Exception("Dependencies not installed. Please run setup.sh.")
+logger = Logging()
 
 
 def NBZParser(script, interactive=False):
