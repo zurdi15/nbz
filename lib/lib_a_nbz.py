@@ -641,7 +641,10 @@ class LibA:
 			'phantomjs': phantomjs_downloader
 		}
 
-		downloader[browser_name](downloaded)
+		try:
+			downloader[browser_name](downloaded)
+		except Exception as e:
+			raise Exception('Error waiting for downloads: {exception}'.format(exception=e))
 			
 
 	@staticmethod
@@ -657,8 +660,10 @@ class LibA:
 		"""
 
 		environment_variable = params[0]
-
-		return os.environ.get(environment_variable)
+		try:
+			return os.environ.get(environment_variable)
+		except Exception as e:
+			raise Exception('Error getting environment variable: {exception}'.format(exception=e))
 
 	@staticmethod
 	def get_parameter(script_parameters, params):
@@ -676,7 +681,6 @@ class LibA:
 		
 		try:
 			return script_parameters[script_parameter_index]
-		except IndexError:
-			logger.log('ERROR', 'Invalid script parameter')
-			sys.exit(1)
+		except Exception as e:
+			raise Exception('Error getting script parameter: {exception}'.format(exception=e))
 		

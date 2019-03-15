@@ -150,13 +150,13 @@ class NBZCore:
 				except Exception as e:
 					logger.log('ERROR', 'Error with function {function}: {exception}'.format(function=func_name,
 																							 exception=e))
-					sys.exit()
+					raise Exception(str(e))
 			except LookupError:
 				try:
 					self.execute_instructions(self.attributes['USER_FUNC'][func_name])
 				except LookupError:
 					logger.log('ERROR', 'Not defined function')
-					sys.exit()
+					raise Exception(str(e))
 
 	def _if(self, instruction):
 		if_condition = self.get_value(instruction[1])
@@ -290,10 +290,7 @@ class NBZCore:
 								return self.attributes['NATIVES'][sub_instruction[1]](self.attributes['browser'],
 																					sub_params)
 						except Exception as e:
-							logger.log('ERROR',
-									'Error with function {function}: {exception}'.format(function=sub_instruction[1],
-																							exception=e))
-							sys.exit(-1)
+							raise Exception(str(e))
 					else:
 						return sub_instruction
 				else:
@@ -301,5 +298,4 @@ class NBZCore:
 			else:
 				return sub_instruction
 		except Exception as e:
-			logger.log('ERROR', 'Error getting value: ' + str(e))
-			sys.exit()
+			raise Exception(str(e))

@@ -112,7 +112,6 @@ class NBZInterface:
 			logger.log('ERROR',
 					   'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'],
 																			exception=e))
-			sys.exit(1)
 
 	def close_all(self):
 		"""Close all connections and export har log"""
