@@ -62,7 +62,6 @@ tokens = [
 	 'RPAREN',
 	 'COMMA',
 	 'SEMI',
-	 'COLON',
 	 'LBRACE',
 	 'RBRACE',
 	 'LBRACKET',
@@ -111,7 +110,6 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_COMMA = r'\,'
 t_SEMI = r'\;'
-t_COLON = r'\:'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_LBRACKET = r'\['
