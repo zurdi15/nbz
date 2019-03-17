@@ -10,9 +10,9 @@ import psutil
 import argparse
 from pprint import pprint
 try:
-    from pyvirtualdisplay import Display
+	from pyvirtualdisplay import Display
 except ImportError:
-	raise Exception("Dependencies not installed. Please run setup.sh")
+	raise Exception("Dependencies are not installed. Please run setup.sh")
 from nbz_core import NBZCore
 from parser.nbz_parser import NBZParser
 from data.natives import NATIVES
@@ -43,7 +43,7 @@ class NBZInterface:
 		"""Init NBZInterface class with some attributes"""
 
 		self.core_attributes = {
-			'instruction_set': '',
+			'instruction_set': [],
 			'variables': {},
 			'NATIVES': NATIVES,
 			'USER_FUNC': {},
@@ -74,7 +74,7 @@ class NBZInterface:
 		try:
 			if os.name == 'posix':
 				print("\n{YELLOW}  ############################ START NBZ ###########################{NC}\n".format(YELLOW=self.COLOURS['YELLOW'],
-																											  	  NC=self.COLOURS['NC']))
+																													NC=self.COLOURS['NC']))
 			self.compile_script()
 			nbz_core = NBZCore(self.core_attributes)
 			nbz_core.execute_instructions()
@@ -82,11 +82,12 @@ class NBZInterface:
 			self.core_attributes = NBZCore.get_attributes(nbz_core)
 			if os.name == 'posix':
 				print("\n{YELLOW}  ############################# END NBZ ############################{NC}\n".format(YELLOW=self.COLOURS['YELLOW'],
-																											  	  NC=self.COLOURS['NC']))
-		except:
+																													NC=self.COLOURS['NC']))
+		except Exception as e:
 			if os.name == 'posix':
+				logger.log('ERROR', str(e))
 				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=self.COLOURS['RED'],
-																											  	NC=self.COLOURS['NC']))
+																												  NC=self.COLOURS['NC']))
 		finally:
 			# Close browser/proxy/server
 			self.close_all()
@@ -121,7 +122,7 @@ class NBZInterface:
 					'URL: {url}\n\n'.format(url=self.core_attributes['browser'].current_url))
 				pprint(self.core_attributes['proxy'].har['log']['entries'], self.core_attributes['complete_csv'])
 				self.core_attributes['complete_csv'].close()
-				logger.log('NOTE', 'Complete_net csv file exported to: '
+				logger.log('NOTE', 'Net report csv file exported to: '
 								   '{net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
 		logs_dir = os.path.join(BASE_DIR, "logs")
 		if not os.path.exists(logs_dir):
