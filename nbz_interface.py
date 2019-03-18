@@ -24,6 +24,11 @@ if os.name == 'posix':
 elif os.name == 'nt':
 	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
+COLOURS = {'YELLOW': '\033[93m',
+				'RED': '\033[91m',
+				'NC': '\033[0m',
+}
+
 
 class NBZInterface:
 	"""Interface between all modules of the nbz.
@@ -67,27 +72,23 @@ class NBZInterface:
 			'complete_csv_path': '',
 			'complete_csv': None,
 		}
-		self.COLOURS = {'YELLOW': '\033[93m',
-						'RED': '\033[91m',
-						'NC': '\033[0m',
-		}
 		try:
 			if os.name == 'posix':
-				print("\n{YELLOW}  ############################ START NBZ ###########################{NC}\n".format(YELLOW=self.COLOURS['YELLOW'],
-																													NC=self.COLOURS['NC']))
+				print("\n{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
+																													NC=COLOURS['NC']))
 			self.compile_script()
 			nbz_core = NBZCore(self.core_attributes)
 			nbz_core.execute_instructions()
 			# Return all core attributes to close needed
 			self.core_attributes = NBZCore.get_attributes(nbz_core)
 			if os.name == 'posix':
-				print("\n{YELLOW}  ############################# END NBZ ############################{NC}\n".format(YELLOW=self.COLOURS['YELLOW'],
-																													NC=self.COLOURS['NC']))
+				print("\n{YELLOW}  ############################ END NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
+																													NC=COLOURS['NC']))
 		except Exception as e:
 			if os.name == 'posix':
 				logger.log('ERROR', str(e))
-				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=self.COLOURS['RED'],
-																												  NC=self.COLOURS['NC']))
+				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=COLOURS['RED'],
+																												  NC=COLOURS['NC']))
 		finally:
 			# Close browser/proxy/server
 			self.close_all()
@@ -111,7 +112,6 @@ class NBZInterface:
 			logger.log('ERROR',
 					   'Script not compiled ({script}): {exception}'.format(script=self.core_attributes['script'],
 																			exception=e))
-			sys.exit()
 
 	def close_all(self):
 		"""Close all connections and export har log"""
