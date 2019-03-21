@@ -66,7 +66,7 @@ tokens = [
 	 'RBRACE',
 	 'LBRACKET',
 	 'RBRACKET',
-	 'ID',
+	 'ID'
 
  ] + list(reserved.values())
 

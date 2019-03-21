@@ -3,7 +3,7 @@
 #
 # Author: <Zurdi>
 #
-# File where the dict of natives functions
+# File where the dict of built-in functions
 # is generated, to be imported by other modules.
 
 
