@@ -197,17 +197,17 @@ class NBZCore:
 			element = self.get_value(instruction[1])
 			structure = self.attributes['variables'][self.get_value(instruction[2])]
 			foreach_instructions = instruction[3]
-			for iterate_element in structure:
+			for iterator_element in structure:
 				try:
 					if isinstance(structure, file):
-						self.attributes['variables'][element] = iterate_element[0:-1]  # Avoiding newline character
+						self.attributes['variables'][element] = iterator_element[0:-1]  # Avoiding newline character
 					else:
-						self.attributes['variables'][element] = iterate_element  # All other structure types
+						self.attributes['variables'][element] = iterator_element  # All other structure types
 				except NameError:
 					if isinstance(structure, IOBase):
-						self.attributes['variables'][element] = iterate_element[0:-1]  # Avoiding newline character
+						self.attributes['variables'][element] = iterator_element[0:-1]  # Avoiding newline character
 					else:
-						self.attributes['variables'][element] = iterate_element  # All other structure types
+						self.attributes['variables'][element] = iterator_element  # All other structure types
 				self.execute_instructions(foreach_instructions)
 		else:  # Standard For
 			init_index = self.get_value(instruction[1])
