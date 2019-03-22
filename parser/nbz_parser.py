@@ -74,7 +74,6 @@ def NBZParser(script, interactive=False):
 		"""for_statement : FOR LPAREN for_valid_expr COMMA for_valid_expr COMMA for_valid_iter RPAREN LBRACE code RBRACE
 					 	 | FOR LPAREN ID IN ID RPAREN LBRACE code RBRACE"""
 		if len(p) == 10:
-			print 'for'
 			p[0] = ['for', p[3], p[5], p[8]]
 			for i in range(0, len(p[8])):
 				code.pop()
@@ -190,11 +189,9 @@ def NBZParser(script, interactive=False):
 		if len(p) == 2:
 			if isinstance(p[1], str):
 				try:
-					print 'check'
 					check = variables[p[1]]
 					p[0] = [['var', p[1]]]
 				except LookupError:
-					print 'error'
 					raise Exception('Undefined variable "{variable}" line {line}'.format(variable=p[1],
 																						 line=p.lineno(1)))
 
