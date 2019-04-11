@@ -32,3 +32,5 @@ Compatible OS:
   - java (openjdk-8-jre recommended)
   - python 2.7
   - python-pip
+
+![](https://giphy.com/gifs/robot-war-march-26n79jmM0LlJwtpi8)
