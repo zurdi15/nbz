@@ -10,7 +10,7 @@ NBZ is configured with nbz scripts.
 
 <b>Documentation:</b> https://github.com/zurdi15/NBZ/wiki
 
-Compatible OS:
+Compatible OS and browsers:
 
   - Windows
     - Chrome

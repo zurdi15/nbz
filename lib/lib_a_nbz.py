@@ -122,11 +122,11 @@ class LibA:
 			date_format = False
 			logger.log('NOTE', 'Using default timestamp format')
 		try:
-                        if not date_format:
+			if not date_format:
 				return str(datetime.now())[:-3]
-                        else:
-                                return time.strftime(date_format)
-                except Exception as e:
+			else:
+				return time.strftime(date_format)
+		except Exception as e:
 			raise Exception('Error getting actual timestamp: {exception}'.format(exception=e))
 
 	@staticmethod
