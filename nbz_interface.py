@@ -156,7 +156,7 @@ def main():
 	else:
 		debug = False
 	if display == 'true':
-		display = Display(visible=0, size=(1024, 768))
+		display = Display(visible=0, size=(2920, 1080))
 		display.start()
 	NBZInterface(script, script_parameters, debug)
 
