@@ -26,10 +26,10 @@ configuration:
         name: net.lightbody.bmp
         # to suppress unwanted BMP logging statements, set the level below for the source logger to WARN or ERROR.
         # to enable more verbose logging, set the level to DEBUG or TRACE.
-        level: info
+        level: ERROR
     root:
       # to suppress unwanted logging statements globally, set the level below to WARN or ERROR.
-      level: info
+      level: ERROR
       appender-ref:
         -
           ref: console
