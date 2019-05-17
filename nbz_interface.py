@@ -146,18 +146,28 @@ def main():
 	parser.add_argument("-script_parameters", help="script parameters", required=False, nargs='+')
 	parser.add_argument("-debug", help="debug mode", required=False)
 	parser.add_argument("-display", help="enable display emulation", required=False)
+	parser.add_argument("-resolution", help="set the screen emulator resolution", required=False)
 	args = parser.parse_args()
 	script = args.script
 	script_parameters = args.script_parameters
 	debug = args.debug
 	display = args.display
+	resolution = args.resolution
 	if debug == 'true':
 		debug = True
 	else:
 		debug = False
 	if display == 'true':
+            if resolution != 'default':
+                resolution = resolution.split('x')
+                try:
+                    display = Display(visible=0, size=(resolution[0], resolution[1]))
+                except IndexError:
+                    logger.log('ERROR', 'Error in resolution parameter')
+                    sys.exit(4)
+            else:
 		display = Display(visible=0, size=(2920, 1080))
-		display.start()
+            display.start()
 	NBZInterface(script, script_parameters, debug)
 
 if __name__ == "__main__":

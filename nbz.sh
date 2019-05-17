@@ -42,12 +42,13 @@ function show_version {
 script=""
 debug="false"
 display="false"
+resolution="default"
 
 if [ ${#} = 0 ]; then
 	show_help
 	exit 0
 else
-	while getopts "p:s:hvxd" opt
+	while getopts "p:s:r:hvxd" opt
 	do
 		case ${opt} in
 			h)
@@ -80,6 +81,9 @@ else
 				;;
 			x)
 				display="true" >&2
+				;;
+			r)
+				resolution=${OPTARG}
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
@@ -120,18 +124,17 @@ if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]; then
 fi
 
 #  - Launch NBZ
-clear
 TOILET=$(which toilet)
 if [ -z "${TOILET}" ]; then
 	header=""
 else
-	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
+	header=""
+#	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
 fi
 
 echo -e "${header}"
-
 if [ -z "${PYTHON3}" ]; then
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -debug ${debug} -display ${display}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -debug ${debug} -display ${display} -resolution ${resolution}
 else
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -debug ${debug} -display ${display}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -debug ${debug} -display ${display} -resolution ${resolution}
 fi
