@@ -24,17 +24,14 @@ if os.name == 'posix':
 elif os.name == 'nt':
 	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
-COLOURS = {'YELLOW': '\033[93m',
-				'RED': '\033[91m',
-				'NC': '\033[0m',
-}
+COLOURS = {'YELLOW': '\033[93m', 'RED': '\033[91m', 'NC': '\033[0m'}
 
 
 class NBZInterface:
 	"""Interface between all modules of the nbz.
 
 	This class provides all the attributes needed to the core module, using the parser module
-	to parse the nbz-script previously. After all script is done, this class ends all connections.
+	to parse the nbz-script previously. After all script is executed, this class ends all connections.
 
 	Attributes:
 		core_attributes: dictionary of attributes needed for the core module

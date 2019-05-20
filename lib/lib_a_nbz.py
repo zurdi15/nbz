@@ -52,6 +52,7 @@ class LibA:
 		get_all_html_links
 		get_element_html
 		take_screenshot
+		get_parameter
 	"""
 
 	def __init__(self):
@@ -605,7 +606,7 @@ class LibA:
 																				  ss_path=ss_path))
 		except Exception as e:
 			raise Exception('Error taking screenshot: {exception}'.format(exception=e))
-	
+
 
 	@staticmethod
 	def wait_for_downloads(browser, params):
@@ -628,7 +629,7 @@ class LibA:
 						time.sleep(2)
 					else:
 						downloaded = True
-		
+
 		def firefox_downloader(downloaded):
 			logger.log('ERROR', 'Waiting for download not implemented with firefox')
 
@@ -645,7 +646,7 @@ class LibA:
 			downloader[browser_name](downloaded)
 		except Exception as e:
 			raise Exception('Error waiting for downloads: {exception}'.format(exception=e))
-			
+
 
 	@staticmethod
 	def get_environment_variable(browser, params):
@@ -678,9 +679,8 @@ class LibA:
 		"""
 
 		script_parameter_index = params[0]
-		
+
 		try:
 			return script_parameters[script_parameter_index]
-		except Exception as e:
-			raise Exception('Error getting script parameter: {exception}'.format(exception=e))
-		
+		except IndexError:
+			raise Exception('Error getting script parameter [{}]'.format(script_parameter_index))

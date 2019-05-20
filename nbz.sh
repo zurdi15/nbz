@@ -4,18 +4,6 @@
 
 # NBZ Launcher
 
-# Parameters:
-#  - $script: script file
-#  - $debug: disable/enable debug mode
-#  - $screen: disable/enable screen emulation
-######
-
-# Structure:
-#  - Parameters
-#  - Initialize virtual display (optional)
-#  - Launch NBZ
-######
-
 
 function show_help {
 	echo "NBZ-1 v1.0.1 - (C) 2017-2018 Zurdi Zurdo"
@@ -108,7 +96,7 @@ else
 	fi
 fi
 
-if [ -z ${script_parameters[@]} ]; then
+if [[ -z ${script_parameters[@]} ]]; then
 	script_parameters=""
 fi
 
