@@ -24,17 +24,14 @@ if os.name == 'posix':
 elif os.name == 'nt':
 	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
-COLOURS = {'YELLOW': '\033[93m',
-				'RED': '\033[91m',
-				'NC': '\033[0m',
-}
+COLOURS = {'YELLOW': '\033[93m', 'RED': '\033[91m', 'NC': '\033[0m'}
 
 
 class NBZInterface:
 	"""Interface between all modules of the nbz.
 
 	This class provides all the attributes needed to the core module, using the parser module
-	to parse the nbz-script previously. After all script is done, this class ends all connections.
+	to parse the nbz-script previously. After all script is executed, this class ends all connections.
 
 	Attributes:
 		core_attributes: dictionary of attributes needed for the core module
@@ -147,17 +144,29 @@ def main():
 	parser.add_argument("-script_parameters", help="script parameters", required=False, nargs='+')
 	parser.add_argument("-display", help="enable display emulation", required=False)
 	parser.add_argument("-proxy", help="enable proxy", required=False)
+	parser.add_argument("-resolution", help="set the screen emulator resolution", required=False)
 	parser.add_argument("-debug", help="debug mode", required=False)
 	args = parser.parse_args()
 	script = args.script
 	script_parameters = args.script_parameters
-	display = args.display
 	proxy = args.proxy
-	debug = args.debug
-	if display == 'true': display = Display(visible=0, size=(2920, 1080)); display.start()
 	proxy = True if proxy == 'true' else False
+	debug = args.debug
 	debug = True if debug == 'true' else False
-	NBZInterface(script, script_parameters, proxy, debug)
+	resolution = args.resolution
+	display = args.display
+	if display == 'true':
+            if resolution != 'default':
+                resolution = resolution.split('x')
+                try:
+                    display = Display(visible=0, size=(resolution[0], resolution[1]))
+                except IndexError:
+                    logger.log('ERROR', 'Error in resolution parameter')
+                    sys.exit(4)
+            else:
+		display = Display(visible=0, size=(2920, 1080))
+            display.start()
+	NBZInterface(script, script_parameters, debug)
 
 if __name__ == "__main__":
 	sys.exit(main())

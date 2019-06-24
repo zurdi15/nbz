@@ -4,18 +4,6 @@
 
 # NBZ Launcher
 
-# Parameters:
-#  - $script: script file
-#  - $debug: disable/enable debug mode
-#  - $screen: disable/enable screen emulation
-######
-
-# Structure:
-#  - Parameters
-#  - Initialize virtual display (optional)
-#  - Launch NBZ
-######
-
 
 function show_help {
 	echo "NBZ-1 v1.0.1 - (C) 2017-2018 Zurdi Zurdo"
@@ -44,12 +32,13 @@ script=""
 display="false"
 proxy="false"
 debug="false"
+resolution="default"
 
 if [ ${#} = 0 ]; then
 	show_help
 	exit 0
 else
-	while getopts "p:s:hvxPd" opt
+	while getopts "p:s:r:hvxPd" opt
 	do
 		case ${opt} in
 			h)
@@ -86,6 +75,9 @@ else
 			d)
 				debug="true" >&2
 				;;
+			r)
+				resolution=${OPTARG}
+				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
 				exit 1
@@ -109,7 +101,7 @@ else
 	fi
 fi
 
-if [ -z ${script_parameters[@]} ]; then
+if [[ -z ${script_parameters[@]} ]]; then
 	script_parameters=""
 fi
 
@@ -125,18 +117,17 @@ if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]; then
 fi
 
 #  - Launch NBZ
-clear
 TOILET=$(which toilet)
 if [ -z "${TOILET}" ]; then
 	header=""
 else
-	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
+	header=""
+#	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
 fi
 
 echo -e "${header}"
-
 if [ -z "${PYTHON3}" ]; then
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -debug ${debug}
+	python3 -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}
 else
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -debug ${debug}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}
 fi
