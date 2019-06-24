@@ -61,7 +61,7 @@ else
 				fi
 				;;
 			p)
-				if [ -z $script_parameters ]; then
+				if [ -z "$script_parameters" ]; then
 					script_parameters=("${OPTARG}")
 				else
 					script_parameters+=("${OPTARG}")

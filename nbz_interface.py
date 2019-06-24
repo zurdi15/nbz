@@ -149,10 +149,8 @@ def main():
 	args = parser.parse_args()
 	script = args.script
 	script_parameters = args.script_parameters
-	proxy = args.proxy
-	proxy = True if proxy == 'true' else False
-	debug = args.debug
-	debug = True if debug == 'true' else False
+	proxy = True if args.proxy == 'true' else False
+	debug = True if args.debug == 'true' else False
 	resolution = args.resolution
 	display = args.display
 	if display == 'true':
@@ -166,7 +164,7 @@ def main():
             else:
 		display = Display(visible=0, size=(2920, 1080))
             display.start()
-	NBZInterface(script, script_parameters, debug)
+	NBZInterface(script, script_parameters, proxy, debug)
 
 if __name__ == "__main__":
 	sys.exit(main())
