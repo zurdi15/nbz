@@ -18,6 +18,7 @@ function show_help {
 	echo "-s    Set the .nbz script"
 	echo "-p    Set the script parameters"
 	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
+	echo "-r    Set custom resolution for screen emulation"
 	echo "-P    Enable proxy"
 	echo "-d    Enable debug mode"
 }
