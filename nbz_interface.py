@@ -44,7 +44,7 @@ class NBZInterface:
 		close_all
 	"""
 
-	def __init__(self, script, script_parameters, debug):
+	def __init__(self, script, script_parameters, proxy, debug):
 		"""Init NBZInterface class with some attributes"""
 
 		self.core_attributes = {
@@ -59,6 +59,7 @@ class NBZInterface:
 			'debug': debug,
 
 			# Proxy binaries to execute the sniffer
+			'proxy_enabled': proxy,
 			'proxy_path': proxy_path,
 
 			# Flag to instance browser once (even if z_code has more than one instance)
@@ -144,21 +145,19 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-script", help="script file", required=False)
 	parser.add_argument("-script_parameters", help="script parameters", required=False, nargs='+')
-	parser.add_argument("-debug", help="debug mode", required=False)
 	parser.add_argument("-display", help="enable display emulation", required=False)
+	parser.add_argument("-proxy", help="enable proxy", required=False)
+	parser.add_argument("-debug", help="debug mode", required=False)
 	args = parser.parse_args()
 	script = args.script
 	script_parameters = args.script_parameters
-	debug = args.debug
 	display = args.display
-	if debug == 'true':
-		debug = True
-	else:
-		debug = False
-	if display == 'true':
-		display = Display(visible=0, size=(2920, 1080))
-		display.start()
-	NBZInterface(script, script_parameters, debug)
+	proxy = args.proxy
+	debug = args.debug
+	if display == 'true': display = Display(visible=0, size=(2920, 1080)); display.start()
+	proxy = True if proxy == 'true' else False
+	debug = True if debug == 'true' else False
+	NBZInterface(script, script_parameters, proxy, debug)
 
 if __name__ == "__main__":
 	sys.exit(main())

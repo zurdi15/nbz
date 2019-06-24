@@ -123,7 +123,7 @@ class NBZCore:
 			if not self.attributes['set_browser']:
 				try:
 					self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
-						= lib_wb_nbz.instance_browser(self.attributes['proxy_path'], params)
+						= lib_wb_nbz.instance_browser(self.attributes['proxy_enabled'], self.attributes['proxy_path'], params)
 				except Exception as e:
 					logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
 					sys.exit()
@@ -131,14 +131,20 @@ class NBZCore:
 			else:
 				logger.log('ERROR', 'Browser already instanced')
 		elif func_name == 'export_net_report':
-			self.attributes['complete_csv']\
-				= self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
-			self.attributes['set_net_report'] = True
+			if self.attributes['proxy_enabled']:
+				self.attributes['complete_csv']\
+					= self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
+				self.attributes['set_net_report'] = True
+			else:
+				logger.log('ERROR', 'Proxy not enabled')
 		elif func_name == 'reset_har':
-			self.attributes['NATIVES']['reset_har'](self.attributes['set_net_report'],
-													self.attributes['complete_csv'],
-													self.attributes['browser'].current_url,
-													self.attributes['proxy'])
+			if self.attributes['proxy_enabled']:
+				self.attributes['NATIVES']['reset_har'](self.attributes['set_net_report'],
+														self.attributes['complete_csv'],
+														self.attributes['browser'].current_url,
+														self.attributes['proxy'])
+			else:
+				logger.log('ERROR', 'Proxy not enabled')
 		elif func_name == 'check_net':
 			pass
 		elif func_name == 'get_parameter':

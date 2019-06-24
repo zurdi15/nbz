@@ -40,10 +40,11 @@ class LibWb:
 
 		pass
 
-	def instance_browser(self, proxy_path, params):
+	def instance_browser(self, proxy_enabled, proxy_path, params):
 		"""Start web browser and proxy server
 
 		Args:
+			proxy_enabled: flag to set proxy
 			proxy_path: path to the proxy binaries
 			params: list of parameters
 				-0: browser engine
@@ -51,21 +52,29 @@ class LibWb:
 		Returns:
 			Instance of the server, the proxy and the web browser
 		"""
-
-		try:
-			server = Server(proxy_path)
-			server.start()
-		except Exception as e:
-			raise Exception('Error launching server: {exception}'.format(exception=e))
-		try:
-			proxy = server.create_proxy()
-		except RuntimeError:
-			time.sleep(5)
+		
+		if proxy_enabled:
+			try:
+				server = Server(proxy_path)
+				server.start()
+			except Exception as e:
+				raise Exception('Error launching server: {exception}'.format(exception=e))
 			try:
 				proxy = server.create_proxy()
-			except Exception as e:
-				raise Exception('Error configuring  proxy: {exception}'.format(exception=e))
-		proxy.new_har()
+			except RuntimeError:
+				time.sleep(5)
+				try:
+					proxy = server.create_proxy()
+				except Exception as e:
+					raise Exception('Error configuring  proxy: {exception}'.format(exception=e))
+			proxy.new_har()
+			try:
+				proxy_url = urlparse.urlparse(proxy.proxy).path
+			except AttributeError:
+				proxy_url = urlparse(proxy.proxy).path
+		else:
+			server = None
+			proxy = None
 		try:
 			engine = params[0]
 			driver_path = self.get_driver_path(engine)
@@ -78,13 +87,10 @@ class LibWb:
 		try:
 			logger.log('NOTE', 'Browser: {engine} (user-agent: {user_agent})'.format(engine=engine,
 																							   user_agent=user_agent))
-			try:
-				proxy_url = urlparse.urlparse(proxy.proxy).path
-			except AttributeError:
-				proxy_url = urlparse(proxy.proxy).path
 			if engine == 'chrome':
 				ch_opt = webdriver.ChromeOptions()
-				ch_opt.add_argument("--proxy-server=" + proxy_url)
+				if proxy_enabled:
+					ch_opt.add_argument("--proxy-server=" + proxy_url)
 				if user_agent != 'default':
 					ch_opt.add_argument("--user-agent=" + user_agent)
 				try:
@@ -99,18 +105,15 @@ class LibWb:
 				if user_agent != 'default':
 					ff_prf.set_preference("general.useragent.override", user_agent)
 				try:
-					browser = webdriver.Firefox(executable_path=driver_path,
-												firefox_profile=ff_prf,
-												proxy=proxy.selenium_proxy())
+					browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf, proxy=proxy.selenium_proxy()) if proxy_enabled \
+					else webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf)
 				except LookupError:
 					time.sleep(5)
-					browser = webdriver.Firefox(executable_path=driver_path,
-												firefox_profile=ff_prf,
-												proxy=proxy.selenium_proxy())
+					browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf, proxy=proxy.selenium_proxy()) if proxy_enabled \
+					else webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf)
 			elif engine == 'phantomjs':
 				webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.settings.userAgent'] = user_agent
-				service_args = ['--proxy={proxy}'.format(proxy=proxy_url),
-								'--proxy-type=https']
+				service_args = ['--proxy={proxy}'.format(proxy=proxy_url), '--proxy-type=https']if proxy_enabled else []
 				browser = webdriver.PhantomJS(driver_path, service_args=service_args)
 			else:
 				raise Exception('Not supported browser: {engine}'.format(engine=engine))

@@ -30,6 +30,7 @@ function show_help {
 	echo "-s    Set the .nbz script"
 	echo "-p    Set the script parameters"
 	echo "-x    Enable screen emulation (server) / hide browser screen (desktop)"
+	echo "-P    Enable proxy"
 	echo "-d    Enable debug mode"
 }
 
@@ -40,14 +41,15 @@ function show_version {
 #  - Parameters
 
 script=""
-debug="false"
 display="false"
+proxy="false"
+debug="false"
 
 if [ ${#} = 0 ]; then
 	show_help
 	exit 0
 else
-	while getopts "p:s:hvxd" opt
+	while getopts "p:s:hvxPd" opt
 	do
 		case ${opt} in
 			h)
@@ -75,11 +77,14 @@ else
 					script_parameters+=("${OPTARG}")
 				fi
 				;;
-			d)
-				debug="true" >&2
-				;;
 			x)
 				display="true" >&2
+				;;
+			P)
+				proxy="true" >&2
+				;;
+			d)
+				debug="true" >&2
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
@@ -131,7 +136,7 @@ fi
 echo -e "${header}"
 
 if [ -z "${PYTHON3}" ]; then
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -debug ${debug} -display ${display}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -debug ${debug}
 else
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -debug ${debug} -display ${display}
+	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -debug ${debug}
 fi
