@@ -5,7 +5,7 @@
 
 
 import re
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
 
 logger = Logging()
 

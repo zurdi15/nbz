@@ -8,18 +8,12 @@ import os
 import platform
 import time
 
-try:
-	import urlparse
-except ImportError:
-	from urllib.parse import urlparse
+from urllib.parse import urlparse
 from data.user_agents import USER_AGENTS
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
 
-try:
-	from selenium import webdriver
-	from browsermobproxy import Server
-except ImportError:
-	raise Exception("Dependencies not installed. Please run setup.sh")
+from selenium import webdriver
+from browsermobproxy import Server
 
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))

@@ -11,7 +11,7 @@ import datetime
 from datetime import datetime
 from random import randint
 import re
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
 
 logger = Logging()
 
@@ -70,15 +70,12 @@ class LibA:
 				-0: string to be printed
 		"""
 
-		string = str(params[0])
+		string = params[0]
 		try:
 			if string is None:
 				logger.log('NOTE', '')
 			else:
-				if isinstance(string, unicode):
-					logger.log('NOTE', string.encode('utf-8'))
-				else:
-					logger.log('NOTE', string)
+				logger.log('NOTE', string)
 		except Exception as e:
 			raise Exception('Error printing {string}: {exception}'.format(string=string, exception=e))
 

@@ -6,11 +6,8 @@
 
 from lib.lib_log_nbz import Logging
 from data.natives import NATIVES
-try:
-	from nbz_lexer import tokens
-	import ply.yacc as yacc
-except LookupError:
-	raise Exception("Dependencies not installed. Please run setup.sh.")
+from parser.nbz_lexer import tokens
+import ply.yacc as yacc
 logger = Logging()
 
 

@@ -6,7 +6,7 @@
 
 import os
 from pprint import pprint
-from lib_log_nbz import Logging
+from lib.lib_log_nbz import Logging
 
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
