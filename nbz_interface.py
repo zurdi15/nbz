@@ -6,7 +6,6 @@
 
 import sys
 import os
-from pathlib import Path
 import psutil
 import argparse
 from pprint import pprint
@@ -16,7 +15,7 @@ from parser.nbz_parser import NBZParser
 from data.natives import NATIVES
 from lib.lib_log_nbz import Logging
 logger = Logging()
-BASE_DIR = Path(__file__)
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 COLOURS = {'YELLOW': '\033[93m', 'RED': '\033[91m', 'NC': '\033[0m'}
 

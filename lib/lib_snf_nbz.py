@@ -5,12 +5,11 @@
 
 
 import os
-from pathlib import Path
 from pprint import pprint
 from lib.lib_log_nbz import Logging
 
 logger = Logging()
-BASE_DIR = Path(__file__)
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class LibSnf:

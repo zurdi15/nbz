@@ -5,7 +5,6 @@
 
 
 import os
-from pathlib import Path
 import platform
 import time
 from urllib.parse import urlparse
@@ -14,12 +13,11 @@ from lib.lib_log_nbz import Logging
 from selenium import webdriver
 from browsermobproxy import Server
 logger = Logging()
-BASE_DIR = Path(__file__)
-PROXY_DIR = Path(__file__).parent.parent
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'posix':
-	proxy_path = os.path.join(PROXY_DIR, 'proxy', 'bin', 'browsermob-proxy')
+	proxy_path = os.path.join(BASE_DIR+'/../..', 'proxy', 'bin', 'browsermob-proxy')
 elif os.name == 'nt':
-	proxy_path = os.path.join(PROXY_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
+	proxy_path = os.path.join(BASE_DIR+'/../..', 'proxy', 'bin', 'browsermob-proxy.bat')
 
 
 class LibWb:
