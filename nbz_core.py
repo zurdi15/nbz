@@ -5,6 +5,7 @@
 
 
 import sys
+import os
 from io import IOBase
 from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
