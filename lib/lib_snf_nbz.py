@@ -5,11 +5,12 @@
 
 
 import os
+from pathlib import Path
 from pprint import pprint
 from lib.lib_log_nbz import Logging
 
 logger = Logging()
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+BASE_DIR = Path(__file__)
 
 
 class LibSnf:
@@ -144,10 +145,7 @@ class LibSnf:
 		"""
 		file_name = params[0]
 
-		net_reports_path = '{base_dir}/net_reports/{script_name}'.format(base_dir=os.path.abspath(\
-																				  os.path.join(BASE_DIR,
-																							   os.pardir)),
-																			script_name=script_name)
+		net_reports_path = '{base_dir}/net_reports/{script_name}'.format(base_dir=os.path.abspath(os.path.join(BASE_DIR, os.pardir)), script_name=script_name)
 		complete_csv_path = '{net_reports_path}/complete_net_log_{report_name}.csv'.format(
 			net_reports_path=net_reports_path,
 			report_name=file_name)
