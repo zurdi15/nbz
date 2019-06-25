@@ -5,7 +5,6 @@
 
 
 import time
-import unicodedata
 from selenium.webdriver.common.keys import Keys
 from lib.lib_log_nbz import Logging
 
@@ -284,7 +283,7 @@ class LibB:
 		try:
 			element = browser.find_element_by_xpath(web_element)
 			logger.log('NOTE', 'Getting element: {web_element}'.format(web_element=web_element))
-			return unicodedata.normalize('NFKD', element.text).encode('ascii', 'ignore')
+			return element.text
 		except Exception as e:
 			raise Exception('Error with element {web_element}: {exception}'.format(web_element=web_element,
 																				   exception=e))

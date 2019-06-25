@@ -59,7 +59,7 @@ class NBZInterface:
 		}
 		try:
 			if os.name == 'posix':
-				print("\n{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
+				print("{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
 																													NC=COLOURS['NC']))
 			self.compile_script()
 			nbz_core = NBZCore(self.core_attributes)

@@ -40,14 +40,13 @@ class LibWb:
 
 		Args:
 			proxy_enabled: flag to set proxy
-			proxy_path: path to the proxy binaries
 			params: list of parameters
 				-0: browser engine
 				-1: user-agent
 		Returns:
 			Instance of the server, the proxy and the web browser
 		"""
-		
+
 		if proxy_enabled:
 			try:
 				server = Server(proxy_path)

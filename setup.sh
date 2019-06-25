@@ -18,10 +18,8 @@
 
 
 PYTHON3=$(which python3)
-PYTHON=$(which python)
 JAVA=$(which java)
 PIP3=$(which pip3)
-PIP=$(which pip)
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -37,9 +35,9 @@ toilet -t -f mono12 -F gay "  NBZ  "
 echo -e "${GREEN}  ########################## INSTALLING NBZ ##########################${NC}"
 echo
 
-if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]
+if [ -z "${PYTHON3}" ]
 then
-	echo -e "${RED}NBZ - Error: Python is not installed. Please install python2 or python3 in your system (python3 recommended).${NC}"
+	echo -e "${RED}NBZ - Error: Python is not installed. Please install python3 in your system.${NC}"
 	exit 1
 fi
 
@@ -49,9 +47,9 @@ then
 	exit 1
 fi
 
-if [ -z "${PIP3}" ] && [ -z "${PIP}" ]
+if [ -z "${PIP3}" ]
 then
-	echo -e "${RED}NBZ - Error: Python-pip is not installed. Please install it in your system (python-pip for python2 or python-pip3 for python3).${NC}"
+	echo -e "${RED}NBZ - Error: Python3-pip is not installed. Please install it in your system.${NC}"
 	exit 1
 fi
 
@@ -59,9 +57,6 @@ fi
 if ! [ -z "${PIP3}" ]
 then
 	pip3 install -r requirements.txt
-elif ! [ -z "${PIP}" ]
-then
-    pip install -r requirements.txt
 fi
 
 echo

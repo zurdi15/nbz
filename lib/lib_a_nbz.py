@@ -198,10 +198,7 @@ class LibA:
 		try:
 			sentences = text.split('\\n')
 			for sent in sentences:
-				if isinstance(sent, unicode):
-					file_name.write(sent.encode('utf-8') + '\n')
-				else:
-					file_name.write(sent + '\n')
+				file_name.write(sent + '\n')
 		except Exception as e:
 			raise Exception('Error writing {file_name}: {exception}'.format(file_name=file_name,
 																			exception=e))
@@ -235,10 +232,7 @@ class LibA:
 		try:
 			for row in table.find_elements_by_tag_name('tr'):
 				for cell in row.find_elements_by_tag_name('td'):
-					if isinstance(cell.text, unicode):
-						row_ += cell.text.encode('utf-8') + delimiter
-					else:
-						row_ += cell.text + delimiter
+					row_ += cell.text + delimiter
 				file_.write(add_left + row_ + add_right + '\n')
 				row_ = ''
 		except Exception as e:
@@ -530,10 +524,7 @@ class LibA:
 		try:
 			html = open('{html_path}'.format(html_path=html_path), 'w')
 			html_text = browser.page_source
-			if isinstance(html_text, unicode):
-				html.write(html_text.encode('utf-8'))
-			else:
-				html.write(html_text)
+			html.write(html_text)
 			html.close()
 			logger.log('NOTE', 'HTML from {current_url} saved on: {html_path}'.format(current_url=browser.current_url,
 																					  html_path=html_path))
@@ -578,10 +569,7 @@ class LibA:
 		try:
 			element = browser.find_element_by_xpath(web_element)
 			html = element.get_attribute('outerHTML')
-			if isinstance(html, unicode):
-				return html.encode('utf-8')
-			else:
-				return html
+			return html
 		except Exception as e:
 			raise Exception('Error getting html from {web_element}: {exception}'.format(web_element=web_element,
 																						exception=e))
