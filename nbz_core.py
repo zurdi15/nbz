@@ -120,14 +120,13 @@ class NBZCore:
 		if func_name == 'exit':
 			self.exit = True
 		elif func_name == 'browser':
-			if not self.attributes['set_browser']:
+			if self.attributes['browser'] is not None:
 				try:
 					self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
 						= lib_wb_nbz.instance_browser(self.attributes['proxy_enabled'], self.attributes['proxy_path'], params)
 				except Exception as e:
 					logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
 					sys.exit()
-				self.attributes['set_browser'] = True
 			else:
 				logger.log('ERROR', 'Browser already instanced')
 		elif func_name == 'export_net_report':

@@ -6,7 +6,7 @@
 
 
 function show_help {
-	echo "NBZ-1 v1.0.1 - (C) 2017-2018 Zurdi Zurdo"
+	echo "NBZ v1.1.0 - (C) 2017-2019 Zurdi Zurdo"
 	echo "Released under the GNU GLP"
 	echo ""
 	echo "NBZ is a tool to automate navigation and data extraction on the internet."
@@ -24,7 +24,7 @@ function show_help {
 }
 
 function show_version {
-	echo "NBZ-1 v1.0.1"
+	echo "NBZ v1.1.1"
 }
 
 #  - Parameters
@@ -39,7 +39,7 @@ if [ ${#} = 0 ]; then
 	show_help
 	exit 0
 else
-	while getopts "p:s:r:hvxPd" opt
+	while getopts "hvs:p:xr:Pd" opt
 	do
 		case ${opt} in
 			h)
@@ -70,14 +70,14 @@ else
 			x)
 				display="true" >&2
 				;;
+			r)
+				resolution=${OPTARG}
+				;;
 			P)
 				proxy="true" >&2
 				;;
 			d)
 				debug="true" >&2
-				;;
-			r)
-				resolution=${OPTARG}
 				;;
 			\?)
 				echo "Error: invalid option -${OPTARG}" >&2
@@ -108,12 +108,12 @@ fi
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PYTHON3=$(which python3)
-PYTHON=$(which python)
 YELLOW='\e[33m'
 RED='\e[31m'
 NC='\e[0m'
-if [ -z "${PYTHON3}" ] && [ -z "${PYTHON}" ]; then
-	echo -e "${RED}NBZ - Error: Python is not installed. Please install python 3.6.5 in your system.${NC}"
+
+if [ -z "${PYTHON3}" ]; then
+	echo -e "${RED}NBZ - Error: Python 3 is not installed. Please install it in your system.${NC}"
 	exit 1
 fi
 
@@ -122,13 +122,8 @@ TOILET=$(which toilet)
 if [ -z "${TOILET}" ]; then
 	header=""
 else
-	header=""
-#	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
+	header=$(toilet -t -f mono12 -F gay "  NBZ  ")
 fi
 
 echo -e "${header}"
-if [ -z "${PYTHON3}" ]; then
-	python3 -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}
-else
-	python -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}
-fi
+python3 -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}

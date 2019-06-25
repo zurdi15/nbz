@@ -9,10 +9,7 @@ import os
 import psutil
 import argparse
 from pprint import pprint
-try:
-	from pyvirtualdisplay import Display
-except ImportError:
-	raise Exception("Dependencies are not installed. Please run setup.sh")
+from pyvirtualdisplay import Display
 from nbz_core import NBZCore
 from parser.nbz_parser import NBZParser
 from data.natives import NATIVES
@@ -53,22 +50,19 @@ class NBZInterface:
 			'script': script,
 			'script_name': os.path.basename(script)[0:-4],
 			'script_parameters': script_parameters,
-			'debug': debug,
 
-			# Proxy binaries to execute the sniffer
+			'browser': None,
+			'server': None,
 			'proxy_enabled': proxy,
 			'proxy_path': proxy_path,
-
-			# Flag to instance browser once (even if z_code has more than one instance)
-			'set_browser': False,
-			'server': None,
 			'proxy': None,
-			'browser': None,
 
 			'set_net_report': False,
 			'net_reports_path': '',
 			'complete_csv_path': '',
 			'complete_csv': None,
+
+			'debug': debug,
 		}
 		try:
 			if os.name == 'posix':
@@ -114,7 +108,7 @@ class NBZInterface:
 	def close_all(self):
 		"""Close all connections and export har log"""
 
-		if self.core_attributes['set_browser']:
+		if self.core_attributes['browser'] is not None:
 			if self.core_attributes['set_net_report']:
 				self.core_attributes['complete_csv'].write(
 					'URL: {url}\n\n'.format(url=self.core_attributes['browser'].current_url))
@@ -143,27 +137,27 @@ def main():
 	parser.add_argument("-script", help="script file", required=False)
 	parser.add_argument("-script_parameters", help="script parameters", required=False, nargs='+')
 	parser.add_argument("-display", help="enable display emulation", required=False)
-	parser.add_argument("-proxy", help="enable proxy", required=False)
 	parser.add_argument("-resolution", help="set the screen emulator resolution", required=False)
+	parser.add_argument("-proxy", help="enable proxy", required=False)
 	parser.add_argument("-debug", help="debug mode", required=False)
 	args = parser.parse_args()
 	script = args.script
 	script_parameters = args.script_parameters
+	display = args.display
+	resolution = args.resolution
+	if display == 'true':
+		if resolution != 'default':
+			resolution = resolution.split('x')
+			try:
+				display = Display(visible=0, size=(resolution[0], resolution[1]))
+			except IndexError:
+				logger.log('ERROR', 'Error in resolution parameter. Must be like 1920x1080.')
+				sys.exit(4)
+		else:
+			display = Display(visible=0, size=(2920, 1080))
+		display.start()
 	proxy = True if args.proxy == 'true' else False
 	debug = True if args.debug == 'true' else False
-	resolution = args.resolution
-	display = args.display
-	if display == 'true':
-            if resolution != 'default':
-                resolution = resolution.split('x')
-                try:
-                    display = Display(visible=0, size=(resolution[0], resolution[1]))
-                except IndexError:
-                    logger.log('ERROR', 'Error in resolution parameter')
-                    sys.exit(4)
-            else:
-		display = Display(visible=0, size=(2920, 1080))
-            display.start()
 	NBZInterface(script, script_parameters, proxy, debug)
 
 if __name__ == "__main__":
