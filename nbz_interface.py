@@ -51,11 +51,8 @@ class NBZInterface:
 			'script_name': os.path.basename(script)[0:-4],
 			'script_parameters': script_parameters,
 
-			'browser': None,
-			'server': None,
+			'browser': [],
 			'proxy_enabled': proxy_enabled,
-			'proxy_path': proxy_path,
-			'proxy': None,
 
 			'set_net_report': False,
 			'net_reports_path': '',
@@ -82,7 +79,6 @@ class NBZInterface:
 				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=COLOURS['RED'],
 																												  NC=COLOURS['NC']))
 		finally:
-			# Close browser/proxy/server
 			self.close_all()
 
 	def compile_script(self):

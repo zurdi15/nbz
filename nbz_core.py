@@ -10,6 +10,11 @@ from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
 lib_wb_nbz = LibWb()
 logger = Logging()
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+if os.name == 'posix':
+	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
+elif os.name == 'nt':
+	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
 
 class NBZCore:
@@ -118,15 +123,12 @@ class NBZCore:
 		if func_name == 'exit':
 			sys.exit(params[0])
 		elif func_name == 'browser':
-			if self.attributes['browser'] is not None:
-				try:
-					self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
-						= lib_wb_nbz.instance_browser(self.attributes['proxy_enabled'], self.attributes['proxy_path'], params)
-				except Exception as e:
-					logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
-					sys.exit()
-			else:
-				logger.log('ERROR', 'Browser already instanced')
+			try:
+				self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
+				= lib_wb_nbz.instance_browser(self.attributes['proxy_enabled'], self.attributes['proxy_path'], params)
+			except Exception as e:
+				logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
+				sys.exit()
 		elif func_name == 'export_net_report':
 			if self.attributes['proxy_enabled']:
 				self.attributes['complete_csv']\
