@@ -14,10 +14,11 @@ from selenium import webdriver
 from browsermobproxy import Server
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+PROXY_DIR = os.path.dirname(os.path.realpath(__file__).parent.parent)
 if os.name == 'posix':
-	proxy_path = os.path.join(BASE_DIR.parent.parent, 'proxy', 'bin', 'browsermob-proxy')
+	proxy_path = os.path.join(PROXY_DIR, 'proxy', 'bin', 'browsermob-proxy')
 elif os.name == 'nt':
-	proxy_path = os.path.join(BASE_DIR.parent.parent, 'proxy', 'bin', 'browsermob-proxy.bat')
+	proxy_path = os.path.join(PROXY_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
 
 class LibWb:
