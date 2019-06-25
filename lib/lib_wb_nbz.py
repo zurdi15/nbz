@@ -15,9 +15,9 @@ from browsermobproxy import Server
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 if os.name == 'posix':
-	proxy_path = os.path.join(BASE_DIR+'/../..', 'proxy', 'bin', 'browsermob-proxy')
+	proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy')
 elif os.name == 'nt':
-	proxy_path = os.path.join(BASE_DIR+'/../..', 'proxy', 'bin', 'browsermob-proxy.bat')
+	proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy.bat')
 
 
 class LibWb:
