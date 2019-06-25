@@ -38,7 +38,7 @@ class NBZInterface:
 		close_all
 	"""
 
-	def __init__(self, script, script_parameters, proxy, debug):
+	def __init__(self, script, script_parameters, proxy_enabled, debug):
 		"""Init NBZInterface class with some attributes"""
 
 		self.core_attributes = {
@@ -53,7 +53,7 @@ class NBZInterface:
 
 			'browser': None,
 			'server': None,
-			'proxy_enabled': proxy,
+			'proxy_enabled': proxy_enabled,
 			'proxy_path': proxy_path,
 			'proxy': None,
 
@@ -156,9 +156,9 @@ def main():
 		else:
 			display = Display(visible=0, size=(2920, 1080))
 		display.start()
-	proxy = True if args.proxy == 'true' else False
+	proxy_enabled = True if args.proxy == 'true' else False
 	debug = True if args.debug == 'true' else False
-	NBZInterface(script, script_parameters, proxy, debug)
+	NBZInterface(script, script_parameters, proxy_enabled, debug)
 
 if __name__ == "__main__":
 	sys.exit(main())

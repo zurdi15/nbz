@@ -46,7 +46,6 @@ class NBZCore:
 			'for': self._for,
 			'while': self._while
 		}
-		self.exit = False
 
 	def get_attributes(self):
 		"""Returns class attributes attribute
@@ -98,8 +97,7 @@ class NBZCore:
 		else:
 			instructions = instruction_set
 		for instruction in instructions:
-			if not self.exit:
-				self.statements[instruction[0]](instruction)
+			self.statements[instruction[0]](instruction)
 
 	def _assign(self, instruction):
 		var_name = instruction[1]
@@ -118,7 +116,7 @@ class NBZCore:
 		for param in func_parameters:
 			params.append(self.get_value(param))
 		if func_name == 'exit':
-			self.exit = True
+			sys.exit(params[0])
 		elif func_name == 'browser':
 			if self.attributes['browser'] is not None:
 				try:
@@ -135,7 +133,7 @@ class NBZCore:
 					= self.attributes['NATIVES']['export_net_report'](params, self.attributes['script_name'])
 				self.attributes['set_net_report'] = True
 			else:
-				logger.log('ERROR', 'Proxy not enabled')
+				logger.log('ERROR', 'Can\'t get net report. Proxy not enabled.')
 		elif func_name == 'reset_har':
 			if self.attributes['proxy_enabled']:
 				self.attributes['NATIVES']['reset_har'](self.attributes['set_net_report'],
@@ -143,7 +141,7 @@ class NBZCore:
 														self.attributes['browser'].current_url,
 														self.attributes['proxy'])
 			else:
-				logger.log('ERROR', 'Proxy not enabled')
+				logger.log('ERROR', 'Can\'t reset HAR. Proxy not enabled.')
 		elif func_name == 'check_net':
 			pass
 		elif func_name == 'get_parameter':
@@ -160,7 +158,7 @@ class NBZCore:
 				try:
 					self.execute_instructions(self.attributes['USER_FUNC'][func_name])
 				except LookupError:
-					logger.log('ERROR', 'Not defined function')
+					logger.log('ERROR', '{func_name} function not defined.'.format(func_name=func_name))
 					raise Exception(str(e))
 
 	def _if(self, instruction):
