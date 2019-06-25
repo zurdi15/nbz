@@ -7,16 +7,17 @@
 import os
 import platform
 import time
-
 from urllib.parse import urlparse
 from data.user_agents import USER_AGENTS
 from lib.lib_log_nbz import Logging
-
 from selenium import webdriver
 from browsermobproxy import Server
-
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+if os.name == 'posix':
+	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
+elif os.name == 'nt':
+	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
 
 class LibWb:
@@ -34,7 +35,7 @@ class LibWb:
 
 		pass
 
-	def instance_browser(self, proxy_enabled, proxy_path, params):
+	def instance_browser(self, proxy_enabled, params):
 		"""Start web browser and proxy server
 
 		Args:
@@ -115,7 +116,7 @@ class LibWb:
 			raise Exception('Error launching {engine} ({user_agent}): {exception}'.format(engine=engine,
 																						  user_agent=user_agent,
 																						  exception=e))
-		return server, proxy, browser
+		return browser
 
 	@staticmethod
 	def get_driver_path(engine):

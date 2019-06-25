@@ -11,11 +11,6 @@ from lib.lib_wb_nbz import LibWb
 from lib.lib_log_nbz import Logging
 lib_wb_nbz = LibWb()
 logger = Logging()
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-if os.name == 'posix':
-	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy')
-elif os.name == 'nt':
-	proxy_path = os.path.join(BASE_DIR, 'proxy', 'bin', 'browsermob-proxy.bat')
 
 
 class NBZCore:
@@ -125,8 +120,7 @@ class NBZCore:
 			sys.exit(params[0])
 		elif func_name == 'browser':
 			try:
-				self.attributes['server'], self.attributes['proxy'], self.attributes['browser'] \
-				= lib_wb_nbz.instance_browser(self.attributes['proxy_enabled'], proxy_path, params)
+				self.attributes['browser'] = lib_wb_nbz.instance_browser(self.attributes['proxy_enabled'], params)
 			except Exception as e:
 				logger.log('ERROR', 'Error with browser: {exception}'.format(exception=e))
 				sys.exit()
