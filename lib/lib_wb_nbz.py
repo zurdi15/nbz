@@ -18,6 +18,8 @@ if os.name == 'posix':
 	proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy')
 elif os.name == 'nt':
 	proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy.bat')
+else:
+	raise Exception('Not supported OS {os}'.format(os=os.name))
 
 
 class LibWb:
@@ -70,8 +72,7 @@ class LibWb:
 			server = None
 			proxy = None
 		try:
-			engine = params[0]
-			driver_path = self.get_driver_path(engine)
+			engine = params[0
 			try:
 				user_agent = USER_AGENTS[params[1]]
 			except LookupError:
@@ -82,6 +83,7 @@ class LibWb:
 			logger.log('NOTE', 'Browser: {engine} (user-agent: {user_agent})'.format(engine=engine,
 																							   user_agent=user_agent))
 			if engine == 'chrome':
+				driver_path = self.get_driver_path(engine)
 				ch_opt = webdriver.ChromeOptions()
 				if proxy_enabled:
 					ch_opt.add_argument("--proxy-server=" + proxy_url)
@@ -95,6 +97,7 @@ class LibWb:
 					browser = webdriver.Chrome(executable_path=driver_path,
 											   chrome_options=ch_opt)
 			elif engine == 'firefox':
+				driver_path = self.get_driver_path(engine)
 				ff_prf = webdriver.FirefoxProfile()
 				if user_agent != 'default':
 					ff_prf.set_preference("general.useragent.override", user_agent)
@@ -106,11 +109,12 @@ class LibWb:
 					browser = webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf, proxy=proxy.selenium_proxy()) if proxy_enabled \
 					else webdriver.Firefox(executable_path=driver_path, firefox_profile=ff_prf)
 			elif engine == 'phantomjs':
+				driver_path = self.get_driver_path(engine)
 				webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.settings.userAgent'] = user_agent
 				service_args = ['--proxy={proxy}'.format(proxy=proxy_url), '--proxy-type=https']if proxy_enabled else []
 				browser = webdriver.PhantomJS(driver_path, service_args=service_args)
 			else:
-				raise Exception('Not supported browser: {engine}'.format(engine=engine))
+				raise Exception('Not supported engine: {engine}'.format(engine=engine))
 		except Exception as e:
 			raise Exception('Error launching {engine} ({user_agent}): {exception}'.format(engine=engine,
 																						  user_agent=user_agent,
@@ -134,22 +138,16 @@ class LibWb:
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver.exe')
 			elif platform.system() == 'Darwin':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver_mac')
-			else:
-				raise Exception('Operative System not supported')
 		elif engine == 'firefox':
 			if os.name == 'posix':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'geckodriver')
 			elif os.name == 'nt':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'geckodriver.exe')
-			else:
-				raise Exception('Operative System not supported')
 		elif engine == 'phantomjs':
 			if os.name == 'posix':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'phantomjs')
 			elif os.name == 'nt':
 				driver_path = os.path.join(BASE_DIR, 'drivers', 'phantomjs.exe')
-			else:
-				raise Exception('Operative System not supported')
 		else:
-			driver_path = ''
+			raise Exception('Not supported engine {engine}'.format(engine=engine))
 		return driver_path
