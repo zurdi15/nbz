@@ -72,7 +72,7 @@ class LibWb:
 			server = None
 			proxy = None
 		try:
-			engine = params[0
+			engine = params[0]
 			try:
 				user_agent = USER_AGENTS[params[1]]
 			except LookupError:
