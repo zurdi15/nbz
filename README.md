@@ -12,25 +12,16 @@ NBZ is configured with nbz scripts.
 
 Compatible OS and browsers:
 
-  - Windows
-    - Chrome
-    - Firefox
-    - PhantomJS
-
   - Linux
     - Chrome
     - Firefox
-    - PhantomJS
-
-  - macOS:
-    - Chrome
 
 <h2>Installing</h2>
 
  <h3>Prerequisites</h3>
 
-  - java
-  - python 2.7 or python 3.x
-  - python-pip or python-pip3
+  - openjdk
+  - python3
+  - pip3
 
 ![](https://media.giphy.com/media/26n79jmM0LlJwtpi8/giphy.gif)
