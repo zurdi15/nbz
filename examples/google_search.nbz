@@ -1,7 +1,0 @@
-browser('firefox', 'default', False);
-
-get_url('https://www.google.es');
-
-fill('/html/body/div/div[4]/form/div[2]/div/div[1]/div/div[1]/input', 'github nbz', 'ENTER');
-
-wait(3);

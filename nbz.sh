@@ -126,4 +126,4 @@ else
 fi
 
 echo -e "${header}"
-python3 -W ignore ${NBZ_PATH}/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}
+python3 -W ignore ${NBZ_PATH}/src/nbz_interface.py -script ${script} -script_parameters "${script_parameters[@]}" -display ${display} -proxy ${proxy} -resolution ${resolution} -debug ${debug}
