@@ -58,21 +58,18 @@ class NBZInterface:
 			'debug': debug,
 		}
 		try:
-			if os.name == 'posix':
-				print("{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
+			print("{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
 																													NC=COLOURS['NC']))
 			self.compile_script()
 			nbz_core = NBZCore(self.core_attributes)
 			nbz_core.execute_instructions()
 			# Return all core attributes to close needed
 			self.core_attributes = NBZCore.get_attributes(nbz_core)
-			if os.name == 'posix':
-				print("\n{YELLOW}  ############################ END NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
+			print("\n{YELLOW}  ############################ END NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
 																													NC=COLOURS['NC']))
 		except Exception as e:
-			if os.name == 'posix':
-				logger.log('ERROR', str(e))
-				print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=COLOURS['RED'],
+			logger.log('ERROR', str(e))
+			print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=COLOURS['RED'],
 																												  NC=COLOURS['NC']))
 		finally:
 			self.close_all()
@@ -115,14 +112,10 @@ class NBZInterface:
 		for log in logs:
 			if os.path.isfile(os.path.join(os.getcwd(), log)):
 				os.rename(os.path.join(os.getcwd(), log), os.path.join(logs_dir, log))
-		if os.name == 'posix':
-			root_process = psutil.Process(os.getppid())
-			root_children = root_process.children(recursive=True)[1:]
-			for child in reversed(root_children):
-				os.kill(child.pid, 9)
-		elif os.name == 'nt':
-			# TODO kill zombies processes
-			pass
+		root_process = psutil.Process(os.getppid())
+		root_children = root_process.children(recursive=True)[1:]
+		for child in reversed(root_children):
+			os.kill(child.pid, 9)
 
 def main():
 	parser = argparse.ArgumentParser()

@@ -14,12 +14,7 @@ from selenium import webdriver
 from browsermobproxy import Server
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-if os.name == 'posix':
-    proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy')
-elif os.name == 'nt':
-    proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy.bat')
-else:
-    raise Exception('Not supported OS {os}'.format(os=os.name))
+proxy_path = os.path.join(BASE_DIR+'/..', 'proxy', 'bin', 'browsermob-proxy')
 
 
 class LibWb:
@@ -134,17 +129,9 @@ class LibWb:
         """
 
         if engine == 'chrome':
-            if platform.system() == 'Linux':
                 driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver')
-            elif platform.system() == 'Windows':
-                driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver.exe')
-            elif platform.system() == 'Darwin':
-                driver_path = os.path.join(BASE_DIR, 'drivers', 'chromedriver_mac')
         elif engine == 'firefox':
-            if os.name == 'posix':
                 driver_path = os.path.join(BASE_DIR, 'drivers', 'geckodriver')
-            elif os.name == 'nt':
-                driver_path = os.path.join(BASE_DIR, 'drivers', 'geckodriver.exe')
         else:
             raise Exception('Not supported engine {engine}'.format(engine=engine))
         return driver_path
