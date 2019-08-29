@@ -1,4 +1,4 @@
-browser('chrome', 'default');
+browser('chrome', 'default', True);
 
 get_url('https://github.com/zurdi15/NBZ/archive/master.zip');
 
