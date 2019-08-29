@@ -24,7 +24,6 @@ class NBZCore:
 		statements: dictionary of multiple nbz-script statements to execute each when needed
 
 	Methods:
-		get_attributes
 		execute_instructions
 		_assign
 		_def
@@ -47,14 +46,6 @@ class NBZCore:
 			'for': self._for,
 			'while': self._while
 		}
-
-	def get_attributes(self):
-		"""Returns class attributes attribute
-
-		Returns:
-			The class attributes dict"""
-
-		return self.attributes
 
 	def execute_instructions(self, instruction_set=None):
 		"""Execute each instruction from instruction_set (recursively on flow control sentences)
@@ -293,3 +284,15 @@ class NBZCore:
 				return sub_instruction
 		except Exception as e:
 			raise Exception(str(e))
+
+	def export_har_log(self):
+		"""Export har log"""
+
+		if self.attributes['browser'] is not None:
+			if self.attributes['set_net_report']:
+				self.attributes['complete_csv'].write(
+					'URL: {url}\n\n'.format(url=self.attributes['browser'].current_url))
+				pprint(self.attributes['proxy'].har['log']['entries'], self.attributes['complete_csv'])
+				self.attributes['complete_csv'].close()
+				logger.log('NOTE', 'Net report csv file exported to: '
+								   '{net_report_csv}'.format(net_report_csv=self.attributes['complete_csv'].name))

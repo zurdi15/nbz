@@ -63,8 +63,7 @@ class NBZInterface:
 			self.compile_script()
 			nbz_core = NBZCore(self.core_attributes)
 			nbz_core.execute_instructions()
-			# Return all core attributes to close needed
-			self.core_attributes = NBZCore.get_attributes(nbz_core)
+			nbz_core.export_har_log()
 			print("\n{YELLOW}  ############################ END NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
 																													NC=COLOURS['NC']))
 		except Exception as e:
@@ -95,16 +94,8 @@ class NBZInterface:
 																			exception=e))
 
 	def close_all(self):
-		"""Close all connections and export har log"""
+		"""Close all connections"""
 
-		if self.core_attributes['browser'] is not None:
-			if self.core_attributes['set_net_report']:
-				self.core_attributes['complete_csv'].write(
-					'URL: {url}\n\n'.format(url=self.core_attributes['browser'].current_url))
-				pprint(self.core_attributes['proxy'].har['log']['entries'], self.core_attributes['complete_csv'])
-				self.core_attributes['complete_csv'].close()
-				logger.log('NOTE', 'Net report csv file exported to: '
-								   '{net_report_csv}'.format(net_report_csv=self.core_attributes['complete_csv'].name))
 		logs_dir = os.path.join(BASE_DIR, "logs")
 		if not os.path.exists(logs_dir):
 			os.makedirs(logs_dir)
