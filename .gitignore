@@ -4,6 +4,6 @@ scripts
 *.log
 *.pyc
 net_reports
-parser/parser.out
-parser/parsetab.py
+src/parser/parser.out
+src/parser/parsetab.py
 __pycache__
