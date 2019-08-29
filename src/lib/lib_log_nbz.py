@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
@@ -48,13 +48,13 @@ class Logging:
 			print("{GREEN}  -  NBZ Log{YELLOW}[{st}]: {NC}{msg}".format(GREEN=self.GREEN,
 																		YELLOW=self.YELLOW,
 																		NC=self.NC,
-																		st=st, 
+																		st=st,
 																		msg=msg))
 		elif level == 'ERROR':
 			print("{RED}  -  NBZ Log{YELLOW}[{st}]: {NC}{msg}".format(RED=self.RED,
 																	  YELLOW=self.YELLOW,
 																	  NC=self.NC,
-																	  st=st, 
+																	  st=st,
 																	  msg=msg))
 		else:
 			print('Not defined logger level: {level}'.format(level=level))

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
@@ -153,9 +153,9 @@ def NBZParser(script, interactive=False):
 		code.append(p[0])
 
 	def p_assign_expr(p):
-		"""assign : ID ASSIGN expr_type 
-				  | ID ASSIGN expr_arithm 
-				  | ID ASSIGN logic_list 
+		"""assign : ID ASSIGN expr_type
+				  | ID ASSIGN expr_arithm
+				  | ID ASSIGN logic_list
 				  | ID ASSIGN expr_list"""
 		p[0] = ['assign', p[1], p[3]]
 		variables[p[1]] = ''

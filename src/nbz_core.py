@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Author: <Zurdi>
@@ -252,7 +252,7 @@ class NBZCore:
 						if isinstance(op_1, str) or isinstance(op_2, str):
 							return eval('\'{op_1}\' {operand} \'{op_2}\''.format(op_1=self.get_value(sub_instruction[1]),
 																				operand=sub_instruction[3],
-																				op_2=self.get_value(sub_instruction[2])))	
+																				op_2=self.get_value(sub_instruction[2])))
 						else:
 							return eval('{op_1} {operand} {op_2}'.format(op_1=self.get_value(sub_instruction[1]),
 																		operand=sub_instruction[3],
