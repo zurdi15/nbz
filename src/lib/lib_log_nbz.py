@@ -17,6 +17,9 @@ class Logging:
 
 	Methods:
 		log
+		log_header
+		log_footer
+		log_error
 	"""
 
 	def __init__(self):

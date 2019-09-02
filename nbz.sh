@@ -108,9 +108,7 @@ fi
 
 NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PYTHON3=$(which python3)
-YELLOW='\e[33m'
-RED='\e[31m'
-NC='\e[0m'
+YELLOW='\e[33m'; RED='\e[31m'; NC='\e[0m'
 
 if [ -z "${PYTHON3}" ]; then
 	echo -e "${RED}NBZ - Error: Python 3 is not installed. Please install it in your system.${NC}"
