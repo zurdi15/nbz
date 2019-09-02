@@ -6,12 +6,12 @@
 
 
 function show_help {
-	echo "NBZ v1.1.0 - (C) 2017-2019 Zurdi Zurdo"
+	echo "NBZ v1.0 - (C) 2017-2019 Zurdi Zurdo"
 	echo "Released under the GNU GLP"
 	echo ""
 	echo "NBZ is a tool to automate navigation and data extraction on the internet."
 	echo "It is configured by little scripts coded with nbz-script language. You can find the"
-	echo "documentation in the github wiki: https://github.com/zurdi15/NBZ-1/wiki"
+	echo "documentation in the github wiki: https://github.com/zurdi15/NBZ/wiki"
 	echo ""
 	echo "-h    Show this help"
 	echo "-v    Show the version"
@@ -24,7 +24,7 @@ function show_help {
 }
 
 function show_version {
-	echo "NBZ v1.1.1"
+	echo "NBZ v1.0"
 }
 
 #  - Parameters
