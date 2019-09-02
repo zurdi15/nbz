@@ -22,16 +22,10 @@ class Logging:
 	def __init__(self):
 		"""Init Logging class"""
 
-		if os.name == 'posix':
-			self.GREEN = '\033[92m'
-			self.YELLOW = '\033[93m'
-			self.RED = '\033[91m'
-			self.NC = '\033[0m'
-		else:
-			self.GREEN = ''
-			self.YELLOW = ''
-			self.RED = ''
-			self.NC = ''
+		self.GREEN = '\033[92m'
+		self.YELLOW = '\033[93m'
+		self.RED = '\033[91m'
+		self.NC = '\033[0m'
 
 	def log(self, level, msg):
 		"""Print the log in terminal
