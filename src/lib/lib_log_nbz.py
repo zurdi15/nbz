@@ -58,3 +58,15 @@ class Logging:
 																	  msg=msg))
 		else:
 			print('Not defined logger level: {level}'.format(level=level))
+
+	def log_header(self):
+		print("{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=self.YELLOW,
+																											NC=self.NC))
+
+	def log_footer(self):
+		print("\n{YELLOW}  ############################ END NBZ ############################{NC}\n".format(YELLOW=self.YELLOW,
+																											NC=self.NC))
+
+	def log_error(self):
+		print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=self.RED,
+																										  NC=self.NC))

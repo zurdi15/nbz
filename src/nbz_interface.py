@@ -8,7 +8,6 @@ import sys
 import os
 import psutil
 import argparse
-from pprint import pprint
 from pyvirtualdisplay import Display
 from nbz_core import NBZCore
 from parser.nbz_parser import NBZParser
@@ -16,9 +15,6 @@ from data.natives import NATIVES
 from lib.lib_log_nbz import Logging
 logger = Logging()
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-
-COLOURS = {'YELLOW': '\033[93m', 'RED': '\033[91m', 'NC': '\033[0m'}
-
 
 class NBZInterface:
 	"""Interface between all modules of the nbz.
@@ -58,18 +54,15 @@ class NBZInterface:
 			'debug': debug,
 		}
 		try:
-			print("{YELLOW}  ############################ START NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
-																													NC=COLOURS['NC']))
+			logger.log_header()
 			self.compile_script()
 			nbz_core = NBZCore(self.core_attributes)
 			nbz_core.execute_instructions()
 			nbz_core.export_har_log()
-			print("\n{YELLOW}  ############################ END NBZ ############################{NC}\n".format(YELLOW=COLOURS['YELLOW'],
-																													NC=COLOURS['NC']))
+			logger.log_footer()
 		except Exception as e:
 			logger.log('ERROR', str(e))
-			print("\n{RED}  ************************ ERROR ENDING NBZ ************************{NC}\n".format(RED=COLOURS['RED'],
-																												  NC=COLOURS['NC']))
+			logger.log_error()
 		finally:
 			self.close_all()
 
