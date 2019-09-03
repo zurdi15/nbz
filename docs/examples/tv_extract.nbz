@@ -1,4 +1,4 @@
-browser('chrome', 'default', True);
+browser('firefox', 'default', False);
 
 get_url('https://www.elmundo.es/television/programacion-tv/');
 
