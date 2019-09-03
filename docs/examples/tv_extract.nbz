@@ -1,10 +1,10 @@
-browser('firefox', 'default', False);
+browser('firefox', 'default', True);
 
 get_url('https://www.elmundo.es/television/programacion-tv/');
 
 programas_len = execute_js('return document.getElementsByClassName("itemProgramaInner").length;');
 
-output_programas = open('/home/aatance/NBZ/output.csv', 'w');
+output_programas = open('~/nbz_tv_extract.csv', 'w');
 write(output_programas, 'titulo|horario');
 
 i = 0;
