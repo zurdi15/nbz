@@ -1,0 +1,18 @@
+browser('chrome', 'default', True);
+
+get_url('https://www.elmundo.es/television/programacion-tv/');
+
+programas_len = execute_js('return document.getElementsByClassName("itemProgramaInner").length;');
+
+output_programas = open('/home/aatance/NBZ/output.csv', 'w');
+write(output_programas, 'titulo|horario');
+
+i = 0;
+for (0, programas_len-1, +){
+    titulo = execute_js('return document.getElementsByClassName("itemProgramaInner")[' + i + '].getElementsByTagName("h4")[0].innerText;');
+    horario = execute_js('return document.getElementsByClassName("itemProgramaInner")[' + i + '].getElementsByClassName("fecha")[0].innerText;');
+    write(output_programas, titulo+'|'+horario);
+    i = i + 1;
+}
+
+close(output_programas);
