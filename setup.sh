@@ -37,27 +37,31 @@ echo
 
 if [ -z "${PYTHON3}" ]
 then
-	echo -e "${RED}NBZ - Error: Python is not installed. Please install python3 in your system.${NC}"
-	exit 1
+	echo -e "${RED}NBZ - Error: Python3 is not installed in your system. Do you want to install it?${NC}"
+	read -p "(Y/N) " response
+	if [ $response == 'Y' ] || [ $response == 'y' ]; then
+		echo -e "${GREEN} NBZ - Log: Installing python3{NC}"
+		sudo apt-get install python3 -y
+		sudo apt-get install python3-pip -y
+		echo -e "${GREEN} NBZ - Log: Installing python3 library requeriments{NC}"
+		sudo pip3 install -r requirements.txt
+	else
+		echo -e "${RED} NBZ - Log: Exiting installer${NC}"
+	fi
 fi
 
 if [ -z "$JAVA" ]
 then
-	echo -e "${RED}NBZ - Error: Java is not installed. Please install it in your system (openjdk-8-jre recommended).${NC}"
-	exit 1
+	echo -e "${RED}NBZ - Error: Java is not installed in your system. Do you want to install it?${NC}"
+	read -p "(Y/N) " response
+	if [ $response == 'Y' ] || [ $response == 'y' ]; then
+		echo -e "${GREEN} NBZ - Log: Installing openjdk-11-jre${NC}"
+		sudo apt-get install openjdk-11-jre -y
+	else
+		echo -e "${RED} NBZ - Log: Exiting installer${NC}"
+	fi
 fi
 
-if [ -z "${PIP3}" ]
-then
-	echo -e "${RED}NBZ - Error: Python3-pip is not installed. Please install it in your system.${NC}"
-	exit 1
-fi
+echo -e "\n${GREEN}  ########################## INSTALATION FINISHED NBZ ##########################${NC}"
 
-# Installing libraries
-if ! [ -z "${PIP3}" ]
-then
-	pip3 install -r requirements.txt
-fi
-
-echo
-echo -e "${GREEN}  ########################## INSTALATION FINISHED NBZ ##########################${NC}"
+exit 0
