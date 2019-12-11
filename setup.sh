@@ -42,13 +42,14 @@ then
 	if [ $response == 'Y' ] || [ $response == 'y' ]; then
 		echo -e "${GREEN} NBZ - Log: Installing python3{NC}"
 		sudo apt-get install python3 -y
-		sudo apt-get install python3-pip -y
-		echo -e "${GREEN} NBZ - Log: Installing python3 library requeriments{NC}"
-		sudo pip3 install -r requirements.txt
 	else
 		echo -e "${RED} NBZ - Log: Exiting installer${NC}"
 	fi
 fi
+
+sudo apt-get install python3-pip -y
+echo -e "${GREEN} NBZ - Log: Installing python3 library requeriments{NC}"
+sudo pip3 install -r requirements.txt
 
 if [ -z "$JAVA" ]
 then
