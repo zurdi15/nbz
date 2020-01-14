@@ -174,6 +174,8 @@ class LibA:
 
 		try:
 			return open(file_name, mode)
+		except IOError:
+			return open(file_name, "{}+".format(mode))
 		except Exception as e:
 			raise Exception('Error opening {file_name}: {exception}'.format(file_name=file_name,
 																			exception=e))
