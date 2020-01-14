@@ -6,7 +6,7 @@
 
 import time
 from selenium.webdriver.common.keys import Keys
-from lib.lib_log_nbz import Logging
+from .lib_log_nbz import Logging
 
 logger = Logging()
 

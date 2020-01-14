@@ -9,7 +9,7 @@ import platform
 import time
 from urllib.parse import urlparse
 from data.user_agents import USER_AGENTS
-from lib.lib_log_nbz import Logging
+from .lib_log_nbz import Logging
 from selenium import webdriver
 from browsermobproxy import Server
 logger = Logging()
