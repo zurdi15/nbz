@@ -11,7 +11,7 @@ function show_help {
 	echo ""
 	echo "NBZ is a tool to automate navigation and data extraction on the internet."
 	echo "It is configured by little scripts coded with nbz-script language. You can find the"
-	echo "documentation in the github wiki: https://github.com/zurdi15/NBZ/wiki"
+	echo "documentation in the github wiki: https://github.com/zurdi15/nbz/wiki"
 	echo ""
 	echo "-h    Show this help"
 	echo "-v    Show the version"
