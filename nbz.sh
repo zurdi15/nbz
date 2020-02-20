@@ -106,7 +106,11 @@ if [[ -z ${script_parameters[@]} ]]; then
 	script_parameters=""
 fi
 
-NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ -h "${BASH_SOURCE[0]}" ];then
+	NBZ_PATH="$(dirname "$(readlink -f "$0")")"
+else
+	NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+fi
 PYTHON3=$(which python3)
 YELLOW='\e[33m'; RED='\e[31m'; NC='\e[0m'
 

@@ -32,7 +32,7 @@ sudo apt-get install toilet -y
 sudo apt-get install xvfb -y
 toilet -t -f mono12 -F gay "  NBZ  "
 
-echo -e "${GREEN}  ########################## INSTALLING NBZ ##########################${NC}"
+echo -e "${GREEN}########################## INSTALLING NBZ ##########################${NC}"
 echo
 
 if [ -z "${PYTHON3}" ]
@@ -63,6 +63,12 @@ then
 	fi
 fi
 
-echo -e "\n${GREEN}  ########################## INSTALATION FINISHED NBZ ##########################${NC}"
+if [ ! -d ~/bin ];then
+	mkdir ~/bin
+fi
+ln -s $NBZ_PATH/nbz.sh ~/bin/nbz
+PATH="$HOME/bin:$PATH"
+
+echo -e "\n${GREEN}########################## INSTALATION FINISHED NBZ ##########################${NC}"
 
 exit 0
