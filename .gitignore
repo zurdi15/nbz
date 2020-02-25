@@ -5,3 +5,4 @@ scripts
 *.pyc
 net_reports
 __pycache__
+.swp
