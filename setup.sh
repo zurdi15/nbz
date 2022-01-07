@@ -26,10 +26,11 @@ NBZ_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RED="\e[91"
 BLUE="\e[36m"
 GREEN="\e[92m"
+YELLOW="\e[93m"
 NC="\e[0m"
 
-sudo apt-get install toilet -y
-sudo apt-get install xvfb -y
+sudo apt install toilet -y &> /dev/null
+sudo apt install xvfb -y &> /dev/null
 toilet -t -f mono12 -F gay "  NBZ  "
 
 echo -e "${GREEN}########################## INSTALLING NBZ ##########################${NC}"
@@ -37,29 +38,29 @@ echo
 
 if [ -z "${PYTHON3}" ]
 then
-	echo -e "${RED}NBZ - Error: Python3 is not installed in your system. Do you want to install it?${NC}"
+	echo -e "${YELLOW}Python3 is not installed in your system. Do you want to install it?${NC}"
 	read -p "(Y/N) " response
 	if [ $response == 'Y' ] || [ $response == 'y' ]; then
-		echo -e "${GREEN} NBZ - Log: Installing python3{NC}"
-		sudo apt-get install python3 -y
+		echo -e "${GREEN}Installing python3${NC}"
+		sudo apt install python3 -y
 	else
-		echo -e "${RED} NBZ - Log: Exiting installer${NC}"
+		echo -e "${RED}Exiting installer${NC}"
 	fi
 fi
 
-sudo apt-get install python3-pip -y
-echo -e "${GREEN} NBZ - Log: Installing python3 library requeriments{NC}"
+sudo apt install python3-pip -y
+echo -e "Installing python3 library requeriments"
 sudo pip3 install -r requirements.txt
 
 if [ -z "$JAVA" ]
 then
-	echo -e "${RED}NBZ - Error: Java is not installed in your system. Do you want to install it?${NC}"
+	echo -e "${YELLOW}Java is not installed in your system. Do you want to install it?${NC}"
 	read -p "(Y/N) " response
 	if [ $response == 'Y' ] || [ $response == 'y' ]; then
-		echo -e "${GREEN} NBZ - Log: Installing openjdk-11-jre${NC}"
-		sudo apt-get install openjdk-11-jre -y
+		echo -e "${GREEN}Installing openjdk-11-jre${NC}"
+		sudo apt install openjdk-11-jre -y
 	else
-		echo -e "${RED} NBZ - Log: Exiting installer${NC}"
+		echo -e "${RED}Exiting installer${NC}"
 	fi
 fi
 
