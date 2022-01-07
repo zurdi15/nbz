@@ -43,6 +43,7 @@ NATIVES = {
 	'export_net_report': lib_snf_nbz.net_report,
 
 	# Advanced functions
+	'change_tab': lib_a_nbz.change_tab,
 	'print': lib_a_nbz.print_,
 	'random': lib_a_nbz.random,
 	'get_timestamp': lib_a_nbz.get_timestamp,

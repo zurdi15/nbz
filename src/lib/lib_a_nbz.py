@@ -60,6 +60,17 @@ class LibA:
 		self.scroll = 0
 
 	@staticmethod
+	def change_tab(browser, params):
+		"""
+
+		:param browser:
+		:param params:
+		:return:
+		"""
+
+		browser.switch_to.window(browser.window_handles[params[0]])
+
+	@staticmethod
 	def print_(browser, params):
 		"""Print string in terminal
 
