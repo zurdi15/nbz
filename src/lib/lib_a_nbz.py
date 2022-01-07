@@ -68,7 +68,7 @@ class LibA:
 		:return:
 		"""
 
-		browser.switch_to.window(browser.window_handles[params[0]])
+		browser.switch_to.window(browser.window_handles[1])
 
 	@staticmethod
 	def print_(browser, params):
