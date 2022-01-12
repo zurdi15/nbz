@@ -35,40 +35,41 @@ reserved = {
 # --- TOKENS LIST ---
 tokens = [
 
-	 # Types
-	 'INTEGER',
-	 'FLOAT',
-	 'STRING',
+	# Types
+	'INTEGER',
+	'FLOAT',
+	'STRING',
 
-	 # Aritmethic operators
-	 'PLUS',
-	 'MINUS',
-	 'MULTIPLY',
-	 'DIVIDE',
-	 'PLUSPLUS',
-	 'MINUSMINUS',
+	# Aritmethic operators
+	'PLUS',
+	'MINUS',
+	'MULTIPLY',
+	'DIVIDE',
+	'PLUSPLUS',
+	'MINUSMINUS',
 
-	 # Logical operators
-	 'EQ',
-	 'LT',
-	 'LET',
-	 'GT',
-	 'GET',
-	 'DIFF',
+	# Logical operators
+	'EQ',
+	'LT',
+	'LET',
+	'GT',
+	'GET',
+	'DIFF',
 
-	 # Lexical tokens
-	 'ASSIGN',
-	 'LPAREN',
-	 'RPAREN',
-	 'COMMA',
-	 'SEMI',
-	 'LBRACE',
-	 'RBRACE',
-	 'LBRACKET',
-	 'RBRACKET',
-	 'ID'
+	# Lexical tokens
+	'ASSIGN',
+	'LPAREN',
+	'RPAREN',
+	'COMMA',
+	'SEMI',
+	'LBRACE',
+	'RBRACE',
+	'LBRACKET',
+	'RBRACKET',
+	'ID'
 
- ] + list(reserved.values())
+] + list(reserved.values())
+
 
 # --- REGULAR EXPRESSION RULES FOR TOKENS ---
 
@@ -78,15 +79,18 @@ def t_INTEGER(t):
 	t.value = int(t.value)
 	return t
 
+
 def t_FLOAT(t):
 	r'\d+[\.]\d*'
 	t.value = float(t.value)
 	return t
 
+
 def t_STRING(t):  # Trimming strings rule (avoiding " in the string token)
 	r"(?P<quote>['\"])(?P<string>.*?)(?<!\\)(?P=quote)"
 	t.value = str(t.value)[1:-1]
 	return t
+
 
 # Arithmetic operators
 t_PLUS = r'\+'
@@ -115,10 +119,12 @@ t_RBRACE = r'\}'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 
+
 def t_ID(t):
 	r'[a-z_A-Z]([a-z_A-Z0-9])*'
 	t.type = reserved.get(t.value.lower(), 'ID')  # Check for reserved words (lower() to avoid case-sensitive)
 	return t
+
 
 # --- MISC ---
 
@@ -127,20 +133,22 @@ def t_ID(t):
 # Spaces and tabs
 t_ignore = ' \t'
 
+
 # Comments
 def t_comment(t):
 	r'\#.*'
+
 
 # Newlines
 def t_newline(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
 
+
 # Error handling rule
 def t_error(t):
-	raise Exception("Illegal character '{value}' line: {line} column: {column}".format(value=t.value[0],
-																					   line=t.lineno,
-																					   column=t.lexpos))
+	raise Exception(f"Illegal character '{t.value[0]}' line: {t.lineno} column: {t.lexpos}")
+
 
 # Build the lexer
 lexer = lex.lex()
@@ -150,7 +158,7 @@ if __name__ == "__main__":
 	lexer = lex.lex()
 	print('Starting nbz token parser... Press Ctrl+C to exit.')
 	while True:
-		lex.input(raw_input('token > '))
+		lex.input(input('token > '))
 		try:
 			tok = lex.token()
 		except Exception:
